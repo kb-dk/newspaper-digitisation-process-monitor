@@ -12,5 +12,18 @@
 
     <artifactId>process-monitor-backend-service</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>dk.statsbiblioteket.newspaper</groupId>
+            <artifactId>process-monitor-datasource-interfaces</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-servlet</artifactId>
+            <version>1.17.1</version>
+        </dependency>
+
+    </dependencies>
     
 </project>
