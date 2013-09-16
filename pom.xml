@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>newspaper-parent</groupId>
+        <artifactId>newspaper-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dk.statsbiblioteket.newspaper</groupId>
+    <artifactId>newspaper-digitisation-process-monitor</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>process-monitor-frontend</module>
+        <module>process-monitor-datasource-interfaces</module>
+        <module>process-monitor-backend-service</module>
+    </modules>
+
+</project>
+
