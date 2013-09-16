@@ -2,59 +2,27 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>AuthChecker</display-name>
-
     <listener>
         <listener-class>
             dk.statsbiblioteket.doms.webservices.configuration.ConfigContextListener
         </listener-class>
     </listener>
 
-
-
     <servlet>
         <servlet-name>Batches</servlet-name>
-        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
-        </servlet-class>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>dk.statsbiblioteket.newpaper.processmonitor.backend</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>Batches</servlet-name>
         <url-pattern>/batches/*</url-pattern>
     </servlet-mapping>
-
-
-    <!--This servlet is used only to load on startup, and configure the logging framework.-->
-    <servlet>
-        <description>The servlet that is loaded on startup, and initializes the logging system</description>
-        <servlet-name>Log4jInitialisation</servlet-name>
-        <servlet-class>dk.statsbiblioteket.doms.webservices.logging.Log4JInitServlet</servlet-class>
-        <init-param>
-            <description>Name of the context param that controls the location of the log4j config file</description>
-            <param-name>
-                dk.statsbiblioteket.doms.webservices.logging.Log4JInitServlet.log4jConfigurationPropertyKey
-            </param-name>
-            <param-value>
-                dk.statsbiblioteket.newspaper.processmonitor.log4jconfig
-            </param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Log4jInitialisation</servlet-name>
-        <url-pattern>/Log4jInitialisation</url-pattern>
-    </servlet-mapping>
-
-    <context-param>
-        <description>The location of the log4j config file</description>
-        <param-name>dk.statsbiblioteket.newspaper.processmonitor.log4jconfig</param-name>
-        <param-value>WEB-INF/log4jproperties.xml</param-value>
-    </context-param>
-
-
 
 </web-app>
