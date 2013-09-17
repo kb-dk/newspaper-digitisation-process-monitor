@@ -20,7 +20,7 @@
     <bean id="dataSourcesList" class="java.util.ArrayList">
         <constructor-arg>
             <list>
-                <!--        <ref bean="dataSourceMockup"/>-->
+                <ref bean="dataSourceMockup"/>
             </list>
         </constructor-arg>
     </bean>
