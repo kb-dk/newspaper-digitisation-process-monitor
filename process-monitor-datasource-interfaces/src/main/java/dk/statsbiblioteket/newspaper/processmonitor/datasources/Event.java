@@ -1,8 +1,5 @@
 package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Event {
     private String eventID;
     private boolean succes;

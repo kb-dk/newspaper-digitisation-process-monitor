@@ -1,9 +1,7 @@
 package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
 public class Batch {
 
     private String batchID;
