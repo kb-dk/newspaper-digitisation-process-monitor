@@ -9,7 +9,11 @@
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
     <bean id="dataSourceMockup"
-          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"/>
+          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
+          init-method="init">
+        <property name="username" value="testUser"/>
+        <property name="password" value="testPass"/>
+    </bean>
 
     <!--Reserved name for the data sources list-->
     <bean id="dataSourcesList" class="java.util.ArrayList">

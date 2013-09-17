@@ -15,9 +15,13 @@ public class DataSourceMockup implements DataSource {
 
     private ArrayList<Batch> dummyBatches;
 
+    private String username;
+    private String password;
 
-    public DataSourceMockup() {
+    private void init() {
 
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
 
         Event e1 = new Event();
         e1.setEventID("reels-sent");
@@ -63,7 +67,23 @@ public class DataSourceMockup implements DataSource {
         dummyBatches = new ArrayList<Batch>();
         dummyBatches.add(b1);
         dummyBatches.add(b2);
+    }
 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
