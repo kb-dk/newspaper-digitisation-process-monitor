@@ -69,12 +69,9 @@
     var html = "<tr id='" + batchRow + "'></tr>";
     $("#batches-body").append(html);
     $("#" + batchRow).append("<td>" + batch.batchID + "</td>");
-    makeEventCell("#" + batchRow, "foo", batch.events);
-    makeEventCell("#" + batchRow, "bar", batch.events);
-    makeEventCell("#" + batchRow, "baz", batch.events);
-//    makeEventCell("#" + batchRow, "reels-sent", batch.events);
-//    makeEventCell("#" + batchRow, "data-received", batch.events);
-//    makeEventCell("#" + batchRow, "data-archived", batch.events);
+    makeEventCell("#" + batchRow, "reels-sent", batch.events);
+    makeEventCell("#" + batchRow, "data-received", batch.events);
+    makeEventCell("#" + batchRow, "data-archived", batch.events);
     makeEventCell("#" + batchRow, "metadata-archived", batch.events);
     makeEventCell("#" + batchRow, "structure-checked", batch.events);
     makeEventCell("#" + batchRow, "image-properties-checked", batch.events);
