@@ -10,6 +10,13 @@ import java.util.Map;
 public interface DataSource {
 
     /**
+     * Returns true, if the batch id includes the run nr, and false if not.
+     *
+     * @return as above
+     */
+    boolean isRunNrInBatchID();
+
+    /**
      * Get all batches matched by the filters.
      *
      * @param includeDetails should the field "details" be set on the events. This can be an expensive operation, if
