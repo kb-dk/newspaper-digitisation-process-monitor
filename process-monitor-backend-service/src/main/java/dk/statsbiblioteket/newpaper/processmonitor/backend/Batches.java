@@ -1,7 +1,9 @@
 package dk.statsbiblioteket.newpaper.processmonitor.backend;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -23,41 +25,35 @@ public class Batches {
     
     public Batches() {
         Event e1 = new Event();
-        e1.setEventID("foo");
         e1.setSuccess(true);
         
         Event e2 = new Event();
-        e2.setEventID("bar");
         e2.setSuccess(false);
         
         Event e3 = new Event();
-        e3.setEventID("baz");
         e3.setSuccess(true);
-        List<Event> b1Events = new ArrayList<Event>();
-        b1Events.add(e1);
-        b1Events.add(e2);
-        b1Events.add(e3);
+        Map<String, Event> b1Events = new HashMap<String, Event>();
+        b1Events.put("foo", e1);
+        b1Events.put("bar", e2);
+        b1Events.put("baz", e3);
         
         Batch b1 = new Batch();
         b1.setBatchID("hans");
         b1.setEvents(b1Events);
         
         Event e4 = new Event();
-        e4.setEventID("foo");
         e4.setSuccess(true);
         
         Event e5 = new Event();
-        e5.setEventID("bar");
         e5.setSuccess(false);
         
         Event e6 = new Event();
-        e6.setEventID("baz");
         e6.setSuccess(false);
         
-        List<Event> b2Events = new ArrayList<Event>();
-        b2Events.add(e4);
-        b2Events.add(e5);
-        b2Events.add(e6);
+        Map<String, Event> b2Events = new HashMap<String, Event>();
+        b2Events.put("foo", e4);
+        b2Events.put("bar", e5);
+        b2Events.put("baz", e6);
         
         Batch b2 = new Batch();
         b2.setBatchID("bjarne");
@@ -114,10 +110,8 @@ public class Batches {
         Event event = null;
         for(Batch b : dummyBatches) {
             if(b.getBatchID().equals(batchID)) {
-                for(Event e : b.getEvents()) {
-                    if(e.getEventID().equals(eventID)) {
-                        event = e;
-                    }
+                if(b.getEvents().containsKey(eventID)) {
+                    event = b.getEvents().get(eventID);
                 }
             }
         }       
