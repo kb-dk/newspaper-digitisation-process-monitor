@@ -8,13 +8,34 @@
         </listener-class>
     </listener>
 
+    <listener>
+        <listener-class>dk.statsbiblioteket.newpaper.processmonitor.backend.ExternalConfigLoaderContextListener
+        </listener-class>
+    </listener>
+    <context-param>
+        <param-name>CONFIGDIR</param-name>
+        <param-value>WEB-INF/</param-value>
+    </context-param>
+
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:SampleApplicationContext.xml</param-value>
+    </context-param>
+
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <servlet>
         <servlet-name>Batches</servlet-name>
-        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>dk.statsbiblioteket.newpaper.processmonitor.backend</param-value>

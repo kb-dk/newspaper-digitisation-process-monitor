@@ -1,14 +1,9 @@
-package dk.statsbiblioteket.newspaper.processMonitor.datasources;
+package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: abr
- * Date: 9/16/13
- * Time: 3:02 PM
- * To change this template use File | Settings | File Templates.
- */
+@XmlRootElement
 public class Batch {
 
     private String batchID;
