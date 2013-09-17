@@ -1,7 +1,5 @@
 package dk.statsbiblioteket.newpaper.processmonitor.backend;
 
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.Event;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -12,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,7 +38,15 @@ public class Batches {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Batch> getBatches(@QueryParam("details") @DefaultValue("false") boolean details) {
-        return combiner.getAsOneDataSource().getBatches(details, null);
+        return convertBatchList(combiner.getAsOneDataSource().getBatches(details, null));
+    }
+
+    private List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch> batches) {
+        ArrayList<Batch> result = new ArrayList<Batch>(batches.size());
+        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch : batches) {
+            result.add(convert(batch));
+        }
+        return result;
     }
 
     /**
@@ -54,7 +61,23 @@ public class Batches {
     @Produces(MediaType.APPLICATION_JSON)
     public Batch getSpecificBatch(@PathParam("batchID") String batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
-        return combiner.getAsOneDataSource().getBatch(batchID, details);
+        return convert(combiner.getAsOneDataSource().getBatch(batchID, details));
+    }
+
+    private Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
+        Batch result = new Batch();
+        result.setBatchID(batch.getBatchID());
+        result.setEvents(convert(batch.getEventList()));
+        return result;
+
+    }
+
+    private List<Event> convert(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Event> eventList) {
+        ArrayList<Event> result = new ArrayList<Event>(eventList.size());
+        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Event event : eventList) {
+            result.add(convert(event));
+        }
+        return result;
     }
 
     /**
@@ -69,7 +92,15 @@ public class Batches {
     @Produces(MediaType.APPLICATION_JSON)
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
-        return combiner.getAsOneDataSource().getBatchEvent(batchID, eventID, details);
+        return convert(combiner.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
+    }
+
+    private Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
+        Event result = new Event();
+        result.setEventID(batchEvent.getEventID());
+        result.setDetails(batchEvent.getDetails());
+        result.setSuccess(batchEvent.isSucces());
+        return result;
     }
 
 
