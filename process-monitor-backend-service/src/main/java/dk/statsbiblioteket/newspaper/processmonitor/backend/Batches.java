@@ -34,7 +34,6 @@ public class Batches {
      * @return List<Batch> as JSON data.
      */
     @GET
-    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Batch> getBatches(@QueryParam("details") @DefaultValue("false") boolean details) {
         return convertBatchList(dataSource.getAsOneDataSource().getBatches(details, null));
