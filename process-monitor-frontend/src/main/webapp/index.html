@@ -43,13 +43,52 @@
         <tbody id="batches-body"></tbody>
     </table>
 </div>
+<script src="jquery/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 
 <script>
+
+  function makeEventCell(row, key, events) {
+    var cellContent;
+
+    if(events[key] == null) {
+      cellContent = "<span class=\"label\">Pending</span>";
+    } else {
+      if(events[key].success == true) {
+        cellContent = "<span class=\"label label-success\">Success</span>";
+      } else {
+        cellContent = "<span class=\"label label-important\">Failed</span>";
+      }
+    }
+
+    $(row).append("<td>" + cellContent + "</td>");
+  }
+
+  function makeBatchRow(batch) {
+    var batchRow = "batch-" + batch.batchID;
+    var html = "<tr id='" + batchRow + "'></tr>";
+    $("#batches-body").append(html);
+    $("#" + batchRow).append("<td>" + batch.batchID + "</td>");
+    makeEventCell("#" + batchRow, "reels-sent", batch.events);
+    makeEventCell("#" + batchRow, "data-received", batch.events);
+    makeEventCell("#" + batchRow, "data-archived", batch.events);
+    makeEventCell("#" + batchRow, "metadata-archived", batch.events);
+    makeEventCell("#" + batchRow, "structure-checked", batch.events);
+    makeEventCell("#" + batchRow, "image-properties-checked", batch.events);
+    makeEventCell("#" + batchRow, "metadata-checked", batch.events);
+    makeEventCell("#" + batchRow, "auto-qa", batch.events);
+    makeEventCell("#" + batchRow, "manuel-qa", batch.events);
+    makeEventCell("#" + batchRow, "batch-approved", batch.events);
+    makeEventCell("#" + batchRow, "reels-received", batch.events);
+  }
+
+
   function loadBatches() {
     var url = "batches/";
     $.getJSON(url, {}, function(batches) {
-      
+      for(i in batches) {
+        makeBatchRow(batches[i]);
+      }
     });
   }
 
