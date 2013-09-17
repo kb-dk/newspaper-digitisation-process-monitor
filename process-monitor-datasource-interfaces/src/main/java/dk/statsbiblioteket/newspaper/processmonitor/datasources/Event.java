@@ -1,20 +1,24 @@
-package dk.statsbiblioteket.newspaper.processMonitor.datasources;
+package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
 /**
- * Created with IntelliJ IDEA.
- * User: abr
- * Date: 9/16/13
- * Time: 3:11 PM
- * To change this template use File | Settings | File Templates.
+ * An event that have taken place on a batch
  */
 public class Event {
     private String eventID;
     private boolean succes;
     private String details;
 
+    /**
+     * No-args constructor
+     */
     public Event() {
     }
 
+    /**
+     * Get the event id. The event id
+     *
+     * @return
+     */
     public String getEventID() {
         return eventID;
     }
