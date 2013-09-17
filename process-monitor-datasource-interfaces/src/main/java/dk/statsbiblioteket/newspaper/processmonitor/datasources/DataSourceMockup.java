@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public class DataSourceMockup implements DataSource {
 
-    private final ArrayList<Batch> dummyBatches;
+    private ArrayList<Batch> dummyBatches;
+
 
     public DataSourceMockup() {
 
@@ -63,6 +64,11 @@ public class DataSourceMockup implements DataSource {
         dummyBatches.add(b1);
         dummyBatches.add(b2);
 
+    }
+
+    @Override
+    public boolean isRunNrInBatchID() {
+        return false;
     }
 
     @Override
