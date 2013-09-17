@@ -5,9 +5,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Event {
 
-    String eventID;
-    boolean passed;
-    String details;
+    private String eventID;
+    private boolean success;
+    private String details;
     
     public String getEventID() {
         return eventID;
@@ -17,12 +17,12 @@ public class Event {
         this.eventID = eventID;
     }
     
-    public boolean isPassed() {
-        return passed;
+    public boolean isSuccess() {
+        return success;
     }
     
-    public void setPassed(boolean passed) {
-        this.passed = passed;
+    public void setSuccess(boolean passed) {
+        this.success = passed;
     }
     
     public String getDetails() {

@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Batch {
 
-    String batchID;
-    List<Event> events;
+    private String batchID;
+    private List<Event> events;
         
     public String getBatchID() {
         return batchID;

@@ -15,15 +15,15 @@ public class Batches {
     public Batches() {
         Event e1 = new Event();
         e1.setEventID("foo");
-        e1.setPassed(true);
+        e1.setSuccess(true);
         
         Event e2 = new Event();
         e2.setEventID("bar");
-        e2.setPassed(false);
+        e2.setSuccess(false);
         
         Event e3 = new Event();
         e3.setEventID("baz");
-        e3.setPassed(true);
+        e3.setSuccess(true);
         List<Event> b1Events = new ArrayList<Event>();
         b1Events.add(e1);
         b1Events.add(e2);
@@ -34,15 +34,15 @@ public class Batches {
         
         Event e4 = new Event();
         e4.setEventID("foo");
-        e4.setPassed(true);
+        e4.setSuccess(true);
         
         Event e5 = new Event();
         e5.setEventID("bar");
-        e5.setPassed(false);
+        e5.setSuccess(false);
         
         Event e6 = new Event();
         e6.setEventID("baz");
-        e6.setPassed(false);
+        e6.setSuccess(false);
         
         List<Event> b2Events = new ArrayList<Event>();
         b2Events.add(e4);
@@ -69,7 +69,7 @@ public class Batches {
     public Batch getSpecificBatch(@PathParam("batchID") String batchID) {
         Batch batch = null;
         for(Batch b : dummyBatches) {
-            if(b.batchID.equals(batchID)) {
+            if(b.getBatchID().equals(batchID)) {
                 batch = b;
             }
         }
@@ -81,7 +81,7 @@ public class Batches {
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID) {
         Event event = null;
         for(Batch b : dummyBatches) {
-            if(b.batchID.equals(batchID)) {
+            if(b.getBatchID().equals(batchID)) {
                 for(Event e : b.getEvents()) {
                     if(e.getEventID().equals(eventID)) {
                         event = e;
