@@ -20,8 +20,10 @@ public class DataSourceMockup implements DataSource {
 
     private void init() {
 
+/*
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
+*/
 
         Event e1 = new Event();
         e1.setEventID("reels-sent");
