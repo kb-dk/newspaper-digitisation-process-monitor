@@ -40,6 +40,7 @@ public class Batches {
         
         Batch b1 = new Batch();
         b1.setBatchID("hans");
+        b1.setEvents(b1Events);
         
         Event e4 = new Event();
         e4.setEventID("foo");
@@ -60,6 +61,7 @@ public class Batches {
         
         Batch b2 = new Batch();
         b2.setBatchID("bjarne");
+        b2.setEvents(b2Events);
         
         dummyBatches = new ArrayList<Batch>();
         dummyBatches.add(b1);
