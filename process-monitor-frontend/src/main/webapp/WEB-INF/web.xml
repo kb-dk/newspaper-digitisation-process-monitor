@@ -9,7 +9,7 @@
     </listener>
 
     <listener>
-        <listener-class>dk.statsbiblioteket.newpaper.processmonitor.backend.ExternalConfigLoaderContextListener
+        <listener-class>dk.statsbiblioteket.newspaper.processmonitor.backend.ExternalConfigLoaderContextListener
         </listener-class>
     </listener>
     <context-param>
@@ -41,7 +41,7 @@
         <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>dk.statsbiblioteket.newpaper.processmonitor.backend</param-value>
+            <param-value>dk.statsbiblioteket.newspaper.processmonitor.backend</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>

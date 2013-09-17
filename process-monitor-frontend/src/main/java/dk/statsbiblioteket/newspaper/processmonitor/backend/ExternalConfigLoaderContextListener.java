@@ -1,4 +1,4 @@
-package dk.statsbiblioteket.newpaper.processmonitor.backend;
+package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

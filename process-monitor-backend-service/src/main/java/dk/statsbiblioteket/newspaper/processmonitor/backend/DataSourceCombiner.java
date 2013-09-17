@@ -1,4 +1,4 @@
-package dk.statsbiblioteket.newpaper.processmonitor.backend;
+package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSource;
 import org.springframework.stereotype.Component;
