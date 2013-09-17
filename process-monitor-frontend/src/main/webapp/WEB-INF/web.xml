@@ -13,6 +13,9 @@
         </listener-class>
     </listener>
     <context-param>
+        <description>The config dir where logback.xml is read from. Regarded as absolute if starting with /, otherwise
+            relative from the WEB-INF folder of the webapp
+        </description>
         <param-name>CONFIGDIR</param-name>
         <param-value>WEB-INF/</param-value>
     </context-param>
