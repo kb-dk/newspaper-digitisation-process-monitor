@@ -13,56 +13,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 
 /**
  * Service class to expose retrieval of Batch (@see Batch) and Events (@see Event) objects for monitoring progress and state  
  */
 
+@Component
 @Path("/")
 public class Batches {
 
-    private List<Batch> dummyBatches; 
-    
-    public Batches() {
-        Event e1 = new Event();
-        e1.setSuccess(true);
-        
-        Event e2 = new Event();
-        e2.setSuccess(false);
-        
-        Event e3 = new Event();
-        e3.setSuccess(true);
-        Map<String, Event> b1Events = new HashMap<String, Event>();
-        b1Events.put("foo", e1);
-        b1Events.put("bar", e2);
-        b1Events.put("baz", e3);
-        
-        Batch b1 = new Batch();
-        b1.setBatchID("hans");
-        b1.setEvents(b1Events);
-        
-        Event e4 = new Event();
-        e4.setSuccess(true);
-        
-        Event e5 = new Event();
-        e5.setSuccess(false);
-        
-        Event e6 = new Event();
-        e6.setSuccess(false);
-        
-        Map<String, Event> b2Events = new HashMap<String, Event>();
-        b2Events.put("foo", e4);
-        b2Events.put("bar", e5);
-        b2Events.put("baz", e6);
-        
-        Batch b2 = new Batch();
-        b2.setBatchID("bjarne");
-        b2.setEvents(b2Events);
-        
-        dummyBatches = new ArrayList<Batch>();
-        dummyBatches.add(b1);
-        dummyBatches.add(b2);
-    } 
+    @Autowired
+    private DataSourceCombiner dataSource;
     
     /**
      * Retrieves a list of all known Batch objects (@see Batch).
@@ -73,7 +37,15 @@ public class Batches {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Batch> getBatches(@QueryParam("details") @DefaultValue("false") boolean details) {
-        return dummyBatches;
+        return convertBatchList(dataSource.getAsOneDataSource().getBatches(details, null));
+    }
+    
+    private List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch> batches) {
+        ArrayList<Batch> result = new ArrayList<Batch>(batches.size());
+        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch : batches) {
+            result.add(convert(batch));
+        }
+        return result;
     }
     
     /**
@@ -87,13 +59,22 @@ public class Batches {
     @Produces(MediaType.APPLICATION_JSON)
     public Batch getSpecificBatch(@PathParam("batchID") String batchID, 
             @QueryParam("details") @DefaultValue("false") boolean details) {
-        Batch batch = null;
-        for(Batch b : dummyBatches) {
-            if(b.getBatchID().equals(batchID)) {
-                batch = b;
-            }
+        return convert(dataSource.getAsOneDataSource().getBatch(batchID, details));
+    }
+    
+    private Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
+        Batch result = new Batch();
+        result.setBatchID(batch.getBatchID());
+        result.setEvents(convert(batch.getEventList()));
+        return result;
+    }
+    
+    private Map<String, Event> convert(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Event> eventList) {
+        Map<String, Event> result = new HashMap<String, Event>(eventList.size());
+        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Event event : eventList) {
+            result.put(event.getEventID(), convert(event));
         }
-        return batch;
+        return result;
     }
     
     /**
@@ -107,16 +88,14 @@ public class Batches {
     @Produces(MediaType.APPLICATION_JSON)
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID, 
             @QueryParam("details") @DefaultValue("false") boolean details) {
-        Event event = null;
-        for(Batch b : dummyBatches) {
-            if(b.getBatchID().equals(batchID)) {
-                if(b.getEvents().containsKey(eventID)) {
-                    event = b.getEvents().get(eventID);
-                }
-            }
-        }       
-        return event;
+        return convert(dataSource.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
     }
     
+    private Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
+        Event result = new Event();
+        result.setDetails(batchEvent.getDetails());
+        result.setSuccess(batchEvent.isSucces());
+        return result;
+    }
 
 }
