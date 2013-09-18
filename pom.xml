@@ -13,6 +13,10 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <frontend.name>processMonitor</frontend.name>
+    </properties>
+
     <modules>
         <module>process-monitor-frontend</module>
         <module>process-monitor-datasource-interfaces</module>
@@ -31,10 +35,36 @@
             <id>jenkins</id>
             <properties>
                 <integration.test.newspaper.properties>
-                    ${env.WORKSPACE}/build/devel-config/integration.test.newspaper.properties
+                    <!--                    ${env.WORKSPACE}/build/devel-config/integration.test.newspaper.properties-->
                 </integration.test.newspaper.properties>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>tomcat-maven-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>jenkinsDeploy</id>
+                                <inherited>true</inherited>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                                <configuration combine.children="override">
+                                    <url>http://achernar:7820/manager/text</url>
+                                    <server>ProcessMonitorTomcat</server>
+                                    <path>/${frontend.name}</path>
+                                    <warFile>target/${frontend.name}.war</warFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
+
     </profiles>
 </project>
 
