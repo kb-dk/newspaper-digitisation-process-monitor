@@ -1,0 +1,12 @@
+<settings>
+    <profiles>
+        <profile>
+            <id>newspaper</id>
+            <properties>
+                <integration.test.newspaper.properties>
+                    ${env.WORKSPACE}/target/devel-config/integration.test.newspaper.properties
+                </integration.test.newspaper.properties>
+            </properties>
+        </profile>
+    </profiles>
+</settings>
