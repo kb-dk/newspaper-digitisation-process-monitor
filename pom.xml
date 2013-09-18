@@ -60,7 +60,7 @@
             <id>jenkins</id>
             <properties>
                 <integration.test.newspaper.properties>
-                    <!--                    ${env.WORKSPACE}/build/devel-config/integration.test.newspaper.properties-->
+                    ${env.WORKSPACE}/build/devel-config/integration.test.newspaper.properties
                 </integration.test.newspaper.properties>
             </properties>
             <build>
