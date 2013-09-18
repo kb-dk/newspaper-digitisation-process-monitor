@@ -3,13 +3,18 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
+
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +64,14 @@ public class Batches {
     @Produces(MediaType.APPLICATION_JSON)
     public Batch getSpecificBatch(@PathParam("batchID") String batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
-        return convert(dataSource.getAsOneDataSource().getBatch(batchID, details));
+        try {
+            return convert(dataSource.getAsOneDataSource().getBatch(batchID, details));
+        } catch (NotFoundException e) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Failed to get batch with ID: " + batchID)
+                    .type(MediaType.TEXT_PLAIN)
+                    .build());
+        }
     }
 
     private Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
@@ -89,7 +101,14 @@ public class Batches {
     @Produces(MediaType.APPLICATION_JSON)
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
-        return convert(dataSource.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
+        try {
+            return convert(dataSource.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
+        } catch (NotFoundException e) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID)
+                    .type(MediaType.TEXT_PLAIN)
+                    .build());
+        }
     }
 
     private Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
