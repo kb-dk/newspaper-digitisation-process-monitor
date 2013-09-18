@@ -1,12 +1,15 @@
 package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
+import java.util.Date;
+
 /**
  * An event that have taken place on a batch
  */
 public class Event {
     private String eventID;
-    private boolean succes;
+    private boolean success;
     private String details;
+    private Date date;
 
     /**
      * No-args constructor
@@ -27,12 +30,12 @@ public class Event {
         this.eventID = eventID;
     }
 
-    public boolean isSucces() {
-        return succes;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setSucces(boolean succes) {
-        this.succes = succes;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getDetails() {
@@ -41,5 +44,13 @@ public class Event {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

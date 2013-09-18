@@ -21,8 +21,8 @@ public interface DataSource {
      *
      * @param includeDetails should the field "details" be set on the events. This can be an expensive operation, if
      *                       many batches are returned
-     * @param filters        the map of filters. Name/value pairs.
-     * @return a List of Batch objects
+     * @param filters        the map of filters. Name/value pairs. Can be null, if no filters
+     * @return a List of Batch objects. If no batch objects are found, returns an empty list
      */
     List<Batch> getBatches(boolean includeDetails, Map<String, String> filters);
 
@@ -32,8 +32,9 @@ public interface DataSource {
      * @param batchID        the id of the specific batch
      * @param includeDetails should the field "details" be set on the events.
      * @return the Batch object
+     * @throws NotFoundException If no batch with this ID is found
      */
-    Batch getBatch(String batchID, boolean includeDetails);
+    Batch getBatch(String batchID, boolean includeDetails) throws NotFoundException;
 
     /**
      * Get information about the specific event on the specific batch
@@ -42,7 +43,8 @@ public interface DataSource {
      * @param eventID        the event id
      * @param includeDetails should the field "details" be set on the event.
      * @return the Specific event
+     * @throws NotFoundException if the batch is not found, or the batch does not have an event by this name
      */
-    Event getBatchEvent(String batchID, String eventID, boolean includeDetails);
+    Event getBatchEvent(String batchID, String eventID, boolean includeDetails) throws NotFoundException;
 
 }

@@ -27,15 +27,15 @@ public class DataSourceMockup implements DataSource {
 
         Event e1 = new Event();
         e1.setEventID("reels-sent");
-        e1.setSucces(true);
+        e1.setSuccess(true);
 
         Event e2 = new Event();
         e2.setEventID("data-received");
-        e2.setSucces(false);
+        e2.setSuccess(false);
 
         Event e3 = new Event();
         e3.setEventID("data-archived");
-        e3.setSucces(true);
+        e3.setSuccess(true);
         List<Event> b1Events = new ArrayList<Event>();
         b1Events.add(e1);
         b1Events.add(e2);
@@ -47,15 +47,15 @@ public class DataSourceMockup implements DataSource {
 
         Event e4 = new Event();
         e4.setEventID("reels-sent");
-        e4.setSucces(true);
+        e4.setSuccess(true);
 
         Event e5 = new Event();
         e5.setEventID("data-received");
-        e5.setSucces(false);
+        e5.setSuccess(false);
 
         Event e6 = new Event();
         e6.setEventID("data-archived");
-        e6.setSucces(false);
+        e6.setSuccess(false);
 
         List<Event> b2Events = new ArrayList<Event>();
         b2Events.add(e4);
