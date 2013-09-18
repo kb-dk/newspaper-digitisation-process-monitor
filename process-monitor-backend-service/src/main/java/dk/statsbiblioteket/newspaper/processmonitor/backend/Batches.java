@@ -95,7 +95,7 @@ public class Batches {
     private Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
         Event result = new Event();
         result.setDetails(batchEvent.getDetails());
-        result.setSuccess(batchEvent.isSucces());
+        result.setSuccess(batchEvent.isSuccess());
         return result;
     }
 

@@ -5,7 +5,7 @@ package dk.statsbiblioteket.newspaper.processmonitor.datasources;
  */
 public class Event {
     private String eventID;
-    private boolean succes;
+    private boolean success;
     private String details;
 
     /**
@@ -27,12 +27,12 @@ public class Event {
         this.eventID = eventID;
     }
 
-    public boolean isSucces() {
-        return succes;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setSucces(boolean succes) {
-        this.succes = succes;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getDetails() {
