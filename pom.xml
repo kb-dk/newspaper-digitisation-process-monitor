@@ -30,6 +30,31 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${integration.test.newspaper.properties}</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
     <profiles>
         <profile>
             <id>jenkins</id>
@@ -41,9 +66,9 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <version>1.1</version>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.1</version>
                         <executions>
                             <execution>
                                 <id>jenkinsDeploy</id>
@@ -52,11 +77,13 @@
                                     <goal>deploy</goal>
                                 </goals>
                                 <phase>deploy</phase>
-                                <configuration combine.children="override">
+                                <configuration>
                                     <url>http://achernar:7820/manager/text</url>
-                                    <server>ProcessMonitorTomcat</server>
                                     <path>/${frontend.name}</path>
                                     <warFile>target/${frontend.name}.war</warFile>
+                                    <username>${process.monitor.jenkins.username}</username>
+                                    <password>${process.monitor.jenkins.password}</password>
+                                    <update>true</update>
                                 </configuration>
                             </execution>
                         </executions>
