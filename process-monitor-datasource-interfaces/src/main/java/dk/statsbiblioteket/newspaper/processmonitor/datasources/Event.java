@@ -1,5 +1,7 @@
 package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
+import java.util.Date;
+
 /**
  * An event that have taken place on a batch
  */
@@ -7,6 +9,7 @@ public class Event {
     private String eventID;
     private boolean success;
     private String details;
+    private Date date;
 
     /**
      * No-args constructor
@@ -41,5 +44,13 @@ public class Event {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
