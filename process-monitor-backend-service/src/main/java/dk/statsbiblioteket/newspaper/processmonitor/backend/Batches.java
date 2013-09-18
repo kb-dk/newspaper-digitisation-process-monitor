@@ -1,9 +1,8 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
+import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -14,11 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -41,15 +36,7 @@ public class Batches {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Batch> getBatches(@QueryParam("details") @DefaultValue("false") boolean details) {
-        return convertBatchList(dataSource.getAsOneDataSource().getBatches(details, null));
-    }
-
-    private List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch> batches) {
-        ArrayList<Batch> result = new ArrayList<Batch>(batches.size());
-        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch : batches) {
-            result.add(convert(batch));
-        }
-        return result;
+        return Converter.convertBatchList(dataSource.getAsOneDataSource().getBatches(details, null));
     }
 
     /**
@@ -65,28 +52,13 @@ public class Batches {
     public Batch getSpecificBatch(@PathParam("batchID") String batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            return convert(dataSource.getAsOneDataSource().getBatch(batchID, details));
+            return Converter.convert(dataSource.getAsOneDataSource().getBatch(batchID, details));
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get batch with ID: " + batchID)
                     .type(MediaType.TEXT_PLAIN)
                     .build());
         }
-    }
-
-    private Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
-        Batch result = new Batch();
-        result.setBatchID(batch.getBatchID());
-        result.setEvents(convert(batch.getEventList()));
-        return result;
-    }
-
-    private Map<String, Event> convert(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Event> eventList) {
-        Map<String, Event> result = new HashMap<String, Event>(eventList.size());
-        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Event event : eventList) {
-            result.put(event.getEventID(), convert(event));
-        }
-        return result;
     }
 
     /**
@@ -102,20 +74,13 @@ public class Batches {
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            return convert(dataSource.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
+            return Converter.convert(dataSource.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID)
                     .type(MediaType.TEXT_PLAIN)
                     .build());
         }
-    }
-
-    private Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
-        Event result = new Event();
-        result.setDetails(batchEvent.getDetails());
-        result.setSuccess(batchEvent.isSuccess());
-        return result;
     }
 
 }
