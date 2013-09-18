@@ -36,7 +36,7 @@ public class Batches {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Batch> getBatches(@QueryParam("details") @DefaultValue("false") boolean details) {
-        return Converter.convertBatchList(dataSource.getAsOneDataSource().getBatches(details, null));
+        return Converter.convertBatchList(dataSource.getBatches(details, null));
     }
 
     /**
@@ -52,7 +52,7 @@ public class Batches {
     public Batch getSpecificBatch(@PathParam("batchID") String batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            return Converter.convert(dataSource.getAsOneDataSource().getBatch(batchID, details));
+            return Converter.convert(dataSource.getBatch(batchID, details));
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get batch with ID: " + batchID)
@@ -74,7 +74,7 @@ public class Batches {
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            return Converter.convert(dataSource.getAsOneDataSource().getBatchEvent(batchID, eventID, details));
+            return Converter.convert(dataSource.getBatchEvent(batchID, eventID, details));
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID)
