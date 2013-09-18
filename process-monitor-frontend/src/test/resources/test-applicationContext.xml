@@ -8,6 +8,15 @@
 
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
+    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakConfiguration">
+        <property name="databaseUrl" value="#{systemProperties['mfpak.server']}"/>
+        <property name="databaseUser" value="#{systemProperties['mfpak.server.username']}"/>
+        <property name="databasePassword" value="#{systemProperties['mfpak.server.password']}"/>
+    </bean>
+    <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource">
+        <constructor-arg ref="mpPakConfig"/>
+    </bean>
+
     <bean id="dataSourceMockup"
           class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
           init-method="init">
@@ -20,6 +29,7 @@
     <bean id="dataSourcesList" class="java.util.ArrayList">
         <constructor-arg>
             <list>
+                <ref bean="mfPak"/>
                 <ref bean="dataSourceMockup"/>
             </list>
         </constructor-arg>

@@ -14,7 +14,8 @@ public class BackendTest {
 
     private DefaultClientConfig config;
 
-    private String batchID = "hans";
+    private String batchID = "4002";
+    private String eventID = "Shipped";
     private String integrationTestServer;
 
 
@@ -30,6 +31,7 @@ public class BackendTest {
     public void testGetBatches() {
         Batch[] result = Client.create(config).resource(integrationTestServer).get(Batch[].class);
         Assert.assertTrue(result.length > 1, "We expected more than one batch to be returned");
+        System.out.println(Client.create(config).resource(integrationTestServer).get(String.class));
 
     }
 
@@ -38,8 +40,8 @@ public class BackendTest {
         Batch result = Client.create(config).resource(integrationTestServer).path(batchID).get(Batch.class);
         System.out.println(result);
         Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
-        Assert.assertTrue(result.getEvents().containsKey("reels-sent"), "The batch does not contain the expected key");
-        Assert.assertTrue(result.getEvents().get("reels-sent").isSuccess(), "The event is not marked as succesful");
+        Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
+        Assert.assertTrue(result.getEvents().get(eventID).isSuccess(), "The event is not marked as succesful");
 
     }
 
@@ -49,7 +51,7 @@ public class BackendTest {
         Event result = Client.create(config)
                 .resource(integrationTestServer)
                 .path(batchID)
-                .path("reels-sent")
+                .path(eventID)
                 .queryParam("details", "true")
                 .get(Event.class);
         Assert.assertTrue(result.isSuccess(), "The event is not succesful");
