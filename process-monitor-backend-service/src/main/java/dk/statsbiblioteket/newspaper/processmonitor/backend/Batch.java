@@ -1,5 +1,6 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ public class Batch {
     private String batchID;
     private Map<String, Event> events;
 
+    @XmlElement(name = "batchID")
     public String getBatchID() {
         return batchID;
     }
@@ -17,6 +19,7 @@ public class Batch {
         this.batchID = batchID;
     }
 
+    @XmlElement(name = "events")
     public Map<String, Event> getEvents() {
         return events;
     }
