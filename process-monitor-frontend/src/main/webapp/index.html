@@ -85,9 +85,9 @@
 
   function loadBatches() {
     var url = "batches/";
-    $.getJSON(url, {}, function(batches) {
-      for(i in batches) {
-        makeBatchRow(batches[i]);
+    $.getJSON(url, {}, function(batchList) {
+      for(i in batchList) {
+        makeBatchRow(batchList[i]);
       }
     });
   }
