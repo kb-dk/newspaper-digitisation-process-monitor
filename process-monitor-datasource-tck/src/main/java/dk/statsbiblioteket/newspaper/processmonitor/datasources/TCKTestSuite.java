@@ -7,17 +7,10 @@ import java.util.List;
 
 public abstract class TCKTestSuite {
 
-    private final DataSource dataSource;
-    private final boolean runNrInBatchID;
 
-    protected TCKTestSuite(DataSource dataSource, boolean isRunNrInBatchID) {
-        this.dataSource = dataSource;
-        runNrInBatchID = isRunNrInBatchID;
-    }
+    public abstract boolean isRunNrInBatchID();
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+    public abstract DataSource getDataSource();
 
     public abstract String getValidBatchID();
 
@@ -35,9 +28,9 @@ public abstract class TCKTestSuite {
 
     @Test(groups = "integrationTest")
     public void testIsRunNrInBatchID() throws NotWorkingProperlyException {
-        Assert.assertEquals(dataSource.isRunNrInBatchID(), runNrInBatchID, "Run nr should be set correctly");
+        Assert.assertEquals(getDataSource().isRunNrInBatchID(), isRunNrInBatchID(), "Run nr should be set correctly");
         boolean containsRunNr = idContainsRunNr(getValidBatchID());
-        if (runNrInBatchID) {
+        if (isRunNrInBatchID()) {
             Assert.assertTrue(containsRunNr, "Run nr should be in batch id, but is not in valid id");
         } else {
             Assert.assertFalse(containsRunNr, "Run nr should not be in batch id, but is in valid id");
@@ -48,12 +41,12 @@ public abstract class TCKTestSuite {
 
     @Test(groups = "integrationTest")
     public void testGetBatches() throws NotWorkingProperlyException {
-        List<Batch> batches = dataSource.getBatches(false, null);
+        List<Batch> batches = getDataSource().getBatches(false, null);
         Assert.assertTrue(batches.size() > 0, "The datasource have no content");
         boolean validHaveBeenFound = false;
         boolean anEventHaveBeenSeen = false;
         for (Batch batch : batches) {
-            if (runNrInBatchID != idContainsRunNr(batch.getBatchID())) {
+            if (isRunNrInBatchID() != idContainsRunNr(batch.getBatchID())) {
                 Assert.fail("The batch ids should not contain run nrs, if this is not specified");
             }
             List<Event> eventList = batch.getEventList();
@@ -88,7 +81,7 @@ public abstract class TCKTestSuite {
     @Test(groups = "integrationTest")
     public void testGetInvalidBatch() throws NotWorkingProperlyException {
         try {
-            Batch batch = dataSource.getBatch(getInvalidBatchID(), false);
+            Batch batch = getDataSource().getBatch(getInvalidBatchID(), false);
             Assert.assertNotNull(batch, "Do not return null");
             Assert.fail("The invalid batch was found");
         } catch (NotFoundException e) {
@@ -101,7 +94,7 @@ public abstract class TCKTestSuite {
         Batch validBatch = null;
         try {
 
-            validBatch = dataSource.getBatch(getValidBatchID(), true);
+            validBatch = getDataSource().getBatch(getValidBatchID(), true);
             Assert.assertNotNull(validBatch, "Do not return null");
         } catch (NotFoundException e) {
             Assert.fail("The valid batch was not found", e);
@@ -122,7 +115,7 @@ public abstract class TCKTestSuite {
 
         Event event = null;
         try {
-            event = dataSource.getBatchEvent(getValidBatchID(), getValidAndSucessfullEventIDForValidBatch(), true);
+            event = getDataSource().getBatchEvent(getValidBatchID(), getValidAndSucessfullEventIDForValidBatch(), true);
             Assert.assertNotNull(event, "Do not return null");
         } catch (NotFoundException e) {
             Assert.fail("The valid batch event was not found", e);
@@ -140,7 +133,7 @@ public abstract class TCKTestSuite {
 
         Event event = null;
         try {
-            event = dataSource.getBatchEvent(getValidBatchID(), getInvalidEventIDForValidBatch(), true);
+            event = getDataSource().getBatchEvent(getValidBatchID(), getInvalidEventIDForValidBatch(), true);
             Assert.assertNotNull(event, "Do not return null");
             Assert.fail("The invalid event was found");
         } catch (NotFoundException e) {
