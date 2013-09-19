@@ -8,10 +8,10 @@
 
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
-    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakConfiguration">
-        <property name="databaseUrl" value="#{systemProperties['mfpak.server']}"/>
-        <property name="databaseUser" value="#{systemProperties['mfpak.server.username']}"/>
-        <property name="databasePassword" value="#{systemProperties['mfpak.server.password']}"/>
+    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration">
+        <property name="databaseUrl" value="${mfpak.postgres.url}"/>
+        <property name="databaseUser" value="${mfpak.postgres.user}"/>
+        <property name="databasePassword" value="${mfpak.postgres.password}"/>
     </bean>
     <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource">
         <constructor-arg ref="mpPakConfig"/>
@@ -20,8 +20,8 @@
     <bean id="dataSourceMockup"
           class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
           init-method="init">
-        <property name="username" value="#{systemProperties['fedora.admin.username']}"/>
-        <property name="password" value="#{systemProperties['fedora.admin.password']}"/>
+        <property name="username" value="${fedora.admin.username}"/>
+        <property name="password" value="${fedora.admin.password}"/>
     </bean>
 
 
