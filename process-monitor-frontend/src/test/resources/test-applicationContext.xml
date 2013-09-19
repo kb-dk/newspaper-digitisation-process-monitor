@@ -18,8 +18,7 @@
     </bean>
 
     <bean id="dataSourceMockup"
-          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
-          init-method="init">
+          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup">
         <property name="username" value="${fedora.admin.username}"/>
         <property name="password" value="${fedora.admin.password}"/>
     </bean>
