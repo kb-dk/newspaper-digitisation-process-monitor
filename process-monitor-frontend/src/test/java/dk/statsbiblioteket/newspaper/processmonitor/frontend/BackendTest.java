@@ -35,7 +35,7 @@ public class BackendTest {
 
     }
 
-    @Test(groups = "integrationTest")
+    @Test(groups = "integrationTest", enabled = false)
     public void testGetSingleBatch() {
         Batch result = Client.create(config).resource(integrationTestServer).path(batchID).get(Batch.class);
         System.out.println(result);
@@ -46,7 +46,8 @@ public class BackendTest {
     }
 
 
-    @Test(groups = "integrationTest")
+    @Test(groups = "integrationTest", enabled = false)
+
     public void testGetSingleEvent() {
         Event result = Client.create(config)
                 .resource(integrationTestServer)
