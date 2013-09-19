@@ -6,7 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Utility class for converting between datasource structures and json structures
+ */
 public class Converter {
+
+    /**
+     * Convert a list of batches from datasource to backend
+     *
+     * @param batches the batches from a datasource
+     * @return the batches in the backend structure
+     */
     static List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch> batches) {
         if (batches == null) {
             return null;
@@ -18,6 +28,12 @@ public class Converter {
         return result;
     }
 
+    /**
+     * Convert a batch
+     *
+     * @param batch the batch as datasource structure
+     * @return the batch as backend
+     */
     static Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
         if (batch == null) {
             return null;
@@ -28,6 +44,12 @@ public class Converter {
         return result;
     }
 
+    /**
+     * Convert an event list
+     *
+     * @param eventList as datasource
+     * @return as backend
+     */
     private static Map<String, Event> convert(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Event> eventList) {
         if (eventList == null) {
             return null;
@@ -39,6 +61,12 @@ public class Converter {
         return result;
     }
 
+    /**
+     * convert an event
+     *
+     * @param batchEvent as datasource
+     * @return as backend
+     */
     static Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
         if (batchEvent == null) {
             return null;

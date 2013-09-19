@@ -17,7 +17,10 @@ import java.util.List;
 
 
 /**
- * Service class to expose retrieval of Batch (@see Batch) and Events (@see Event) objects for monitoring progress and state
+ * Service class to expose retrieval of Batch and Events  objects for monitoring progress and state
+ *
+ * @see Batch
+ * @see Event
  */
 
 @Component

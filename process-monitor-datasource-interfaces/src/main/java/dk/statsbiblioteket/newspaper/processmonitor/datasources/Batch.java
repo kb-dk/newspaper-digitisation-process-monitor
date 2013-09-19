@@ -11,7 +11,7 @@ public class Batch {
     private List<Event> eventList;
 
     /**
-     * Construct a new batch
+     * Constructor
      */
     public Batch() {
     }
