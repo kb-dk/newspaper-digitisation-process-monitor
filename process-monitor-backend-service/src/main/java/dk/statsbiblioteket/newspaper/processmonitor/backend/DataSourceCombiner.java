@@ -4,6 +4,7 @@ import dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSource;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.Event;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
+import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotWorkingProperlyException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -31,10 +32,14 @@ public class DataSourceCombiner implements DataSource {
         dataSources_withoutRunNr = new ArrayList<>();
         dataSources_withRunNr = new ArrayList<>();
         for (DataSource dataSource : dataSources) {
-            if (dataSource.isRunNrInBatchID()) {
-                dataSources_withRunNr.add(dataSource);
-            } else {
-                dataSources_withoutRunNr.add(dataSource);
+            try {
+                if (dataSource.isRunNrInBatchID()) {
+                    dataSources_withRunNr.add(dataSource);
+                } else {
+                    dataSources_withoutRunNr.add(dataSource);
+                }
+            } catch (NotWorkingProperlyException e) {
+                continue;
             }
         }
     }
@@ -50,10 +55,18 @@ public class DataSourceCombiner implements DataSource {
         Map<String, Batch> resultsWithoutRunNr = new HashMap<>();
 
         for (DataSource dataSource : dataSources_withoutRunNr) {
-            resultsWithoutRunNr.putAll(toBatchMap(dataSource.getBatches(includeDetails, filters)));
+            try {
+                resultsWithoutRunNr.putAll(toBatchMap(dataSource.getBatches(includeDetails, filters)));
+            } catch (NotWorkingProperlyException e) {
+                continue;
+            }
         }
         for (DataSource dataSource : dataSources_withRunNr) {
-            resultsWithRunNr.putAll(toBatchMap(dataSource.getBatches(includeDetails, filters)));
+            try {
+                resultsWithRunNr.putAll(toBatchMap(dataSource.getBatches(includeDetails, filters)));
+            } catch (NotWorkingProperlyException e) {
+                continue;
+            }
         }
 
         HashMap<String, Batch> combinedResult = new HashMap<>();
@@ -130,7 +143,12 @@ public class DataSourceCombiner implements DataSource {
         Batch result = null;
         for (DataSource dataSource : dataSources) {
             try {
-                Batch temp = dataSource.getBatch(batchID, includeDetails);
+                Batch temp = null;
+                try {
+                    temp = dataSource.getBatch(batchID, includeDetails);
+                } catch (NotWorkingProperlyException e) {
+                    continue;
+                }
                 if (result != null) {
                     result = mergeBatches(result, temp);
                 } else {
@@ -157,6 +175,8 @@ public class DataSourceCombiner implements DataSource {
                 return dataSource.getBatchEvent(strippedID, eventID, includeDetails);
             } catch (NotFoundException e) {
                 //continiue
+            } catch (NotWorkingProperlyException e) {
+                continue;
             }
         }
         for (DataSource dataSource : dataSources_withRunNr) {
@@ -164,6 +184,8 @@ public class DataSourceCombiner implements DataSource {
                 return dataSource.getBatchEvent(batchID, eventID, includeDetails);
             } catch (NotFoundException e) {
                 //continiue
+            } catch (NotWorkingProperlyException e) {
+                continue;
             }
         }
 

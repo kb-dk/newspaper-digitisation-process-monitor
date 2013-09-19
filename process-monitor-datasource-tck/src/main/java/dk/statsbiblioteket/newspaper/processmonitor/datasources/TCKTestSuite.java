@@ -34,7 +34,7 @@ public abstract class TCKTestSuite {
 
 
     @Test(groups = "integrationTest")
-    public void testIsRunNrInBatchID() {
+    public void testIsRunNrInBatchID() throws NotWorkingProperlyException {
         Assert.assertEquals(dataSource.isRunNrInBatchID(), runNrInBatchID, "Run nr should be set correctly");
         boolean containsRunNr = idContainsRunNr(getValidBatchID());
         if (runNrInBatchID) {
@@ -47,7 +47,7 @@ public abstract class TCKTestSuite {
 
 
     @Test(groups = "integrationTest")
-    public void testGetBatches() {
+    public void testGetBatches() throws NotWorkingProperlyException {
         List<Batch> batches = dataSource.getBatches(false, null);
         Assert.assertTrue(batches.size() > 0, "The datasource have no content");
         boolean validHaveBeenFound = false;
@@ -86,7 +86,7 @@ public abstract class TCKTestSuite {
     }
 
     @Test(groups = "integrationTest")
-    public void testGetInvalidBatch() {
+    public void testGetInvalidBatch() throws NotWorkingProperlyException {
         try {
             Batch batch = dataSource.getBatch(getInvalidBatchID(), false);
             Assert.assertNotNull(batch, "Do not return null");
@@ -97,7 +97,7 @@ public abstract class TCKTestSuite {
     }
 
     @Test(groups = "integrationTest")
-    public void testGetValidBatch() {
+    public void testGetValidBatch() throws NotWorkingProperlyException {
         Batch validBatch = null;
         try {
 
@@ -118,7 +118,7 @@ public abstract class TCKTestSuite {
     }
 
     @Test(groups = "integrationTest")
-    public void testGetEvent() {
+    public void testGetEvent() throws NotWorkingProperlyException {
 
         Event event = null;
         try {
@@ -136,7 +136,7 @@ public abstract class TCKTestSuite {
 
 
     @Test(groups = "integrationTest")
-    public void testGetInvalidEvent() {
+    public void testGetInvalidEvent() throws NotWorkingProperlyException {
 
         Event event = null;
         try {
