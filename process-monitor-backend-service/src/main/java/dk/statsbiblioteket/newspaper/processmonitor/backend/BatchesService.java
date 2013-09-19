@@ -25,7 +25,7 @@ import java.util.List;
 
 @Component
 @Path("/")
-public class Batches {
+public class BatchesService {
 
     @Autowired
     private DataSourceCombiner dataSource;
