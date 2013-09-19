@@ -19,6 +19,8 @@
     <modules>
         <module>process-monitor-frontend</module>
         <module>process-monitor-datasource-interfaces</module>
+        <module>process-monitor-datasource-tck</module>
+        <module>process-monitor-datasource-mockup</module>
         <module>process-monitor-backend-service</module>
     </modules>
     <dependencyManagement>

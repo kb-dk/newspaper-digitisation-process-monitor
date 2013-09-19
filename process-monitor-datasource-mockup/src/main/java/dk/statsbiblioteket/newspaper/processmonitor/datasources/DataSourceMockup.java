@@ -18,7 +18,7 @@ public class DataSourceMockup implements DataSource {
     private String username;
     private String password;
 
-    private void init() {
+    public DataSourceMockup() {
 
 /*
         System.out.println("Username: " + username);
@@ -99,18 +99,21 @@ public class DataSourceMockup implements DataSource {
     }
 
     @Override
-    public Batch getBatch(String batchID, boolean includeDetails) {
+    public Batch getBatch(String batchID, boolean includeDetails) throws NotFoundException {
         Batch batch = null;
         for (Batch b : dummyBatches) {
             if (b.getBatchID().equals(batchID)) {
                 batch = b;
             }
         }
+        if (batch == null) {
+            throw new NotFoundException("Batch not found" + batchID);
+        }
         return batch;
     }
 
     @Override
-    public Event getBatchEvent(String batchID, String eventID, boolean includeDetails) {
+    public Event getBatchEvent(String batchID, String eventID, boolean includeDetails) throws NotFoundException {
         Event event = null;
         for (Batch b : dummyBatches) {
             if (b.getBatchID().equals(batchID)) {
@@ -120,6 +123,9 @@ public class DataSourceMockup implements DataSource {
                     }
                 }
             }
+        }
+        if (event == null) {
+            throw new NotFoundException("Event not found");
         }
         return event;
     }
