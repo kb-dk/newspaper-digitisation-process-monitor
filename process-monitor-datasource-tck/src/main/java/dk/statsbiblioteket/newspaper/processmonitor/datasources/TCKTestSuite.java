@@ -1,9 +1,14 @@
 package dk.statsbiblioteket.newspaper.processmonitor.datasources;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 public abstract class TCKTestSuite {
 
@@ -28,12 +33,12 @@ public abstract class TCKTestSuite {
 
     @Test(groups = "integrationTest")
     public void testIsRunNrInBatchID() throws NotWorkingProperlyException {
-        Assert.assertEquals(getDataSource().isRunNrInBatchID(), isRunNrInBatchID(), "Run nr should be set correctly");
+        assertEquals(getDataSource().isRunNrInBatchID(), isRunNrInBatchID(), "Run nr should be set correctly");
         boolean containsRunNr = idContainsRunNr(getValidBatchID());
         if (isRunNrInBatchID()) {
-            Assert.assertTrue(containsRunNr, "Run nr should be in batch id, but is not in valid id");
+            assertTrue(containsRunNr, "Run nr should be in batch id, but is not in valid id");
         } else {
-            Assert.assertFalse(containsRunNr, "Run nr should not be in batch id, but is in valid id");
+            assertFalse(containsRunNr, "Run nr should not be in batch id, but is in valid id");
         }
 
     }
@@ -42,15 +47,15 @@ public abstract class TCKTestSuite {
     @Test(groups = "integrationTest")
     public void testGetBatches() throws NotWorkingProperlyException {
         List<Batch> batches = getDataSource().getBatches(false, null);
-        Assert.assertTrue(batches.size() > 0, "The datasource have no content");
+        assertTrue(batches.size() > 0, "The datasource have no content");
         boolean validHaveBeenFound = false;
         boolean anEventHaveBeenSeen = false;
         for (Batch batch : batches) {
             if (isRunNrInBatchID() != idContainsRunNr(batch.getBatchID())) {
-                Assert.fail("The batch ids should not contain run nrs, if this is not specified");
+                fail("The batch ids should not contain run nrs, if this is not specified");
             }
             List<Event> eventList = batch.getEventList();
-            Assert.assertNotNull(eventList, "The event list cannot be null");
+            assertNotNull(eventList, "The event list cannot be null");
             if (eventList.size() > 0) {
                 anEventHaveBeenSeen = true;
             }
@@ -59,11 +64,11 @@ public abstract class TCKTestSuite {
                 boolean goodEventFound = false;
                 for (Event event : eventList) {
                     if (event.getEventID().equals(getValidAndSucessfullEventIDForValidBatch())) {
-                        Assert.assertTrue(event.isSuccess(), "The successful event must be successful");
+                        assertTrue(event.isSuccess(), "The successful event must be successful");
                         goodEventFound = true;
                     }
                 }
-                Assert.assertTrue(goodEventFound, "The good event was not found for the valid batch");
+                assertTrue(goodEventFound, "The good event was not found for the valid batch");
             }
             for (Event event : eventList) {
                 // Assert.assertNull(event.getDetails(),"We requested no details, so that must be null");
@@ -71,10 +76,10 @@ public abstract class TCKTestSuite {
             }
         }
         if (!validHaveBeenFound) {
-            Assert.fail("Failed to find the valid ID among all the batches");
+            fail("Failed to find the valid ID among all the batches");
         }
         if (!anEventHaveBeenSeen) {
-            Assert.fail("None of the batches have any events. Quite boring, right?");
+            fail("None of the batches have any events. Quite boring, right?");
         }
     }
 
@@ -82,8 +87,8 @@ public abstract class TCKTestSuite {
     public void testGetInvalidBatch() throws NotWorkingProperlyException {
         try {
             Batch batch = getDataSource().getBatch(getInvalidBatchID(), false);
-            Assert.assertNotNull(batch, "Do not return null");
-            Assert.fail("The invalid batch was found");
+            assertNotNull(batch, "Do not return null");
+            fail("The invalid batch was found");
         } catch (NotFoundException e) {
             //expected
         }
@@ -95,17 +100,17 @@ public abstract class TCKTestSuite {
         try {
 
             validBatch = getDataSource().getBatch(getValidBatchID(), true);
-            Assert.assertNotNull(validBatch, "Do not return null");
+            assertNotNull(validBatch, "Do not return null");
         } catch (NotFoundException e) {
-            Assert.fail("The valid batch was not found", e);
+            fail("The valid batch was not found", e);
         }
-        Assert.assertEquals(validBatch.getBatchID(), getValidBatchID(), "The batch have a wrong ID");
+        assertEquals(validBatch.getBatchID(), getValidBatchID(), "The batch have a wrong ID");
         List<Event> eventList = validBatch.getEventList();
-        Assert.assertTrue(eventList.size() > 0, "The valid batch must have at least one event");
+        assertTrue(eventList.size() > 0, "The valid batch must have at least one event");
         for (Event event : eventList) {
             // Assert.assertNotNull(event.getDetails(), "We requested details, so that must be not null");
             if (event.getEventID().equals(getValidAndSucessfullEventIDForValidBatch())) {
-                Assert.assertTrue(event.isSuccess(), "The event must be successful");
+                assertTrue(event.isSuccess(), "The event must be successful");
             }
         }
     }
@@ -116,13 +121,13 @@ public abstract class TCKTestSuite {
         Event event = null;
         try {
             event = getDataSource().getBatchEvent(getValidBatchID(), getValidAndSucessfullEventIDForValidBatch(), true);
-            Assert.assertNotNull(event, "Do not return null");
+            assertNotNull(event, "Do not return null");
         } catch (NotFoundException e) {
-            Assert.fail("The valid batch event was not found", e);
+            fail("The valid batch event was not found", e);
         }
-        Assert.assertEquals(event.getEventID(), getValidAndSucessfullEventIDForValidBatch(), "The event have a wrong ID");
+        assertEquals(event.getEventID(), getValidAndSucessfullEventIDForValidBatch(), "The event have a wrong ID");
         //   Assert.assertNotNull(event.getDetails(), "We requested details, so that must be not null");
-        Assert.assertTrue(event.isSuccess(), "The event must be successful");
+        assertTrue(event.isSuccess(), "The event must be successful");
 
 
     }
@@ -134,8 +139,8 @@ public abstract class TCKTestSuite {
         Event event = null;
         try {
             event = getDataSource().getBatchEvent(getValidBatchID(), getInvalidEventIDForValidBatch(), true);
-            Assert.assertNotNull(event, "Do not return null");
-            Assert.fail("The invalid event was found");
+            assertNotNull(event, "Do not return null");
+            fail("The invalid event was found");
         } catch (NotFoundException e) {
 
         }
