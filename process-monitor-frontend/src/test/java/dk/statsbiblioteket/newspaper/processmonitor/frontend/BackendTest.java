@@ -55,6 +55,7 @@ public class BackendTest {
                 .queryParam("details", "true")
                 .get(Event.class);
         Assert.assertTrue(result.isSuccess(), "The event is not succesful");
+        //TODO the backends should, but does not guarantee, that details is not null when called with details=true
         //Assert.assertNotNull(result.getDetails(), "The event has no details");
     }
 
