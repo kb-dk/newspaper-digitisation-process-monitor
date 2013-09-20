@@ -53,4 +53,21 @@ public class Event {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event)) return false;
+
+        Event event = (Event) o;
+
+        if (!eventID.equals(event.eventID)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return eventID.hashCode();
+    }
 }

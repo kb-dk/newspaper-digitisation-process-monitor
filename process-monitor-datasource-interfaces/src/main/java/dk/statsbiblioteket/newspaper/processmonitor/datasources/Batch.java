@@ -60,4 +60,21 @@ public class Batch {
     public void setEventList(List<Event> eventList) {
         this.eventList = eventList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Batch)) return false;
+
+        Batch batch = (Batch) o;
+
+        if (!batchID.equals(batch.batchID)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return batchID.hashCode();
+    }
 }
