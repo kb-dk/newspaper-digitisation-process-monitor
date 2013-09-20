@@ -8,12 +8,21 @@ import java.util.List;
 public class Batch {
 
     private String batchID;
+    private int runNr = 0;
     private List<Event> eventList;
 
     /**
      * Constructor
      */
     public Batch() {
+    }
+
+    public int getRunNr() {
+        return runNr;
+    }
+
+    public void setRunNr(int runNr) {
+        this.runNr = runNr;
     }
 
     /**

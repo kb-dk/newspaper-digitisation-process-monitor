@@ -15,6 +15,7 @@ public interface DataSource {
      * @return as above
      * @throws NotWorkingProperlyException If the datasource does not function right now
      */
+    @Deprecated
     boolean isRunNrInBatchID() throws NotWorkingProperlyException;
 
     /**

@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
@@ -13,6 +12,7 @@ import static org.testng.Assert.fail;
 public abstract class TCKTestSuite {
 
 
+    @Deprecated
     public abstract boolean isRunNrInBatchID();
 
     public abstract DataSource getDataSource();
@@ -26,24 +26,6 @@ public abstract class TCKTestSuite {
     public abstract String getInvalidEventIDForValidBatch();
 
 
-    private boolean idContainsRunNr(String batchID) {
-        return batchID.contains("-");
-    }
-
-
-    @Test(groups = "integrationTest")
-    public void testIsRunNrInBatchID() throws NotWorkingProperlyException {
-        assertEquals(getDataSource().isRunNrInBatchID(), isRunNrInBatchID(), "Run nr should be set correctly");
-        boolean containsRunNr = idContainsRunNr(getValidBatchID());
-        if (isRunNrInBatchID()) {
-            assertTrue(containsRunNr, "Run nr should be in batch id, but is not in valid id");
-        } else {
-            assertFalse(containsRunNr, "Run nr should not be in batch id, but is in valid id");
-        }
-
-    }
-
-
     @Test(groups = "integrationTest")
     public void testGetBatches() throws NotWorkingProperlyException {
         List<Batch> batches = getDataSource().getBatches(false, null);
@@ -51,9 +33,6 @@ public abstract class TCKTestSuite {
         boolean validHaveBeenFound = false;
         boolean anEventHaveBeenSeen = false;
         for (Batch batch : batches) {
-            if (isRunNrInBatchID() != idContainsRunNr(batch.getBatchID())) {
-                fail("The batch ids should not contain run nrs, if this is not specified");
-            }
             List<Event> eventList = batch.getEventList();
             assertNotNull(eventList, "The event list cannot be null");
             if (eventList.size() > 0) {
