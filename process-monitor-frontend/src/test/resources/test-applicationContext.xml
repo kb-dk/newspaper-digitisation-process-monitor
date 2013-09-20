@@ -8,23 +8,25 @@
 
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
-    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration">
+    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration"
+          scope="singleton">
         <property name="databaseUrl" value="${mfpak.postgres.url}"/>
         <property name="databaseUser" value="${mfpak.postgres.user}"/>
         <property name="databasePassword" value="${mfpak.postgres.password}"/>
     </bean>
-    <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource">
+    <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource" scope="singleton">
         <constructor-arg ref="mpPakConfig"/>
     </bean>
 
     <bean id="dataSourceMockup"
-          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup">
+          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
+          scope="singleton">
         <property name="username" value="${fedora.admin.username}"/>
         <property name="password" value="${fedora.admin.password}"/>
     </bean>
 
     <!--Reserved name for the data sources list-->
-    <util:list id="dataSourcesList" list-class="java.util.ArrayList">
+    <util:list id="dataSourcesList" list-class="java.util.ArrayList" scope="request">
         <ref bean="mfPak"/>
         <ref bean="dataSourceMockup"/>
     </util:list>

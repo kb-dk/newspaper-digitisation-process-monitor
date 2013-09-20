@@ -1,28 +1,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
     <bean id="dataSourceMockup"
           class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
-          init-method="init">
+          scope="request">
         <property name="username" value="testUser"/>
         <property name="password" value="testPass"/>
     </bean>
 
     <!--Reserved name for the data sources list-->
-    <bean id="dataSourcesList" class="java.util.ArrayList">
-        <constructor-arg>
-            <list>
-                <ref bean="dataSourceMockup"/>
-            </list>
-        </constructor-arg>
-    </bean>
+    <util:list id="dataSourcesList" list-class="java.util.ArrayList" scope="request">
+        <ref bean="dataSourceMockup"/>
+    </util:list>
 
 
 </beans>

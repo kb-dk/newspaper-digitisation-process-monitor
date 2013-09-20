@@ -2,6 +2,7 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.DefaultValue;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 
 @Component
+@Scope(value = "request")
 @Path("/")
 public class BatchesService {
 

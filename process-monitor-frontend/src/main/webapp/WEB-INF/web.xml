@@ -2,12 +2,15 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+    <!--General for reading context params, not presently needed-->
     <listener>
         <listener-class>
             dk.statsbiblioteket.doms.webservices.configuration.ConfigContextListener
         </listener-class>
     </listener>
 
+
+    <!--For the logback config-->
     <listener>
         <listener-class>dk.statsbiblioteket.newspaper.processmonitor.backend.ExternalConfigLoaderContextListener
         </listener-class>
@@ -21,6 +24,10 @@
     </context-param>
 
 
+    <!--Make the request scope work-->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
     <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener

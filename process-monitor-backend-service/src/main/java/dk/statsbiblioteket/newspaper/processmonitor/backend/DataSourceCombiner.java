@@ -5,6 +5,7 @@ import dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSource;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.Event;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotWorkingProperlyException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 
 @Component
+@Scope(value = "request")
 public class DataSourceCombiner implements DataSource {
 
     List<DataSource> dataSources_withRunNr;
