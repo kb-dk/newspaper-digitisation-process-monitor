@@ -1,5 +1,6 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
+import dk.statsbiblioteket.newspaper.processmonitor.datasources.EventID;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -79,7 +80,13 @@ public class BatchesService {
     public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            return Converter.convert(dataSource.getBatchEvent(batchID, eventID, details));
+            EventID id = EventID.valueOf(eventID);
+            return Converter.convert(dataSource.getBatchEvent(batchID, id, details));
+        } catch (IllegalArgumentException e) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID + ". The EventID is not known by the system")
+                    .type(MediaType.TEXT_PLAIN)
+                    .build());
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID)

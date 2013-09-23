@@ -166,7 +166,7 @@ public class DataSourceCombiner implements DataSource {
      * @throws NotFoundException
      */
     @Override
-    public Event getBatchEvent(String batchID, String eventID, boolean includeDetails) throws NotFoundException {
+    public Event getBatchEvent(String batchID, EventID eventID, boolean includeDetails) throws NotFoundException {
         for (DataSource dataSource : dataSources) {
             Event result = null;
             try {
