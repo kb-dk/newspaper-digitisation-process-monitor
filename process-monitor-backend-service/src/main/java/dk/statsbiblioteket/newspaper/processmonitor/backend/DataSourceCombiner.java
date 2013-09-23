@@ -5,6 +5,8 @@ import dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSource;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.Event;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotWorkingProperlyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,9 @@ import java.util.Map;
 @Component
 @Scope(value = "request")
 public class DataSourceCombiner implements DataSource {
+
+    final static Logger logger = LoggerFactory.getLogger(DataSourceCombiner.class);
+
 
     private List<DataSource> dataSources;
 
@@ -39,11 +44,13 @@ public class DataSourceCombiner implements DataSource {
 
     @Override
     public List<Batch> getBatches(boolean includeDetails, Map<String, String> filters) {
+        logger.info("Call to getBatches with {} and filters {}", includeDetails, filters);
         Map<String, Batch> result = new HashMap<>();
         for (DataSource dataSource : dataSources) {
             try {
                 mergeResults(result, dataSource.getBatches(includeDetails, filters));
             } catch (NotWorkingProperlyException e) {
+                logger.error("Datasource failed", e);
                 continue;
             }
         }
@@ -128,6 +135,9 @@ public class DataSourceCombiner implements DataSource {
             try {
                 founds.add(dataSource.getBatch(batchID, includeDetails));
             } catch (NotWorkingProperlyException e) {
+                logger.error("Datasource failed", e);
+                continue;
+            } catch (NotFoundException e) {
                 continue;
             }
         }
@@ -163,6 +173,7 @@ public class DataSourceCombiner implements DataSource {
             } catch (NotFoundException e) {
                 continue;
             } catch (NotWorkingProperlyException e) {
+                logger.error("Datasource failed", e);
                 continue;
             }
             return result;
