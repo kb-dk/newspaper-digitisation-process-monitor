@@ -3,6 +3,7 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSource;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.Event;
+import dk.statsbiblioteket.newspaper.processmonitor.datasources.EventID;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
 import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotWorkingProperlyException;
 import org.slf4j.Logger;
@@ -101,7 +102,7 @@ public class DataSourceCombiner implements DataSource {
             result.setRunNr(b.getRunNr());
         }
 
-        HashMap<String, Event> eventMap = new HashMap<String, Event>();
+        HashMap<EventID, Event> eventMap = new HashMap<EventID, Event>();
         for (Event event : a.getEventList()) {
             eventMap.put(event.getEventID(), event);
         }

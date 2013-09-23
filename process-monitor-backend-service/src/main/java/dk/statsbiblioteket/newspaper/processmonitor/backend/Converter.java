@@ -58,7 +58,7 @@ public class Converter {
         }
         Map<String, Event> result = new HashMap<>(eventList.size());
         for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Event event : eventList) {
-            result.put(event.getEventID(), convert(event));
+            result.put(event.getEventID().toString(), convert(event));
         }
         return result;
     }
