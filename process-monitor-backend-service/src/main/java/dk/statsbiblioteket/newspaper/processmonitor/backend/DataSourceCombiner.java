@@ -50,13 +50,34 @@ public class DataSourceCombiner implements DataSource {
         return new ArrayList<>(result.values());
     }
 
+    /**
+     * Merge a list of batches into the given result map. Will do inplace modification of the map.
+     *
+     * @param result  the map of batches to merge the list into
+     * @param batches the batches to merge into the map
+     */
     private void mergeResults(Map<String, Batch> result, List<Batch> batches) {
+        //For each batch in the lis
         for (Batch batch : batches) {
+            //get the id
             String id = batch.getBatchID();
+            //get the id already in the map
+            //merge the batch from the list and the one from the map
+            //put them back into the map
             result.put(id, mergeBatches(result.get(id), batch));
         }
     }
 
+    /**
+     * Merge two batches. If both is null, null is returned. If either is null, the other is returned.
+     * For each event for the batches. If they do not overlap in eventID, both are included.
+     * If they do overlap in eventID, the one from the batch with the highest runNr is used.
+     * If the batches have equal runNr, the event from b is used.
+     *
+     * @param a the first batch
+     * @param b the second batch
+     * @return a new batch containing the merged information
+     */
     private Batch mergeBatches(Batch a, Batch b) {
         if (a == null) {
             return b;
@@ -66,13 +87,18 @@ public class DataSourceCombiner implements DataSource {
         }
         Batch result = new Batch();
         result.setBatchID(a.getBatchID());
-
+        boolean aIsHigher = a.getRunNr() > b.getRunNr();
+        if (aIsHigher) {
+            result.setRunNr(a.getRunNr());
+        } else {
+            result.setRunNr(b.getRunNr());
+        }
 
         HashMap<String, Event> eventMap = new HashMap<String, Event>();
         for (Event event : a.getEventList()) {
             eventMap.put(event.getEventID(), event);
         }
-        boolean aIsHigher = a.getRunNr() > b.getRunNr();
+
         for (Event event : b.getEventList()) {
             Event existing = eventMap.get(event.getEventID());
             if (existing != null) {
@@ -86,9 +112,17 @@ public class DataSourceCombiner implements DataSource {
         return result;
     }
 
-
+    /**
+     * Get a specific batch, by merging the results of each datasource
+     *
+     * @param batchID        the id
+     * @param includeDetails should details be included
+     * @return the specific batch
+     * @throws NotFoundException
+     */
     @Override
     public Batch getBatch(String batchID, boolean includeDetails) throws NotFoundException {
+        //Create a list of batches, at most one from each datasource
         List<Batch> founds = new ArrayList<>();
         for (DataSource dataSource : dataSources) {
             try {
@@ -97,10 +131,13 @@ public class DataSourceCombiner implements DataSource {
                 continue;
             }
         }
+        //Merge all the found batches into one batch
         Batch result = null;
         for (Batch found : founds) {
             result = mergeBatches(result, found);
         }
+
+        //return or throw
         if (result == null) {
             throw new NotFoundException();
         }
@@ -108,12 +145,23 @@ public class DataSourceCombiner implements DataSource {
     }
 
 
+    /**
+     * Get a specific event by quering the datasources until one of them provides the event
+     *
+     * @param batchID        the batch id
+     * @param eventID        the event id
+     * @param includeDetails should details be included
+     * @return the specific event
+     * @throws NotFoundException
+     */
     @Override
     public Event getBatchEvent(String batchID, String eventID, boolean includeDetails) throws NotFoundException {
         for (DataSource dataSource : dataSources) {
             Event result = null;
             try {
                 result = dataSource.getBatchEvent(batchID, eventID, includeDetails);
+            } catch (NotFoundException e) {
+                continue;
             } catch (NotWorkingProperlyException e) {
                 continue;
             }
