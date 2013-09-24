@@ -55,7 +55,7 @@ public class BatchesService {
     @GET
     @Path("{batchID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Batch getSpecificBatch(@PathParam("batchID") String batchID,
+    public Batch getSpecificBatch(@PathParam("batchID") int batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
             return Converter.convert(dataSource.getBatch(batchID, details));
@@ -77,7 +77,7 @@ public class BatchesService {
     @GET
     @Path("{batchID}/{eventID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
+    public Event getSpecificBatchEvent(@PathParam("batchID") int batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
             EventID id = EventID.valueOf(eventID);

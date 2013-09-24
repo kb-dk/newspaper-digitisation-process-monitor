@@ -46,7 +46,7 @@ public class DataSourceCombiner implements DataSource {
     @Override
     public List<Batch> getBatches(boolean includeDetails, Map<String, String> filters) {
         logger.info("Call to getBatches with {} and filters {}", includeDetails, filters);
-        Map<String, Batch> result = new HashMap<>();
+        Map<Integer, Batch> result = new HashMap<>();
         for (DataSource dataSource : dataSources) {
             try {
                 mergeResults(result, dataSource.getBatches(includeDetails, filters));
@@ -64,11 +64,11 @@ public class DataSourceCombiner implements DataSource {
      * @param result  the map of batches to merge the list into
      * @param batches the batches to merge into the map
      */
-    private void mergeResults(Map<String, Batch> result, List<Batch> batches) {
+    private void mergeResults(Map<Integer, Batch> result, List<Batch> batches) {
         //For each batch in the lis
         for (Batch batch : batches) {
             //get the id
-            String id = batch.getBatchID();
+            int id = batch.getBatchID();
             //get the id already in the map
             //merge the batch from the list and the one from the map
             //put them back into the map
@@ -129,7 +129,7 @@ public class DataSourceCombiner implements DataSource {
      * @throws NotFoundException
      */
     @Override
-    public Batch getBatch(String batchID, boolean includeDetails) throws NotFoundException {
+    public Batch getBatch(int batchID, boolean includeDetails) throws NotFoundException {
         //Create a list of batches, at most one from each datasource
         List<Batch> founds = new ArrayList<>();
         for (DataSource dataSource : dataSources) {
@@ -166,7 +166,7 @@ public class DataSourceCombiner implements DataSource {
      * @throws NotFoundException
      */
     @Override
-    public Event getBatchEvent(String batchID, EventID eventID, boolean includeDetails) throws NotFoundException {
+    public Event getBatchEvent(int batchID, EventID eventID, boolean includeDetails) throws NotFoundException {
         for (DataSource dataSource : dataSources) {
             Event result = null;
             try {
