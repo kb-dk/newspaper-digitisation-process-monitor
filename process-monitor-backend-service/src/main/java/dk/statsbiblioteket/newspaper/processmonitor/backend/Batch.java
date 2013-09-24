@@ -7,15 +7,15 @@ import java.util.Map;
 @XmlRootElement
 public class Batch {
 
-    private int batchID;
+    private String batchID;
     private Map<String, Event> events;
 
     @XmlElement(name = "batchID")
-    public int getBatchID() {
+    public String getBatchID() {
         return batchID;
     }
 
-    public void setBatchID(int batchID) {
+    public void setBatchID(String batchID) {
         this.batchID = batchID;
     }
 
