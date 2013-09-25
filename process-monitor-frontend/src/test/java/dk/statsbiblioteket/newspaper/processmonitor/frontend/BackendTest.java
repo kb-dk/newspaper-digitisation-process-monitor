@@ -15,7 +15,7 @@ public class BackendTest {
 
     private DefaultClientConfig config;
 
-    private String batchID = "4002";
+    private long batchID = 4002l;
     private String eventID = EventID.Shipped_to_supplier.toString();
     private String integrationTestServer;
 
@@ -38,7 +38,7 @@ public class BackendTest {
 
     @Test(groups = "integrationTest", enabled = false)
     public void testGetSingleBatch() {
-        Batch result = Client.create(config).resource(integrationTestServer).path(batchID).get(Batch.class);
+        Batch result = Client.create(config).resource(integrationTestServer).path(batchID + "").get(Batch.class);
         System.out.println(result);
         Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
         Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
@@ -52,7 +52,7 @@ public class BackendTest {
     public void testGetSingleEvent() {
         Event result = Client.create(config)
                 .resource(integrationTestServer)
-                .path(batchID)
+                .path(batchID + "")
                 .path(eventID)
                 .queryParam("details", "true")
                 .get(Event.class);

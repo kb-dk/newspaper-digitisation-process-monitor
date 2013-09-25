@@ -17,7 +17,7 @@ public class Converter {
      * @param batches the batches from a datasource
      * @return the batches in the backend structure
      */
-    static <T> List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch<T>> batches) {
+    static List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch> batches) {
         if (batches == null) {
             return null;
         }
@@ -34,12 +34,12 @@ public class Converter {
      * @param batch the batch as datasource structure
      * @return the batch as backend
      */
-    static <T> Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch<T> batch) {
+    static Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
         if (batch == null) {
             return null;
         }
         Batch result = new Batch();
-        result.setBatchID(batch.getBatchID().toString());
+        result.setBatchID(batch.getBatchID());
         result.setEvents(convert(batch.getEventList()));
         //result = EventCleaner.cleanBatch(result);
 

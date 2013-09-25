@@ -20,28 +20,28 @@ import java.util.Map;
 
 @Component
 @Scope(value = "request")
-public class DataSourceCombiner<T> implements DataSource<T> {
+public class DataSourceCombiner implements DataSource {
 
     final static Logger logger = LoggerFactory.getLogger(DataSourceCombiner.class);
 
 
-    private List<DataSource<T>> dataSources;
+    private List<DataSource> dataSources;
 
 
-    public List<DataSource<T>> getDataSources() {
+    public List<DataSource> getDataSources() {
         return dataSources;
     }
 
     @Resource(name = "dataSourcesList")
-    public void setDataSources(List<DataSource<T>> dataSources) {
+    public void setDataSources(List<DataSource> dataSources) {
         this.dataSources = dataSources;
     }
 
     @Override
-    public List<Batch<T>> getBatches(boolean includeDetails, Map<String, String> filters) {
+    public List<Batch> getBatches(boolean includeDetails, Map<String, String> filters) {
         logger.info("Call to getBatches with {} and filters {}", includeDetails, filters);
-        Map<T, Batch<T>> result = new HashMap<>();
-        for (DataSource<T> dataSource : dataSources) {
+        Map<Long, Batch> result = new HashMap<>();
+        for (DataSource dataSource : dataSources) {
             try {
                 mergeResults(result, dataSource.getBatches(includeDetails, filters));
             } catch (NotWorkingProperlyException e) {
@@ -57,11 +57,11 @@ public class DataSourceCombiner<T> implements DataSource<T> {
      * @param result  the map of batches to merge the list into
      * @param batches the batches to merge into the map
      */
-    private void mergeResults(Map<T, Batch<T>> result, List<Batch<T>> batches) {
+    private void mergeResults(Map<Long, Batch> result, List<Batch> batches) {
         //For each batch in the lis
-        for (Batch<T> batch : batches) {
+        for (Batch batch : batches) {
             //get the id
-            T id = batch.getBatchID();
+            Long id = batch.getBatchID();
             //get the id already in the map
             //merge the batch from the list and the one from the map
             //put them back into the map
@@ -79,14 +79,14 @@ public class DataSourceCombiner<T> implements DataSource<T> {
      * @param b the second batch
      * @return a new batch containing the merged information
      */
-    private Batch<T> mergeBatches(Batch<T> a, Batch<T> b) {
+    private Batch mergeBatches(Batch a, Batch b) {
         if (a == null) {
             return b;
         }
         if (b == null) {
             return a;
         }
-        Batch<T> result = new Batch<>();
+        Batch result = new Batch();
         result.setBatchID(a.getBatchID());
         boolean aIsHigher = a.getRunNr() > b.getRunNr();
         if (aIsHigher) {
@@ -122,10 +122,10 @@ public class DataSourceCombiner<T> implements DataSource<T> {
      * @throws NotFoundException
      */
     @Override
-    public Batch<T> getBatch(T batchID, boolean includeDetails) throws NotFoundException {
+    public Batch getBatch(Long batchID, boolean includeDetails) throws NotFoundException {
         //Create a list of batches, at most one from each datasource
-        List<Batch<T>> founds = new ArrayList<>();
-        for (DataSource<T> dataSource : dataSources)
+        List<Batch> founds = new ArrayList<>();
+        for (DataSource dataSource : dataSources)
             try {
                 founds.add(dataSource.getBatch(batchID, includeDetails));
             } catch (NotWorkingProperlyException e) {
@@ -133,8 +133,8 @@ public class DataSourceCombiner<T> implements DataSource<T> {
             } catch (NotFoundException ignored) {
             }
         //Merge all the found batches into one batch
-        Batch<T> result = null;
-        for (Batch<T> found : founds) {
+        Batch result = null;
+        for (Batch found : founds) {
             result = mergeBatches(result, found);
         }
 
@@ -156,8 +156,8 @@ public class DataSourceCombiner<T> implements DataSource<T> {
      * @throws NotFoundException
      */
     @Override
-    public Event getBatchEvent(T batchID, EventID eventID, boolean includeDetails) throws NotFoundException {
-        for (DataSource<T> dataSource : dataSources) {
+    public Event getBatchEvent(Long batchID, EventID eventID, boolean includeDetails) throws NotFoundException {
+        for (DataSource dataSource : dataSources) {
             Event result;
             try {
                 result = dataSource.getBatchEvent(batchID, eventID, includeDetails);
