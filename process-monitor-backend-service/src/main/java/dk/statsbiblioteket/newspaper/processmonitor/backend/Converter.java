@@ -40,6 +40,7 @@ public class Converter {
         }
         Batch result = new Batch();
         result.setBatchID(batch.getBatchID());
+        result.setRoundTripNumber(batch.getRoundTripNumber());
         result.setEvents(convert(batch.getEventList()));
         //result = EventCleaner.cleanBatch(result);
 

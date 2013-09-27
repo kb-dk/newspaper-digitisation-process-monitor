@@ -8,6 +8,7 @@ import java.util.Map;
 public class Batch {
 
     private long batchID;
+    private int roundTripNumber;
     private Map<String, Event> events;
 
     @XmlElement(name = "batchID")
@@ -26,5 +27,14 @@ public class Batch {
 
     public void setEvents(Map<String, Event> events) {
         this.events = events;
+    }
+
+    @XmlElement(name = "roundTripNumber")
+    public int getRoundTripNumber() {
+        return roundTripNumber;
+    }
+
+    public void setRoundTripNumber(int roundTripNumber) {
+        this.roundTripNumber = roundTripNumber;
     }
 }
