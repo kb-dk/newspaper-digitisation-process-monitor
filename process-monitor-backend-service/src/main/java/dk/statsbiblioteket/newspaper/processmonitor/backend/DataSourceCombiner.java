@@ -72,8 +72,8 @@ public class DataSourceCombiner implements DataSource {
     /**
      * Merge two batches. If both is null, null is returned. If either is null, the other is returned.
      * For each event for the batches. If they do not overlap in eventID, both are included.
-     * If they do overlap in eventID, the one from the batch with the highest runNr is used.
-     * If the batches have equal runNr, the event from b is used.
+     * If they do overlap in eventID, the one from the batch with the highest round trip number is used.
+     * If the batches have equal round trip number, the event from b is used.
      *
      * @param a the first batch
      * @param b the second batch
@@ -88,11 +88,11 @@ public class DataSourceCombiner implements DataSource {
         }
         Batch result = new Batch();
         result.setBatchID(a.getBatchID());
-        boolean aIsHigher = a.getRunNr() > b.getRunNr();
+        boolean aIsHigher = a.getRoundTripNumber() > b.getRoundTripNumber();
         if (aIsHigher) {
-            result.setRunNr(a.getRunNr());
+            result.setRoundTripNumber(a.getRoundTripNumber());
         } else {
-            result.setRunNr(b.getRunNr());
+            result.setRoundTripNumber(b.getRoundTripNumber());
         }
 
         HashMap<EventID, Event> eventMap = new HashMap<>();
