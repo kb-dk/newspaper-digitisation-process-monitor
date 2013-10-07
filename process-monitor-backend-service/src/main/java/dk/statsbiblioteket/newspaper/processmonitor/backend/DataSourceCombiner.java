@@ -122,12 +122,12 @@ public class DataSourceCombiner implements DataSource {
      * @throws NotFoundException
      */
     @Override
-    public Batch getBatch(Long batchID, boolean includeDetails) throws NotFoundException {
+    public Batch getBatch(Long batchID, Integer roundTripNumber, boolean includeDetails) throws NotFoundException {
         //Create a list of batches, at most one from each datasource
         List<Batch> founds = new ArrayList<>();
         for (DataSource dataSource : dataSources)
             try {
-                founds.add(dataSource.getBatch(batchID, includeDetails));
+                founds.add(dataSource.getBatch(batchID, roundTripNumber,includeDetails));
             } catch (NotWorkingProperlyException e) {
                 logger.error("Datasource failed", e);
             } catch (NotFoundException ignored) {
@@ -156,11 +156,11 @@ public class DataSourceCombiner implements DataSource {
      * @throws NotFoundException
      */
     @Override
-    public Event getBatchEvent(Long batchID, EventID eventID, boolean includeDetails) throws NotFoundException {
+    public Event getBatchEvent(Long batchID, Integer roundTripNumber, EventID eventID, boolean includeDetails) throws NotFoundException {
         for (DataSource dataSource : dataSources) {
             Event result;
             try {
-                result = dataSource.getBatchEvent(batchID, eventID, includeDetails);
+                result = dataSource.getBatchEvent(batchID, roundTripNumber,eventID, includeDetails);
             } catch (NotFoundException e) {
                 continue;
             } catch (NotWorkingProperlyException e) {

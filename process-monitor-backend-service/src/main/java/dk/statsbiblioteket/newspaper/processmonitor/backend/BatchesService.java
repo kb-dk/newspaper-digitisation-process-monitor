@@ -58,7 +58,7 @@ public class BatchesService {
     public Batch getSpecificBatch(@PathParam("batchID") long batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            return Converter.convert(dataSource.getBatch(batchID, details));
+            return Converter.convert(dataSource.getBatch(batchID, null, details));
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get batch with ID: " + batchID)
@@ -81,7 +81,7 @@ public class BatchesService {
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
             EventID id = EventID.valueOf(eventID);
-            return Converter.convert(dataSource.getBatchEvent(batchID, id, details));
+            return Converter.convert(dataSource.getBatchEvent(batchID,null, id, details));
         } catch (IllegalArgumentException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID + ". The EventID is not known by the system")
