@@ -36,12 +36,6 @@
             </dependency>
             <dependency>
                 <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-client</artifactId>
-                <version>${jersey.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
                 <artifactId>jersey-json</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
@@ -50,6 +44,11 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>newspaper-mfpak-integration</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>dk.statsbiblioteket.newspaper</groupId>
+                <artifactId>sboi-datasource</artifactId>
                 <version>0.1-SNAPSHOT</version>
             </dependency>
 

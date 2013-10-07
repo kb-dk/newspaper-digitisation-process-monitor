@@ -89,6 +89,14 @@
                     </connectors>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <forkCount>10</forkCount>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -102,12 +110,12 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
-
+<!--
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>dk.statsbiblioteket.doms.domsutil</groupId>
             <artifactId>domsutil-webservice-common</artifactId>
@@ -122,6 +130,11 @@
             <artifactId>process-monitor-datasource-mockup</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>dk.statsbiblioteket.newspaper</groupId>
+            <artifactId>sboi-datasource</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>javax.ws.rs</groupId>
