@@ -106,6 +106,8 @@ public class DataSourceCombiner implements DataSource {
                 if (!aIsHigher) {
                     eventMap.put(event.getEventID(), event);
                 }
+            } else {
+                eventMap.put(event.getEventID(), event);
             }
 
         }
