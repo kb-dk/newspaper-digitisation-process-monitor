@@ -1,11 +1,8 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSource;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.Event;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.EventID;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotWorkingProperlyException;
+import dk.statsbiblioteket.medieplatform.autonomous.NotFoundException;
+import dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.DataSource;
+import dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.NotWorkingProperlyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -38,9 +35,10 @@ public class DataSourceCombiner implements DataSource {
     }
 
     @Override
-    public List<Batch> getBatches(boolean includeDetails, Map<String, String> filters) {
+    public List<dk.statsbiblioteket.medieplatform.autonomous.Batch> getBatches(boolean includeDetails,
+                                                                               Map<String, String> filters) {
         logger.info("Call to getBatches with {} and filters {}", includeDetails, filters);
-        Map<Long, Batch> result = new HashMap<>();
+        Map<String, dk.statsbiblioteket.medieplatform.autonomous.Batch> result = new HashMap<>();
         for (DataSource dataSource : dataSources) {
             try {
                 mergeResults(result, dataSource.getBatches(includeDetails, filters));
@@ -48,7 +46,7 @@ public class DataSourceCombiner implements DataSource {
                 logger.error("Datasource failed", e);
             }
         }
-        return new ArrayList<>(result.values());
+        return new ArrayList<dk.statsbiblioteket.medieplatform.autonomous.Batch>(result.values());
     }
 
     /**
@@ -57,11 +55,11 @@ public class DataSourceCombiner implements DataSource {
      * @param result  the map of batches to merge the list into
      * @param batches the batches to merge into the map
      */
-    private void mergeResults(Map<Long, Batch> result, List<Batch> batches) {
+    private void mergeResults(Map<String, dk.statsbiblioteket.medieplatform.autonomous.Batch> result, List<dk.statsbiblioteket.medieplatform.autonomous.Batch> batches) {
         //For each batch in the lis
-        for (Batch batch : batches) {
+        for (dk.statsbiblioteket.medieplatform.autonomous.Batch batch : batches) {
             //get the id
-            Long id = batch.getBatchID();
+            String id = batch.getBatchID();
             //get the id already in the map
             //merge the batch from the list and the one from the map
             //put them back into the map
@@ -79,14 +77,14 @@ public class DataSourceCombiner implements DataSource {
      * @param b the second batch
      * @return a new batch containing the merged information
      */
-    private Batch mergeBatches(Batch a, Batch b) {
+    private dk.statsbiblioteket.medieplatform.autonomous.Batch mergeBatches(dk.statsbiblioteket.medieplatform.autonomous.Batch a, dk.statsbiblioteket.medieplatform.autonomous.Batch b) {
         if (a == null) {
             return b;
         }
         if (b == null) {
             return a;
         }
-        Batch result = new Batch();
+        dk.statsbiblioteket.medieplatform.autonomous.Batch result = new dk.statsbiblioteket.medieplatform.autonomous.Batch();
         result.setBatchID(a.getBatchID());
         boolean aIsHigher = a.getRoundTripNumber() > b.getRoundTripNumber();
         if (aIsHigher) {
@@ -95,13 +93,13 @@ public class DataSourceCombiner implements DataSource {
             result.setRoundTripNumber(b.getRoundTripNumber());
         }
 
-        HashMap<EventID, Event> eventMap = new HashMap<>();
-        for (Event event : a.getEventList()) {
+        HashMap<String, dk.statsbiblioteket.medieplatform.autonomous.Event> eventMap = new HashMap<>();
+        for (dk.statsbiblioteket.medieplatform.autonomous.Event event : a.getEventList()) {
             eventMap.put(event.getEventID(), event);
         }
 
-        for (Event event : b.getEventList()) {
-            Event existing = eventMap.get(event.getEventID());
+        for (dk.statsbiblioteket.medieplatform.autonomous.Event event : b.getEventList()) {
+            dk.statsbiblioteket.medieplatform.autonomous.Event existing = eventMap.get(event.getEventID());
             if (existing != null) {
                 if (!aIsHigher) {
                     eventMap.put(event.getEventID(), event);
@@ -121,12 +119,13 @@ public class DataSourceCombiner implements DataSource {
      * @param batchID        the id
      * @param includeDetails should details be included
      * @return the specific batch
-     * @throws NotFoundException
+     * @throws dk.statsbiblioteket.medieplatform.autonomous.NotFoundException
      */
     @Override
-    public Batch getBatch(Long batchID, Integer roundTripNumber, boolean includeDetails) throws NotFoundException {
+    public dk.statsbiblioteket.medieplatform.autonomous.Batch getBatch(String batchID, Integer roundTripNumber, boolean includeDetails) throws
+                                                                                         NotFoundException {
         //Create a list of batches, at most one from each datasource
-        List<Batch> founds = new ArrayList<>();
+        List<dk.statsbiblioteket.medieplatform.autonomous.Batch> founds = new ArrayList<>();
         for (DataSource dataSource : dataSources)
             try {
                 founds.add(dataSource.getBatch(batchID, roundTripNumber,includeDetails));
@@ -135,8 +134,8 @@ public class DataSourceCombiner implements DataSource {
             } catch (NotFoundException ignored) {
             }
         //Merge all the found batches into one batch
-        Batch result = null;
-        for (Batch found : founds) {
+        dk.statsbiblioteket.medieplatform.autonomous.Batch result = null;
+        for (dk.statsbiblioteket.medieplatform.autonomous.Batch found : founds) {
             result = mergeBatches(result, found);
         }
 
@@ -158,9 +157,9 @@ public class DataSourceCombiner implements DataSource {
      * @throws NotFoundException
      */
     @Override
-    public Event getBatchEvent(Long batchID, Integer roundTripNumber, EventID eventID, boolean includeDetails) throws NotFoundException {
+    public dk.statsbiblioteket.medieplatform.autonomous.Event getBatchEvent(String batchID, Integer roundTripNumber, String eventID, boolean includeDetails) throws NotFoundException {
         for (DataSource dataSource : dataSources) {
-            Event result;
+            dk.statsbiblioteket.medieplatform.autonomous.Event result;
             try {
                 result = dataSource.getBatchEvent(batchID, roundTripNumber,eventID, includeDetails);
             } catch (NotFoundException e) {

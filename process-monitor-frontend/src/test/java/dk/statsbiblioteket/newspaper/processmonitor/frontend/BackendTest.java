@@ -5,7 +5,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Event;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.EventID;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,7 +16,7 @@ public class BackendTest {
     private DefaultClientConfig config;
 
     private long batchID = 4002l;
-    private String eventID = EventID.Shipped_to_supplier.toString();
+    private String eventID = "Shipped_to_supplier";
     private String integrationTestServer;
 
 

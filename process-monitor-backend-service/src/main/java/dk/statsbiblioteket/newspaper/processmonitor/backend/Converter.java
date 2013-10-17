@@ -17,12 +17,12 @@ public class Converter {
      * @param batches the batches from a datasource
      * @return the batches in the backend structure
      */
-    static List<Batch> convertBatchList(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch> batches) {
+    static List<Batch> convertBatchList(List<dk.statsbiblioteket.medieplatform.autonomous.Batch> batches) {
         if (batches == null) {
             return null;
         }
         List<Batch> result = new ArrayList<>(batches.size());
-        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch : batches) {
+        for (dk.statsbiblioteket.medieplatform.autonomous.Batch batch : batches) {
             result.add(convert(batch));
         }
         return result;
@@ -34,7 +34,7 @@ public class Converter {
      * @param batch the batch as datasource structure
      * @return the batch as backend
      */
-    static Batch convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch batch) {
+    static Batch convert(dk.statsbiblioteket.medieplatform.autonomous.Batch batch) {
         if (batch == null) {
             return null;
         }
@@ -53,12 +53,12 @@ public class Converter {
      * @param eventList as datasource
      * @return as backend
      */
-    private static Map<String, Event> convert(List<dk.statsbiblioteket.newspaper.processmonitor.datasources.Event> eventList) {
+    private static Map<String, Event> convert(List<dk.statsbiblioteket.medieplatform.autonomous.Event> eventList) {
         if (eventList == null) {
             return null;
         }
         Map<String, Event> result = new HashMap<>(eventList.size());
-        for (dk.statsbiblioteket.newspaper.processmonitor.datasources.Event event : eventList) {
+        for (dk.statsbiblioteket.medieplatform.autonomous.Event event : eventList) {
             result.put(event.getEventID().toString(), convert(event));
         }
         return result;
@@ -70,7 +70,7 @@ public class Converter {
      * @param batchEvent as datasource
      * @return as backend
      */
-    static Event convert(dk.statsbiblioteket.newspaper.processmonitor.datasources.Event batchEvent) {
+    static Event convert(dk.statsbiblioteket.medieplatform.autonomous.Event batchEvent) {
         if (batchEvent == null) {
             return null;
         }

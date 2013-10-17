@@ -1,7 +1,6 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.EventID;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.NotFoundException;
+import dk.statsbiblioteket.medieplatform.autonomous.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -55,7 +54,7 @@ public class BatchesService {
     @GET
     @Path("{batchID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Batch getSpecificBatch(@PathParam("batchID") long batchID,
+    public Batch getSpecificBatch(@PathParam("batchID") String batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
             return Converter.convert(dataSource.getBatch(batchID, null, details));
@@ -77,11 +76,10 @@ public class BatchesService {
     @GET
     @Path("{batchID}/{eventID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Event getSpecificBatchEvent(@PathParam("batchID") long batchID, @PathParam("eventID") String eventID,
+    public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
         try {
-            EventID id = EventID.valueOf(eventID);
-            return Converter.convert(dataSource.getBatchEvent(batchID,null, id, details));
+            return Converter.convert(dataSource.getBatchEvent(batchID,null, eventID, details));
         } catch (IllegalArgumentException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID + ". The EventID is not known by the system")
