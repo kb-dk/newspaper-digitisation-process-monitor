@@ -9,11 +9,7 @@
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
     <bean id="sboi_config" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration" scope="singleton">
-        <property name="domsPass" value="${doms.password}"/>
-        <property name="domsUser" value="${doms.username}"/>
-        <property name="domsUrl" value="${doms.url}"/>
         <property name="summaLocation" value="${autonomous.sboi.url}"/>
-        <property name="urlToPidGen" value="${doms.pidgenerator.url}"/>
     </bean>
 
     <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource" scope="singleton">
