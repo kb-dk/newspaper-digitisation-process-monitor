@@ -1,5 +1,7 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -8,6 +10,7 @@ public class Event {
 
     private boolean success;
     private String details;
+    private Date date;
 
     @XmlElement(name = "success")
     public boolean isSuccess() {
@@ -25,5 +28,14 @@ public class Event {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+    
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+    @XmlElement(name = "date")   
+    public Date getDate() {
+        return date;
     }
 }

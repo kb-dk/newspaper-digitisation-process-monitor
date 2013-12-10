@@ -77,6 +77,7 @@ public class Converter {
         Event result = new Event();
         result.setDetails(batchEvent.getDetails());
         result.setSuccess(batchEvent.isSuccess());
+        result.setDate(batchEvent.getDate());
         return result;
     }
 }
