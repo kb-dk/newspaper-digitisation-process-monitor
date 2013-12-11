@@ -29,13 +29,13 @@ public class Event {
     public void setDetails(String details) {
         this.details = details;
     }
-    
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    
-    @XmlElement(name = "date")   
+
+    @XmlElement(name = "date")
     public Date getDate() {
         return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

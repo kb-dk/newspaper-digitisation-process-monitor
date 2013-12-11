@@ -87,25 +87,11 @@
 
     function loadBatches() {
         var url = "batches/";
-        var batchList =
-                [
-                    {"batchID": "400022028241", "roundTripNumber": 1, "events": {"Metadata_Archived": {"success": true}, "JPylyzed": {"success": true}, "Shipped_to_supplier": {"success": true}, "Metadata_checked": {"success": false}, "Data_Received": {"success": true}, "Data_Archived": {"success": true}, "Structure_Checked": {"success": true}}},
-                    {"batchID": "400022028242", "roundTripNumber": 1, "events": {"Shipped_to_supplier": {"success": true}}},
-                    {"batchID": "400022028243", "roundTripNumber": 1, "events": {"Shipped_to_supplier": {"success": true}}},
-                    {"batchID": "400022028244", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "400022028245", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "400022028246", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "400022028247", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "400022028248", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "400022028249", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "410022028245", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "420022028245", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "430022028245", "roundTripNumber": 1, "events": {}},
-                    {"batchID": "440022028245", "roundTripNumber": 1, "events": {}}
-                ];
-        for (i in batchList) {
-            makeBatchRow(batchList[i]);
-        }
+        $.getJSON(url, {}, function (batchList) {
+            for (i in batchList) {
+                makeBatchRow(batchList[i]);
+            }
+        });
     }
 
     $(document).ready(function () {
