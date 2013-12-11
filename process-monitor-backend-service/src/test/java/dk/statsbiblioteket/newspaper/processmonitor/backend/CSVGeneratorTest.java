@@ -46,7 +46,7 @@ public class CSVGeneratorTest {
                 = "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
                 + "4000000000;2;;;;false;;Test;;;;;;;;;;false;;Hello World;;;;;;;;;;;;;;;\n"
                 + "4000000001;1;true;;\"æøå\nabc\";;;;true;;;;;;false;;Test;;;;;;;;;;;;;;;;;;\n";
-        assertEquals(CSVGenerator.generateCSVForBatchList(TEST_BATCHES, true), expectedOutput);
+        assertEquals(CSVGenerator.generateCSV(TEST_BATCHES), expectedOutput);
     }
 
     @Test
@@ -54,22 +54,13 @@ public class CSVGeneratorTest {
         String expectedOutput
                 = "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
                 + "4000000000;2;;;;false;;Test;;;;;;;;;;false;;Hello World;;;;;;;;;;;;;;;\n";
-        assertEquals(CSVGenerator.generateCSVForBatch(TEST_BATCH_1, true), expectedOutput);
-    }
-
-    @Test
-    public void testGenerateCSVForBatchNoDetails() throws Exception {
-        Batch batch = TEST_BATCH_2;
-        String expectedOutput
-                = "Batch;Roundtrip;Shipped_to_supplier;Data_Received;Metadata_Archived;Data_Archived;Structure_Checked;JPylyzed;Metadata_checked;auto-qa;manuel-qa;Approved;Received_from_supplier\n"
-                + "4000000001;1;true;;true;;false;;;;;;\n";
-        assertEquals(CSVGenerator.generateCSVForBatch(batch, false), expectedOutput);
+        assertEquals(CSVGenerator.generateCSV(TEST_BATCH_1), expectedOutput);
     }
 
     @Test
     public void testGenerateCSVForEvent() throws Exception {
         String expectedOutput=";;false;;\"The\ndetails\næøå\"\n";
-        assertEquals(CSVGenerator.generateCSVForEvent(TEST_EVENT, true), expectedOutput);
+        assertEquals(CSVGenerator.generateCSV(TEST_EVENT), expectedOutput);
     }
 
     private static Batch getTestBatch(String batchID, int roundTripNumber, Map<String, Event> events) {

@@ -39,17 +39,16 @@ public class CSVGenerator {
      * The report will contain a header row, and a row per batch with events for that batch.
      *
      * @param batches The batches to generate CSV for.
-     * @param details Whether details should be included in the report.
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    public static String generateCSVForBatchList(List<Batch> batches, boolean details)
+    public static String generateCSV(List<Batch> batches)
             throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
-        printHeader(csvWriter, details);
+        printHeader(csvWriter);
         for (Batch batch : batches) {
-            generateCSVForBatch(csvWriter, batch, details);
+            generateCSVForBatch(csvWriter, batch);
         }
         return stream.toString();
     }
@@ -59,15 +58,14 @@ public class CSVGenerator {
      * The report will contain a header row and a single row with events for the batch.
      *
      * @param batch The batch to generate CSV for.
-     * @param details Whether details should be included in the report.
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    public static String generateCSVForBatch(Batch batch, boolean details) throws IOException {
+    public static String generateCSV(Batch batch) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
-        printHeader(csvWriter, details);
-        generateCSVForBatch(csvWriter, batch, details);
+        printHeader(csvWriter);
+        generateCSVForBatch(csvWriter, batch);
         return stream.toString();
     }
 
@@ -75,18 +73,16 @@ public class CSVGenerator {
      * Generate CSV blob for a single batch event.
      * The report will contain a single row, with the event name and information about the event.
      *
-     *
      * @param event The event to generate CSV for.
-     * @param details Whether details should be included in the report.
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    public static String generateCSVForEvent(Event event, boolean details) throws IOException {
+    public static String generateCSV(Event event) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
         Object[] row = new Object[COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
         // Print the event details.
-        generateCSVForEvent(EVENTS.get(0), event, row, details);
+        generateCSVForEvent(EVENTS.get(0), event, row);
         csvWriter.printRow(row);
         return stream.toString();
     }
@@ -107,18 +103,13 @@ public class CSVGenerator {
     /**
      * Generate a header matching the CSV rows for all events on a batch.
      *
+     *
      * @param csvWriter The csvWriter to generate the header on.
-     * @param details Whether the header should match a detailed report.
      * @throws IOException If the header row cannot be generated.
      */
-    private static void printHeader(TableWriter csvWriter, boolean details) throws IOException {
+    private static void printHeader(TableWriter csvWriter) throws IOException {
         // A row with the right length.
-        Object[] header;
-        if (details) {
-            header = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
-        } else {
-            header = new Object[EVENTS.size() + ROW_HEADER_COLUMNS];
-        }
+        Object[] header = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
 
         // Row headers
         updateCell(header, 0, "Batch");
@@ -128,11 +119,7 @@ public class CSVGenerator {
         int index = ROW_HEADER_COLUMNS;
         for (String event : EVENTS) {
             updateCell(header, index, event);
-            if (details) {
-                index += COLUMNS_PER_EVENT;
-            } else {
-                index++;
-            }
+            index += COLUMNS_PER_EVENT;
         }
         csvWriter.printRow(header);
     }
@@ -140,19 +127,14 @@ public class CSVGenerator {
     /**
      * Run through all events for a batch, and generate a row containing information about events for that batch.
      *
+     *
      * @param csvWriter The csvWriter to generate the row on.
      * @param batch The batch to generate a row for.
-     * @param details Whether the row should contain details.
      * @throws IOException If the row cannot be generated.
      */
-    private static void generateCSVForBatch(TableWriter csvWriter, Batch batch, boolean details) throws IOException {
+    private static void generateCSVForBatch(TableWriter csvWriter, Batch batch) throws IOException {
         // A row with the right length.
-        Object[] row;
-        if (details) {
-            row = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
-        } else {
-            row = new Object[EVENTS.size() + ROW_HEADER_COLUMNS];
-        }
+        Object[] row = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
 
         // Row headers
         updateCell(row, 0, batch.getBatchID());
@@ -162,7 +144,7 @@ public class CSVGenerator {
         Map<String, Event> events = batch.getEvents();
         for (Map.Entry<String, Event> event : events.entrySet()) {
             // Fill out details for the event.
-            generateCSVForEvent(event.getKey(), event.getValue(), row, details);
+            generateCSVForEvent(event.getKey(), event.getValue(), row);
         }
         csvWriter.printRow(row);
     }
@@ -173,24 +155,17 @@ public class CSVGenerator {
      * @param eventID The ID of the event.
      * @param event The event to process.
      * @param row The row to fill out cells in.
-     * @param details If true, fills out details using multiple cells.
      */
-    private static void generateCSVForEvent(String eventID, Event event, Object[] row, boolean details) {
+    private static void generateCSVForEvent(String eventID, Event event, Object[] row) {
         // Find the index of the event, to fill out the right cells.
         int index = EVENTS.indexOf(eventID);
         if (index == -1) {
             // Unknown events are not included in the report
             return;
         }
-        if (details) {
-            // If details are requested, use multiple cells
-            updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS, event.isSuccess());
-            //updateCell(row, index * COLUMNS_PER_DETAILED_EVENT + ROW_HEADER_COLUMNS + 1, event.getDate());
-            updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 2, event.getDetails());
-        } else {
-            // Else just fill out if it was a success.
-            updateCell(row, index + ROW_HEADER_COLUMNS, event.isSuccess());
-        }
+        updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS, event.isSuccess());
+        //updateCell(row, index * COLUMNS_PER_DETAILED_EVENT + ROW_HEADER_COLUMNS + 1, event.getDate());
+        updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 2, event.getDetails());
     }
 
     /**
