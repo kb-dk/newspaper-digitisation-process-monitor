@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import javax.ws.rs.core.MediaType;
 
 public class BackendTest {
 
@@ -61,4 +62,37 @@ public class BackendTest {
         //Assert.assertNotNull(result.getDetails(), "The event has no details");
     }
 
+    @Test(groups = "integrationTest")
+    public void testGetBatchesCSV() {
+        String result = Client.create(config).resource(integrationTestServer).accept(MediaType.APPLICATION_JSON).get(String.class);
+        System.out.println(result);
+        //Assert.assertTrue(result.length > 1, "We expected more than one batch to be returned");
+        //System.out.println(Client.create(config).resource(integrationTestServer).get(String.class));
+
+    }
+
+    @Test(groups = "integrationTest", enabled = false)
+    public void testGetSingleBatchCSV() {
+        String result = Client.create(config).resource(integrationTestServer).path(batchID + "").accept("text/csv").get(String.class);
+        System.out.println(result);
+        //Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
+        //Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
+        //Assert.assertTrue(result.getEvents().get(eventID).isSuccess(), "The event is not marked as succesful");
+
+    }
+
+
+    @Test(groups = "integrationTest", enabled = false)
+
+    public void testGetSingleEventCSV() {
+        String result = Client.create(config)
+                .resource(integrationTestServer)
+                .path(batchID + "")
+                .path(eventID)
+                .queryParam("details", "true")
+                .accept("text/csv")
+                .get(String.class);
+        System.out.println(result);
+        //Assert.assertTrue(result.isSuccess(), "The event is not succesful");
+    }
 }

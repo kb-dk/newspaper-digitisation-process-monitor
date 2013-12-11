@@ -1,6 +1,9 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import dk.statsbiblioteket.medieplatform.autonomous.NotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -12,10 +15,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Variant;
+import java.io.IOException;
 import java.util.List;
-
 
 /**
  * Service class to expose retrieval of Batch and Events  objects for monitoring progress and state
@@ -28,7 +34,6 @@ import java.util.List;
 @Scope(value = "request")
 @Path("/")
 public class BatchesService {
-
     @Autowired
     private DataSourceCombiner dataSource;
 
@@ -39,9 +44,13 @@ public class BatchesService {
      * @return List<Batch> as JSON data.
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Batch> getBatches(@QueryParam("details") @DefaultValue("false") boolean details) {
-        return Converter.convertBatchList(dataSource.getBatches(details, null));
+    @Produces({MediaType.APPLICATION_JSON, "text/csv"})
+    public Response getBatches(@Context Request req, @QueryParam("details") @DefaultValue("false") boolean details) {
+        MediaType types[] = {MediaType.APPLICATION_JSON_TYPE, new MediaType("text", "csv")};
+        List<Variant> vars = Variant.mediaTypes(types).add().build();
+        Variant var = req.selectVariant(vars);
+        List<Batch> body = Converter.convertBatchList(dataSource.getBatches(details, null));
+        return Response.ok().entity(body).type(var.getMediaType()).build();
     }
 
     /**
@@ -53,11 +62,16 @@ public class BatchesService {
      */
     @GET
     @Path("{batchID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Batch getSpecificBatch(@PathParam("batchID") String batchID,
+    @Produces({MediaType.APPLICATION_JSON, "text/csv"})
+    public Response getSpecificBatch(@Context Request req,
+                                  @PathParam("batchID") String batchID,
                                   @QueryParam("details") @DefaultValue("false") boolean details) {
+        MediaType types[] = {MediaType.APPLICATION_JSON_TYPE, new MediaType("text", "csv")};
+        List<Variant> vars = Variant.mediaTypes(types).add().build();
+        Variant var = req.selectVariant(vars);
         try {
-            return Converter.convert(dataSource.getBatch(batchID, null, details));
+            Batch body = Converter.convert(dataSource.getBatch(batchID, null, details));
+            return Response.ok().entity(body).type(var.getMediaType()).build();
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get batch with ID: " + batchID)
@@ -75,11 +89,16 @@ public class BatchesService {
      */
     @GET
     @Path("{batchID}/{eventID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Event getSpecificBatchEvent(@PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
+    @Produces({MediaType.APPLICATION_JSON, "text/csv"})
+    public Response getSpecificBatchEvent(@Context Request req,
+                                          @PathParam("batchID") String batchID, @PathParam("eventID") String eventID,
                                        @QueryParam("details") @DefaultValue("false") boolean details) {
+        MediaType types[] = {MediaType.APPLICATION_JSON_TYPE, new MediaType("text", "csv")};
+        List<Variant> vars = Variant.mediaTypes(types).add().build();
+        Variant var = req.selectVariant(vars);
         try {
-            return Converter.convert(dataSource.getBatchEvent(batchID,null, eventID, details));
+            Event body = Converter.convert(dataSource.getBatchEvent(batchID,null, eventID, details));
+            return Response.ok().entity(body).type(var.getMediaType()).build();
         } catch (IllegalArgumentException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity("Failed to get event with ID: " + eventID + " from batch with ID: " + batchID + ". The EventID is not known by the system")
