@@ -33,13 +33,11 @@ public class BackendTest {
     public void testGetBatches() {
         Batch[] result = Client.create(config).resource(integrationTestServer).get(Batch[].class);
         Assert.assertTrue(result.length > 1, "We expected more than one batch to be returned");
-        System.out.println(Client.create(config).resource(integrationTestServer).get(String.class));
     }
 
     @Test(groups = "integrationTest")
     public void testGetSingleBatch() {
         Batch result = Client.create(config).resource(integrationTestServer).path(batchID + "").get(Batch.class);
-        System.out.println(result);
         Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
         Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
         Assert.assertTrue(result.getEvents().get(eventID).isSuccess(), "The event is not marked as succesful");
@@ -60,21 +58,35 @@ public class BackendTest {
 
     @Test(groups = "integrationTest")
     public void testGetBatchesCSV() {
-        String result = Client.create(config).resource(integrationTestServer).accept("text/csv").get(String.class);
-        // TODO: Test
-        // Assert.assertEquals(result, "NONE");
-
+        String result = Client.create(config)
+                .resource(integrationTestServer)
+                .accept("text/csv")
+                .get(String.class);
+        result = cleanDate(result);
+        Assert.assertTrue(result.startsWith("Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;"),
+                          "Expect a column header first");
+        Assert.assertTrue(result.contains("4001;1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
+                          "The 4001 batch should be contained");
+        Assert.assertTrue(result.contains("400022028241;1;"),
+                          "The small test batch should be there");
     }
 
     @Test(groups = "integrationTest")
     public void testGetSingleBatchCSV() {
-        String result = Client.create(config).resource(integrationTestServer).path(batchID + "").accept("text/csv").get(String.class);
+        String result = Client.create(config)
+                .resource(integrationTestServer)
+                .path(batchID + "")
+                .accept("text/csv")
+                .get(String.class);
+        result = cleanDate(result);
         Assert.assertEquals(result,
                             "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
-                                    + "4001;1;true;2013-12-04 14:51:01.890173;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
-        // TODO: More forgiving test for updated time stamps
+                                    + "4001;1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
     }
 
+    private String cleanDate(String result) {
+        return result.replaceAll("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}", "1970-01-01 01:00:00");
+    }
 
     @Test(groups = "integrationTest")
     public void testGetSingleEventCSV() {
@@ -85,7 +97,7 @@ public class BackendTest {
                 .queryParam("details", "true")
                 .accept("text/csv")
                 .get(String.class);
-        Assert.assertEquals(result, ";;true;2013-12-04 14:51:01.890173;\n");
-        // TODO: More forgiving test for updated time stamps
+        result = cleanDate(result);
+        Assert.assertEquals(result, ";;true;1970-01-01 01:00:00;\n");
     }
 }
