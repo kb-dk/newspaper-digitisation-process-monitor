@@ -5,24 +5,20 @@
     <meta name="description" content="Newspaper ingest monitor">
     <meta name="author" content="The State and University Library, Denmark">
 
-    <!-- Le styles -->
+    <!-- Styles -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
-    <![endif]-->
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet"/>
+    <link href="jquery/dataTable/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="jquery/dataTable/yadcf/css/jquery.dataTables.yadcf.css" rel="stylesheet" />
+    <link href="jquery/dataTable/css/jquery.dataTables.css" rel="stylesheet" />
 </head>
 <body>
 
-<div class="container">
-    <h1><span id="header">Batches</span></h1>
-    <table class="table">
+<div class="container" style="margin-top: 10px">
+    <div class="row">
+        <div class="center-block">
+    <h1><col-md id="header">Batches</col-md></h1>
+    <table border="0" class="table" id="batchtable">
         <thead>
         <tr>
             <th>Batch</th>
@@ -42,22 +38,28 @@
         </thead>
         <tbody id="batches-body"></tbody>
     </table>
+        </div>
+    </div>
 </div>
+
 <script src="jquery/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="jquery/dataTable/jquery.dataTables.min.js" charset="utf8"></script>
+<script src="jquery/dataTable/yadcf/jquery.dataTables.yadcf.js"></script>
+<script src="jquery/dataTable/dataTables.bootstrap.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
 <script>
-
     function makeEventCell(row, key, events) {
         var cellContent;
 
         if (events[key] == null) {
-            cellContent = "<col-md class=\"label label-default\">Pending</col-md>";
+            cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (events[key].success == true) {
-                cellContent = "<col-md class=\"label label-success\">Success</col-md>";
+                cellContent = "<span class=\"label label-success\">Success</span>";
             } else {
-                cellContent = "<col-md class=\"label label-danger\">Failed</col-md>";
+                cellContent = "<span class=\"label label-danger\">Failed</span>";
             }
         }
 
@@ -87,19 +89,41 @@
         var url = "batches/";
         var batchList =
                 [
-                    {"batchID":"400022028241","roundTripNumber":1,"events":{"Metadata_Archived":{"success":true},"JPylyzed":{"success":true},"Shipped_to_supplier":{"success":true},"Metadata_checked":{"success":false},"Data_Received":{"success":true},"Data_Archived":{"success":true},"Structure_Checked":{"success":true}}},
-                    {"batchID":"400022028242","roundTripNumber":1,"events":{"Shipped_to_supplier":{"success":true}}},
-                    {"batchID":"400022028243","roundTripNumber":1,"events":{"Shipped_to_supplier":{"success":true}}},
-                    {"batchID":"400022028245","roundTripNumber":1,"events":{}}
-                ]
-            for (i in batchList) {
-                makeBatchRow(batchList[i]);
-            }
+                    {"batchID": "400022028241", "roundTripNumber": 1, "events": {"Metadata_Archived": {"success": true}, "JPylyzed": {"success": true}, "Shipped_to_supplier": {"success": true}, "Metadata_checked": {"success": false}, "Data_Received": {"success": true}, "Data_Archived": {"success": true}, "Structure_Checked": {"success": true}}},
+                    {"batchID": "400022028242", "roundTripNumber": 1, "events": {"Shipped_to_supplier": {"success": true}}},
+                    {"batchID": "400022028243", "roundTripNumber": 1, "events": {"Shipped_to_supplier": {"success": true}}},
+                    {"batchID": "400022028244", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "400022028245", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "400022028246", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "400022028247", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "400022028248", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "400022028249", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "410022028245", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "420022028245", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "430022028245", "roundTripNumber": 1, "events": {}},
+                    {"batchID": "440022028245", "roundTripNumber": 1, "events": {}}
+                ];
+        for (i in batchList) {
+            makeBatchRow(batchList[i]);
+        }
     }
-
 
     $(document).ready(function () {
         loadBatches();
+        $('#batchtable').dataTable().yadcf([
+            {column_number : 0, filter_type: "auto_complete", filter_default_label: "Filter batch"},
+            {column_number : 1, filter_default_label: "All"},
+            {column_number : 2, column_data_type: "html", html_data_type: "text", filter_default_label: "All"},
+            {column_number : 3, column_data_type: "html", html_data_type: "text", filter_default_label: "All"},
+            {column_number : 4, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 5, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 6, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 7, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 8, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 9, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 10, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 11, column_data_type: "html", filter_default_label: "All"},
+            {column_number : 12, column_data_type: "html", filter_default_label: "All"}]);
     });
 </script>
 </body>
