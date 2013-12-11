@@ -177,7 +177,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             return;
         }
         updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS, event.isSuccess());
-        //updateCell(row, index * COLUMNS_PER_DETAILED_EVENT + ROW_HEADER_COLUMNS + 1, event.getDate());
+        updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 1, event.getDate());
         updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 2, event.getDetails());
     }
 
