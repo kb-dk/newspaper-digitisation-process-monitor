@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -200,7 +201,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             return;
         }
         updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS, event.isSuccess());
-        updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 1, event.getDate());
+        updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 1, event.getDate() != null ? new Date(event.getDate().getTime()) : null);
         updateCell(row, index * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS + 2, event.getDetails());
     }
 
