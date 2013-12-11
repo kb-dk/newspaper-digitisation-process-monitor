@@ -16,7 +16,7 @@ public class BackendTest {
 
     private DefaultClientConfig config;
 
-    private long batchID = 4002l;
+    private String batchID = "4001";
     private String eventID = "Shipped_to_supplier";
     private String integrationTestServer;
 
@@ -34,10 +34,9 @@ public class BackendTest {
         Batch[] result = Client.create(config).resource(integrationTestServer).get(Batch[].class);
         Assert.assertTrue(result.length > 1, "We expected more than one batch to be returned");
         System.out.println(Client.create(config).resource(integrationTestServer).get(String.class));
-
     }
 
-    @Test(groups = "integrationTest", enabled = false)
+    @Test(groups = "integrationTest")
     public void testGetSingleBatch() {
         Batch result = Client.create(config).resource(integrationTestServer).path(batchID + "").get(Batch.class);
         System.out.println(result);
@@ -48,8 +47,7 @@ public class BackendTest {
     }
 
 
-    @Test(groups = "integrationTest", enabled = false)
-
+    @Test(groups = "integrationTest")
     public void testGetSingleEvent() {
         Event result = Client.create(config)
                 .resource(integrationTestServer)
@@ -58,32 +56,27 @@ public class BackendTest {
                 .queryParam("details", "true")
                 .get(Event.class);
         Assert.assertTrue(result.isSuccess(), "The event is not succesful");
-        //TODO the backends should, but does not guarantee, that details is not null when called with details=true
-        //Assert.assertNotNull(result.getDetails(), "The event has no details");
     }
 
     @Test(groups = "integrationTest")
     public void testGetBatchesCSV() {
-        String result = Client.create(config).resource(integrationTestServer).accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(result);
-        //Assert.assertTrue(result.length > 1, "We expected more than one batch to be returned");
-        //System.out.println(Client.create(config).resource(integrationTestServer).get(String.class));
+        String result = Client.create(config).resource(integrationTestServer).accept("text/csv").get(String.class);
+        // TODO: Test
+        // Assert.assertEquals(result, "NONE");
 
     }
 
-    @Test(groups = "integrationTest", enabled = false)
+    @Test(groups = "integrationTest")
     public void testGetSingleBatchCSV() {
         String result = Client.create(config).resource(integrationTestServer).path(batchID + "").accept("text/csv").get(String.class);
-        System.out.println(result);
-        //Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
-        //Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
-        //Assert.assertTrue(result.getEvents().get(eventID).isSuccess(), "The event is not marked as succesful");
-
+        Assert.assertEquals(result,
+                            "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
+                                    + "4001;1;true;2013-12-04 14:51:01.890173;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+        // TODO: More forgiving test for updated time stamps
     }
 
 
-    @Test(groups = "integrationTest", enabled = false)
-
+    @Test(groups = "integrationTest")
     public void testGetSingleEventCSV() {
         String result = Client.create(config)
                 .resource(integrationTestServer)
@@ -92,7 +85,7 @@ public class BackendTest {
                 .queryParam("details", "true")
                 .accept("text/csv")
                 .get(String.class);
-        System.out.println(result);
-        //Assert.assertTrue(result.isSuccess(), "The event is not succesful");
+        Assert.assertEquals(result, ";;true;2013-12-04 14:51:01.890173;\n");
+        // TODO: More forgiving test for updated time stamps
     }
 }

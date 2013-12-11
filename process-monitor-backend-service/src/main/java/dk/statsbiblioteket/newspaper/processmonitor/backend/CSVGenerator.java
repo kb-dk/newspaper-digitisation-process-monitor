@@ -6,7 +6,6 @@ import csv.impl.type.DateConversionHandler;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -16,7 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
@@ -199,12 +197,9 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return (Batch.class.isAssignableFrom(type)
+        return Batch.class.isAssignableFrom(type)
                 || Event.class.isAssignableFrom(type)
-                || (List.class.isAssignableFrom(type)
-                    && genericType instanceof ParameterizedType
-                    && (((ParameterizedType) genericType).getActualTypeArguments()).length == 1
-                    && (((ParameterizedType) genericType).getActualTypeArguments())[0].equals(Batch.class)));
+                || (List.class.isAssignableFrom(type));
     }
 
     @Override
@@ -216,14 +211,11 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
     public void writeTo(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
                         MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
-        if (o instanceof Batch) {
+        if (Batch.class.isAssignableFrom(o.getClass())) {
             entityStream.write(generateCSV((Batch) o).getBytes());
-        } else if (o instanceof Event) {
+        } else if (Event.class.isAssignableFrom(o.getClass())) {
             entityStream.write(generateCSV((Event) o).getBytes());
-        } else if (o instanceof List
-                && genericType instanceof ParameterizedType
-                && (((ParameterizedType) genericType).getActualTypeArguments()).length == 1
-                && (((ParameterizedType) genericType).getActualTypeArguments())[0].equals(Batch.class)) {
+        } else if (List.class.isAssignableFrom(o.getClass())) {
             entityStream.write(generateCSV((List<Batch>) o).getBytes());
         } else {
             throw new WebApplicationException(Response.Status.NOT_ACCEPTABLE);
