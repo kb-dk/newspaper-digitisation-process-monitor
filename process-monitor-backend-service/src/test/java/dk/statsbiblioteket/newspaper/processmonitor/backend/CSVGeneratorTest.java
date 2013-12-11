@@ -2,6 +2,8 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import org.testng.annotations.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +48,9 @@ public class CSVGeneratorTest {
                 = "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
                 + "4000000000;2;;;;false;1970-01-01 01:00:00;Test;;;;;;;;;;false;1970-01-01 01:00:01;Hello World;;;;;;;;;;;;;;;\n"
                 + "4000000001;1;true;1970-01-01 01:00:02;\"æøå\nabc\";;;;true;1970-01-01 01:00:00;;;;;false;1970-01-01 01:00:01;Test;;;;;;;;;;;;;;;;;;\n";
-        assertEquals(CSVGenerator.generateCSV(TEST_BATCHES), expectedOutput);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        new CSVGenerator().writeTo(TEST_BATCHES, null, null, null, null, null, baos);
+        assertEquals(baos.toString(), expectedOutput);
     }
 
     @Test
@@ -54,13 +58,17 @@ public class CSVGeneratorTest {
         String expectedOutput
                 = "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
                 + "4000000000;2;;;;false;1970-01-01 01:00:00;Test;;;;;;;;;;false;1970-01-01 01:00:01;Hello World;;;;;;;;;;;;;;;\n";
-        assertEquals(CSVGenerator.generateCSV(TEST_BATCH_1), expectedOutput);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        new CSVGenerator().writeTo(TEST_BATCH_1, null, null, null, null, null, baos);
+        assertEquals(baos.toString(), expectedOutput);
     }
 
     @Test
     public void testGenerateCSVForEvent() throws Exception {
         String expectedOutput=";;false;1970-01-01 01:00:01;\"The\ndetails\næøå\"\n";
-        assertEquals(CSVGenerator.generateCSV(TEST_EVENT), expectedOutput);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        new CSVGenerator().writeTo(TEST_EVENT, null, null, null, null, null, baos);
+        assertEquals(baos.toString(), expectedOutput);
     }
 
     private static Batch getTestBatch(String batchID, int roundTripNumber, Map<String, Event> events) {
