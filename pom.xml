@@ -50,12 +50,17 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>newspaper-mfpak-integration</artifactId>
-                <version>1.1</version>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>sboi-datasource</artifactId>
-                <version>1.1</version>
+                <version>1.2-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>dk.statsbiblioteket.newspaper</groupId>
+                <artifactId>process-monitor-datasource-interfaces</artifactId>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
 
 
@@ -79,6 +84,11 @@
                 <scope>provided</scope>
             </dependency>
 
+            <dependency>
+               <groupId>eu.ralph-schuster</groupId>
+               <artifactId>csv</artifactId>
+               <version>2.6.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
