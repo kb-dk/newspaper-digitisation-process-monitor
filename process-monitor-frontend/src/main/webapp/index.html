@@ -109,7 +109,7 @@
         var blob = new Blob([this.response]);
         var a = document.createElement('a');
         a.download = 'file.csv';
-        a.href = window.URL.createObjectURL(data);
+        a.href = window.URL.createObjectURL(blob);
         a.innerText = 'download the file';
         document.body.appendChild(a);
     };
