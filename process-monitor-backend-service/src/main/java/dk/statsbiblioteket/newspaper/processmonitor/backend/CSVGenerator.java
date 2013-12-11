@@ -45,6 +45,33 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
     /** How many columns are used per row for headers */
     private static final int ROW_HEADER_COLUMNS = 2;
 
+    @Override
+    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+        return Batch.class.isAssignableFrom(type)
+                || Event.class.isAssignableFrom(type)
+                || (List.class.isAssignableFrom(type));
+    }
+
+    @Override
+    public long getSize(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+        return -1;
+    }
+
+    @Override
+    public void writeTo(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+                        MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
+            throws IOException, WebApplicationException {
+        if (Batch.class.isAssignableFrom(o.getClass())) {
+            entityStream.write(generateCSV((Batch) o).getBytes());
+        } else if (Event.class.isAssignableFrom(o.getClass())) {
+            entityStream.write(generateCSV((Event) o).getBytes());
+        } else if (List.class.isAssignableFrom(o.getClass())) {
+            entityStream.write(generateCSV((List<Batch>) o).getBytes());
+        } else {
+            throw new WebApplicationException(Response.Status.NOT_ACCEPTABLE);
+        }
+    }
+
     /**
      * Generate CSV blob for a list of batches and events happened on these.
      * The report will contain a header row, and a row per batch with events for that batch.
@@ -53,7 +80,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    public static String generateCSV(List<Batch> batches)
+    private static String generateCSV(List<Batch> batches)
             throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
@@ -72,7 +99,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    public static String generateCSV(Batch batch) throws IOException {
+    private static String generateCSV(Batch batch) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
         printHeader(csvWriter);
@@ -82,13 +109,13 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
 
     /**
      * Generate CSV blob for a single batch event.
-     * The report will contain a single row, with the event name and information about the event.
+     * The report will contain a single row, with information about the event.
      *
      * @param event The event to generate CSV for.
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    public static String generateCSV(Event event) throws IOException {
+    private static String generateCSV(Event event) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
         Object[] row = new Object[COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
@@ -114,7 +141,6 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
     /**
      * Generate a header matching the CSV rows for all events on a batch.
      *
-     *
      * @param csvWriter The csvWriter to generate the header on.
      * @throws IOException If the header row cannot be generated.
      */
@@ -137,7 +163,6 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
 
     /**
      * Run through all events for a batch, and generate a row containing information about events for that batch.
-     *
      *
      * @param csvWriter The csvWriter to generate the row on.
      * @param batch The batch to generate a row for.
@@ -180,7 +205,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
     }
 
     /**
-     * Update a cell in a row. If the cell is empty, insert the value. Otherwise add the value, by updating it to a 
+     * Update a cell in a row. If the cell is empty, insert the value. Otherwise add the value, by updating it to a
      * comma-separated list of values.
      *
      * @param row The row to update.
@@ -192,33 +217,6 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             row[index] = value;
         } else {
             row[index] = row[index].toString() + "," + value.toString();
-        }
-    }
-
-    @Override
-    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return Batch.class.isAssignableFrom(type)
-                || Event.class.isAssignableFrom(type)
-                || (List.class.isAssignableFrom(type));
-    }
-
-    @Override
-    public long getSize(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return -1;
-    }
-
-    @Override
-    public void writeTo(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-                        MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-            throws IOException, WebApplicationException {
-        if (Batch.class.isAssignableFrom(o.getClass())) {
-            entityStream.write(generateCSV((Batch) o).getBytes());
-        } else if (Event.class.isAssignableFrom(o.getClass())) {
-            entityStream.write(generateCSV((Event) o).getBytes());
-        } else if (List.class.isAssignableFrom(o.getClass())) {
-            entityStream.write(generateCSV((List<Batch>) o).getBytes());
-        } else {
-            throw new WebApplicationException(Response.Status.NOT_ACCEPTABLE);
         }
     }
 }
