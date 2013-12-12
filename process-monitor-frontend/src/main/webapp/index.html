@@ -69,7 +69,7 @@
         var url = "batches/" + batch + "/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
             $('#detailsModalTitle').text(eventid);
-            $('#detailsModalDate').text(event.date);
+            $('#detailsModalDate').text(new Date(event.date).toLocaleString());
             $('#detailsModalDetails').text(event.details);
             $('#detailsModal').modal();
         });
@@ -82,9 +82,9 @@
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (events[key].success == true) {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + event.date + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"label label-success\">Success</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
             } else {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + event.date + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
             }
         }
 
@@ -116,7 +116,7 @@
         for (i in batchList) {
             makeBatchRow(batchList[i]);
         }
-        $(".label").tooltip({placement: 'bottom'});
+        $(".datetooltip").tooltip({placement: 'bottom'});
         });
     }
 
