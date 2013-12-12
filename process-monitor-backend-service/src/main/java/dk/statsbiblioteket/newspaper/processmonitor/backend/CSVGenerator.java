@@ -174,7 +174,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         Object[] row = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
 
         // Row headers
-        updateCell(row, 0, batch.getBatchID());
+        updateCell(row, 0, "=\"" + batch.getBatchID() + "\"");
         updateCell(row, 1, batch.getRoundTripNumber());
 
         // Events
