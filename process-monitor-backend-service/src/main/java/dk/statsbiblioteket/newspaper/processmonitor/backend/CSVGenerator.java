@@ -41,7 +41,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             "Approved",
             "Received_from_supplier");
 
-    /** How many columns are used per event in detailed mode */
+    /** How many columns are used per event */
     private static final int COLUMNS_PER_EVENT = 3;
     /** How many columns are used per row for headers */
     private static final int ROW_HEADER_COLUMNS = 2;
