@@ -46,8 +46,8 @@ public class CSVGeneratorTest {
     public void testGenerateCSVForBatchList() throws Exception {
         String expectedOutput
                 = "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
-                + "4000000000;2;;;;false;1970-01-01 01:00:00;Test;;;;;;;;;;false;1970-01-01 01:00:01;Hello World;;;;;;;;;;;;;;;\n"
-                + "4000000001;1;true;1970-01-01 01:00:02;\"æøå\nabc\";;;;true;1970-01-01 01:00:00;;;;;false;1970-01-01 01:00:01;Test;;;;;;;;;;;;;;;;;;\n";
+                + "\"=\"\"4000000000\"\"\";2;;;;false;1970-01-01 01:00:00;Test;;;;;;;;;;false;1970-01-01 01:00:01;Hello World;;;;;;;;;;;;;;;\n"
+                + "\"=\"\"4000000001\"\"\";1;true;1970-01-01 01:00:02;\"æøå\nabc\";;;;true;1970-01-01 01:00:00;;;;;false;1970-01-01 01:00:01;Test;;;;;;;;;;;;;;;;;;\n";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         new CSVGenerator().writeTo(TEST_BATCHES, null, null, null, null, null, baos);
         assertEquals(baos.toString(), expectedOutput);
@@ -57,7 +57,7 @@ public class CSVGeneratorTest {
     public void testGenerateCSVForBatch() throws Exception {
         String expectedOutput
                 = "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
-                + "4000000000;2;;;;false;1970-01-01 01:00:00;Test;;;;;;;;;;false;1970-01-01 01:00:01;Hello World;;;;;;;;;;;;;;;\n";
+                + "\"=\"\"4000000000\"\"\";2;;;;false;1970-01-01 01:00:00;Test;;;;;;;;;;false;1970-01-01 01:00:01;Hello World;;;;;;;;;;;;;;;\n";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         new CSVGenerator().writeTo(TEST_BATCH_1, null, null, null, null, null, baos);
         assertEquals(baos.toString(), expectedOutput);
