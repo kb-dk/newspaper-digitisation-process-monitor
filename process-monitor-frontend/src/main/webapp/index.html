@@ -82,9 +82,9 @@
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (events[key].success == true) {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"\" data-original-title=\"" + event.date + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"label label-success\">Success</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + event.date + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"label label-success\">Success</span>";
             } else {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"\" data-original-title=\"" + event.date + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + event.date + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"label label-danger\">Failed</span>";
             }
         }
 
@@ -116,6 +116,7 @@
         for (i in batchList) {
             makeBatchRow(batchList[i]);
         }
+        $(".label").tooltip({placement: 'bottom'});
         });
     }
 
