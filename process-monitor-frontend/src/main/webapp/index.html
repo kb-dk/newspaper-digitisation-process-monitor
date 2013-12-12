@@ -46,17 +46,45 @@
 <script src="jquery/dataTable/dataTables.bootstrap.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
+<!-- Modal -->
+<div id="detailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 id="detailsModalTitle">Modal header</h4>
+  </div>
+  <div class="modal-body">
+      <p id="detailsModalDate"></p>
+      <pre id="detailsModalDetails"></pre>
+  </div>
+  <div class="modal-footer">
+  </div>
+  </div>
+  </div>
+</div>
+
 <script>
-    function makeEventCell(row, key, events) {
+    function showdetails(batch, eventid) {
+        var url = "batches/" + batch + "/" + eventid + "/?details=true";
+        $.getJSON(url, {}, function (event) {
+            $('#detailsModalTitle').innerText=eventid;
+            $('#detailsModalDate').innerText=event.date;
+            $('#detailsModalDetails').innerText=event.details;
+            $('#detailsModal').modal();
+        });
+    }
+
+    function makeEventCell(row, key, events, batch) {
         var cellContent;
 
         if (events[key] == null) {
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (events[key].success == true) {
-                cellContent = "<span class=\"label label-success\">Success</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"\" data-original-title=\"" + event.date + "\" onclick=\"showdetails(" + batch + "," + key + ")\" class=\"label label-success\">Success</span>";
             } else {
-                cellContent = "<span class=\"label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"\" data-original-title=\"" + event.date + "\" onclick=\"showdetails(" + batch + "," + key + ")\" class=\"label label-danger\">Failed</span>";
             }
         }
 
@@ -69,17 +97,17 @@
         $("#batches-body").append(html);
         $("#" + batchRow).append("<td>" + batch.batchID + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
-        makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events);
-        makeEventCell("#" + batchRow, "Data_Received", batch.events);
-        makeEventCell("#" + batchRow, "Metadata_Archived", batch.events);
-        makeEventCell("#" + batchRow, "Data_Archived", batch.events);
-        makeEventCell("#" + batchRow, "Structure_Checked", batch.events);
-        makeEventCell("#" + batchRow, "JPylyzed", batch.events);
-        makeEventCell("#" + batchRow, "Metadata_checked", batch.events);
-        makeEventCell("#" + batchRow, "auto-qa", batch.events);
-        makeEventCell("#" + batchRow, "manuel-qa", batch.events);
-        makeEventCell("#" + batchRow, "Approved", batch.events);
-        makeEventCell("#" + batchRow, "Received_from_supplier", batch.events);
+        makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events, batch);
+        makeEventCell("#" + batchRow, "Data_Received", batch.events, batch);
+        makeEventCell("#" + batchRow, "Metadata_Archived", batch.events, batch);
+        makeEventCell("#" + batchRow, "Data_Archived", batch.events, batch);
+        makeEventCell("#" + batchRow, "Structure_Checked", batch.events, batch);
+        makeEventCell("#" + batchRow, "JPylyzed", batch.events, batch);
+        makeEventCell("#" + batchRow, "Metadata_checked", batch.events, batch);
+        makeEventCell("#" + batchRow, "auto-qa", batch.events, batch);
+        makeEventCell("#" + batchRow, "manuel-qa", batch.events, batch);
+        makeEventCell("#" + batchRow, "Approved", batch.events, batch);
+        makeEventCell("#" + batchRow, "Received_from_supplier", batch.events, batch);
     }
 
     function loadBatches() {
