@@ -2,8 +2,6 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import dk.statsbiblioteket.medieplatform.autonomous.NotFoundException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Variant;
-import java.io.IOException;
 import java.util.List;
 
 /**
