@@ -113,29 +113,28 @@
     function loadBatches() {
         var url = "batches/";
         $.getJSON(url, {}, function (batchList) {
-        for (i in batchList) {
-            makeBatchRow(batchList[i]);
-        }
-        $(".label").tooltip({placement: 'bottom'});
+            for (i in batchList) {
+                makeBatchRow(batchList[i]);
+            }
+            $('#batchtable').dataTable().yadcf([
+                {column_number : 0, filter_type: "auto_complete", filter_default_label: "Filter batch"},
+                {column_number : 1, filter_default_label: "All"},
+                {column_number : 2, column_data_type: "html", html_data_type: "text", filter_default_label: "All"},
+                {column_number : 3, column_data_type: "html", html_data_type: "text", filter_default_label: "All"},
+                {column_number : 4, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 5, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 6, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 7, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 8, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 9, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 10, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 11, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 12, column_data_type: "html", filter_default_label: "All"}]);
         });
     }
 
     $(document).ready(function () {
         loadBatches();
-        $('#batchtable').dataTable().yadcf([
-            {column_number : 0, filter_type: "auto_complete", filter_default_label: "Filter batch"},
-            {column_number : 1, filter_default_label: "All"},
-            {column_number : 2, column_data_type: "html", html_data_type: "text", filter_default_label: "All"},
-            {column_number : 3, column_data_type: "html", html_data_type: "text", filter_default_label: "All"},
-            {column_number : 4, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 5, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 6, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 7, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 8, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 9, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 10, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 11, column_data_type: "html", filter_default_label: "All"},
-            {column_number : 12, column_data_type: "html", filter_default_label: "All"}]);
     });
 </script>
 
