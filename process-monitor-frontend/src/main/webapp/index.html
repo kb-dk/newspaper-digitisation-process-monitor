@@ -103,7 +103,7 @@
 
 <script type="text/javascript">
     var request = new XMLHttpRequest();
-    request.open('GET', 'batches');
+    request.open('GET', 'batches?details=true');
     request.setRequestHeader("Accept", "text/csv");
     request.responseType = 'arraybuffer';
     request.onload = function (e) {
