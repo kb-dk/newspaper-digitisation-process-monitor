@@ -97,17 +97,17 @@
         $("#batches-body").append(html);
         $("#" + batchRow).append("<td>" + batch.batchID + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
-        makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events, batch);
-        makeEventCell("#" + batchRow, "Data_Received", batch.events, batch);
-        makeEventCell("#" + batchRow, "Metadata_Archived", batch.events, batch);
-        makeEventCell("#" + batchRow, "Data_Archived", batch.events, batch);
-        makeEventCell("#" + batchRow, "Structure_Checked", batch.events, batch);
-        makeEventCell("#" + batchRow, "JPylyzed", batch.events, batch);
-        makeEventCell("#" + batchRow, "Metadata_checked", batch.events, batch);
-        makeEventCell("#" + batchRow, "auto-qa", batch.events, batch);
-        makeEventCell("#" + batchRow, "manuel-qa", batch.events, batch);
-        makeEventCell("#" + batchRow, "Approved", batch.events, batch);
-        makeEventCell("#" + batchRow, "Received_from_supplier", batch.events, batch);
+        makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Data_Received", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Metadata_Archived", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Data_Archived", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Structure_Checked", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "JPylyzed", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Metadata_checked", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "auto-qa", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "manuel-qa", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Approved", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Received_from_supplier", batch.events, batch.batchID);
     }
 
     function loadBatches() {
