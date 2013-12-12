@@ -2,8 +2,6 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import dk.statsbiblioteket.medieplatform.autonomous.NotFoundException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Variant;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -41,7 +38,7 @@ public class BatchesService {
      * Retrieves a list of all known Batch objects (@see Batch).
      *
      * @param details If true, will also include the available details for each event in the Batch objects. Defaults to false.
-     * @return List<Batch> as JSON data.
+     * @return List<Batch> as JSON data or CSV file based on content negotiation.
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, "text/csv"})
@@ -58,7 +55,7 @@ public class BatchesService {
      *
      * @param batchID The ID of the specific batch
      * @param details If true, will also include the available details for each event in the Batch. Defaults to false.
-     * @return Batch as JSON Object
+     * @return Batch as JSON data or CSV file based on content negotiation.
      */
     @GET
     @Path("{batchID}")
@@ -86,6 +83,8 @@ public class BatchesService {
      * @param batchID The ID of the specific batch
      * @param eventID The ID of the specific event
      * @param details If true, will also include the available details. Defaults to false.
+     *
+     * @return Event as JSON data or CSV file based on content negotiation.
      */
     @GET
     @Path("{batchID}/{eventID}")

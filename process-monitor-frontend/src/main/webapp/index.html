@@ -15,10 +15,9 @@
 <body>
 
 <div class="container" style="margin-top: 10px">
-    <div class="row">
-        <div class="center-block">
-    <h1><col-md id="header">Batches</col-md></h1>
-    <table border="0" class="table" id="batchtable">
+    <h1><span id="header">Batches</span></h1>
+    <div style="float: right"><a id="csv" style="display: none" class="btn btn-default btn-success">Download as CSV</a></div>
+    <table class="table" id="batchtable">
         <thead>
         <tr>
             <th>Batch</th>
@@ -38,8 +37,6 @@
         </thead>
         <tbody id="batches-body"></tbody>
     </table>
-        </div>
-    </div>
 </div>
 
 <script src="jquery/jquery-2.0.3.min.js"></script>
@@ -88,9 +85,9 @@
     function loadBatches() {
         var url = "batches/";
         $.getJSON(url, {}, function (batchList) {
-            for (i in batchList) {
-                makeBatchRow(batchList[i]);
-            }
+        for (i in batchList) {
+            makeBatchRow(batchList[i]);
+        }
         });
     }
 
@@ -111,5 +108,21 @@
             {column_number : 11, column_data_type: "html", filter_default_label: "All"},
             {column_number : 12, column_data_type: "html", filter_default_label: "All"}]);
     });
+</script>
+
+<script type="text/javascript">
+    var request = new XMLHttpRequest();
+    request.open('GET', 'batches?details=true');
+    request.setRequestHeader("Accept", "text/csv");
+    request.responseType = 'arraybuffer';
+    var a = document.getElementById('csv');
+    request.onload = function (e) {
+        var blob = new Blob([this.response]);
+        var a = document.getElementById('csv');
+        a.download = 'file.csv';
+        a.href = window.URL.createObjectURL(blob);
+        a.style.display='';
+    };
+    request.send();
 </script>
 </body>
