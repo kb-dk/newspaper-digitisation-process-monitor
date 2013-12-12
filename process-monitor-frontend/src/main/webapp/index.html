@@ -68,9 +68,9 @@
     function showdetails(batch, eventid) {
         var url = "batches/" + batch + "/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
-            $('#detailsModalTitle').text=eventid;
-            $('#detailsModalDate').text=event.date;
-            $('#detailsModalDetails').text=event.details;
+            $('#detailsModalTitle').text(eventid);
+            $('#detailsModalDate').text(event.date);
+            $('#detailsModalDetails').text(event.details);
             $('#detailsModal').modal();
         });
     }
