@@ -23,7 +23,7 @@
 
 <div class="container">
     <h1><span id="header">Batches</span></h1>
-    <div style="float: right"><a id="cvs" style="display: none" class="btn btn-success">Download as CVS</a></div>
+    <div style="float: right"><a id="csv" style="display: none" class="btn btn-success">Download as CSV</a></div>
     <table class="table">
         <thead>
         <tr>
@@ -108,7 +108,7 @@
     request.responseType = 'arraybuffer';
     request.onload = function (e) {
         var blob = new Blob([this.response]);
-        var a = document.getElementById('cvs');
+        var a = document.getElementById('csv');
         a.download = 'file.csv';
         a.href = window.URL.createObjectURL(blob);
         a.style.display='';
