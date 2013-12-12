@@ -38,7 +38,7 @@ public class BatchesService {
      * Retrieves a list of all known Batch objects (@see Batch).
      *
      * @param details If true, will also include the available details for each event in the Batch objects. Defaults to false.
-     * @return List<Batch> as JSON data.
+     * @return List<Batch> as JSON data or CSV file based on content negotiation.
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, "text/csv"})
@@ -55,7 +55,7 @@ public class BatchesService {
      *
      * @param batchID The ID of the specific batch
      * @param details If true, will also include the available details for each event in the Batch. Defaults to false.
-     * @return Batch as JSON Object
+     * @return Batch as JSON data or CSV file based on content negotiation.
      */
     @GET
     @Path("{batchID}")
@@ -83,6 +83,8 @@ public class BatchesService {
      * @param batchID The ID of the specific batch
      * @param eventID The ID of the specific event
      * @param details If true, will also include the available details. Defaults to false.
+     *
+     * @return Event as JSON data or CSV file based on content negotiation.
      */
     @GET
     @Path("{batchID}/{eventID}")
