@@ -65,9 +65,9 @@ public class BackendTest {
         result = cleanDate(result);
         Assert.assertTrue(result.startsWith("Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;"),
                           "Expect a column header first");
-        Assert.assertTrue(result.contains("4001;1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
+        Assert.assertTrue(result.contains("\"=\"\"4001\"\";1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
                           "The 4001 batch should be contained");
-        Assert.assertTrue(result.contains("400022028241;1;"),
+        Assert.assertTrue(result.contains("\"=\"\"400022028241\"\";1;"),
                           "The small test batch should be there");
     }
 
@@ -81,7 +81,7 @@ public class BackendTest {
         result = cleanDate(result);
         Assert.assertEquals(result,
                             "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
-                                    + "4001;1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+                                    + "\"=\"\"4001\"\";1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
     }
 
     private String cleanDate(String result) {
