@@ -156,7 +156,7 @@
     request.onload = function (e) {
         var blob = new Blob([this.response]);
         var a = document.getElementById('csv');
-        a.download = 'file.csv';
+        a.download = 'batch-list-' + new Date().toISOString() + '.csv';
         a.href = window.URL.createObjectURL(blob);
         a.style.display='';
     };
