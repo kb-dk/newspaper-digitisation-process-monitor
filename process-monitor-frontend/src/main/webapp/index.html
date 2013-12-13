@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Newspaper Ingest Monitor</title>
@@ -66,26 +67,31 @@
 </div>
 
 <script>
-    function showdetails(batch, eventid) {
+    function showDetails(batch, eventid) {
         var url = "batches/" + batch + "/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
             $('#detailsModalTitle').text(eventid);
             $('#detailsModalDate').text(new Date(event.date).toLocaleString());
             $('#detailsModalDetails').text(event.details);
+            if (event.details != null && event.details != '') {
+                $('#detailsModalDetails').show();
+            } else {
+                $('#detailsModalDetails').hide();
+            }
             $('#detailsModal').modal();
         });
     }
 
-    function makeEventCell(row, key, events, batch) {
+    function makeEventCell(row, key, events, batchid) {
         var cellContent;
 
         if (events[key] == null) {
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (events[key].success == true) {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batchid + "','" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
             } else {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showdetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batchid + "','" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
             }
         }
 
