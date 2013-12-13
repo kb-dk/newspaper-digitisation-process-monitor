@@ -3,6 +3,8 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 import csv.TableWriter;
 import csv.impl.CSVWriter;
 import csv.impl.type.DateConversionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -27,8 +29,10 @@ import java.util.Map;
 @Provider
 @Produces("text/csv")
 public class CSVGenerator implements MessageBodyWriter<Object> {
+    Logger log = LoggerFactory.getLogger(getClass());
+
     /** List and order of events to present in CSV files in different columns */
-    private static final List<String> EVENTS = Arrays.asList(
+    private final List<String> EVENTS = Arrays.asList(
             "Shipped_to_supplier",
             "Data_Received",
             "Metadata_Archived",
@@ -42,9 +46,9 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             "Received_from_supplier");
 
     /** How many columns are used per event */
-    private static final int COLUMNS_PER_EVENT = 3;
+    private final int COLUMNS_PER_EVENT = 3;
     /** How many columns are used per row for headers */
-    private static final int ROW_HEADER_COLUMNS = 2;
+    private final int ROW_HEADER_COLUMNS = 2;
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -69,6 +73,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         } else if (List.class.isAssignableFrom(o.getClass())) {
             entityStream.write(generateCSV((List<Batch>) o).getBytes());
         } else {
+            log.warn("Unknown object type {} in CSV Generator", o.getClass());
             throw new WebApplicationException(Response.Status.NOT_ACCEPTABLE);
         }
     }
@@ -81,8 +86,9 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    private static String generateCSV(List<Batch> batches)
+    private String generateCSV(List<Batch> batches)
             throws IOException {
+        log.debug("Generating CSV for List<Batch>: {}", batches);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
         printHeader(csvWriter);
@@ -100,7 +106,8 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    private static String generateCSV(Batch batch) throws IOException {
+    private String generateCSV(Batch batch) throws IOException {
+        log.debug("Generating CSV for Batch: {}", batch.getBatchID());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
         printHeader(csvWriter);
@@ -116,7 +123,8 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @return A CSV Blob
      * @throws IOException If the blob cannot be generated.
      */
-    private static String generateCSV(Event event) throws IOException {
+    private String generateCSV(Event event) throws IOException {
+        log.debug("Generating CSV for Event: {}, {}, {}", event.isSuccess(), event.getDate(), event.getDetails());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         TableWriter csvWriter = getTableWriter(stream);
         Object[] row = new Object[COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
@@ -131,7 +139,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @param stream The stream to get a table writer for.
      * @return The table writer.
      */
-    private static TableWriter getTableWriter(OutputStream stream) {
+    private TableWriter getTableWriter(OutputStream stream) {
         CSVWriter csvWriter = new CSVWriter(stream);
         DateConversionHandler handler = new DateConversionHandler();
         handler.setPrintFormat("yyyy-MM-dd HH:mm:ss");
@@ -145,7 +153,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @param csvWriter The csvWriter to generate the header on.
      * @throws IOException If the header row cannot be generated.
      */
-    private static void printHeader(TableWriter csvWriter) throws IOException {
+    private void printHeader(TableWriter csvWriter) throws IOException {
         // A row with the right length.
         Object[] header = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
 
@@ -169,7 +177,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @param batch The batch to generate a row for.
      * @throws IOException If the row cannot be generated.
      */
-    private static void generateCSVForBatch(TableWriter csvWriter, Batch batch) throws IOException {
+    private void generateCSVForBatch(TableWriter csvWriter, Batch batch) throws IOException {
         // A row with the right length.
         Object[] row = new Object[EVENTS.size() * COLUMNS_PER_EVENT + ROW_HEADER_COLUMNS];
 
@@ -193,7 +201,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @param event The event to process.
      * @param row The row to fill out cells in.
      */
-    private static void generateCSVForEvent(String eventID, Event event, Object[] row) {
+    private void generateCSVForEvent(String eventID, Event event, Object[] row) {
         // Find the index of the event, to fill out the right cells.
         int index = EVENTS.indexOf(eventID);
         if (index == -1) {
@@ -213,7 +221,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
      * @param index The index of the cell in the row to update.
      * @param value The value to update the cell with.
      */
-    private static void updateCell(Object[] row, int index, Object value) {
+    private void updateCell(Object[] row, int index, Object value) {
         if (row[index] == null) {
             row[index] = value;
         } else {
