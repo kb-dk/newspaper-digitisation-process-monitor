@@ -73,6 +73,11 @@
             $('#detailsModalTitle').text(eventid);
             $('#detailsModalDate').text(new Date(event.date).toLocaleString());
             $('#detailsModalDetails').text(event.details);
+            if (event.details != null && event.details != '') {
+                $('#detailsModalDetails').show();
+            } else {
+                $('#detailsModalDetails').hide();
+            }
             $('#detailsModal').modal();
         });
     }
