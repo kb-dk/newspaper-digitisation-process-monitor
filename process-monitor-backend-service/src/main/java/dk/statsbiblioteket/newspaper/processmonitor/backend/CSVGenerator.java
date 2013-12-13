@@ -95,7 +95,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         for (Batch batch : batches) {
             generateCSVForBatch(csvWriter, batch);
         }
-        return stream.toString();
+        return stream.toString("UTF-8");
     }
 
     /**
@@ -112,7 +112,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         TableWriter csvWriter = getTableWriter(stream);
         printHeader(csvWriter);
         generateCSVForBatch(csvWriter, batch);
-        return stream.toString();
+        return stream.toString("UTF-8");
     }
 
     /**
@@ -131,7 +131,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         // Print the event details.
         generateCSVForEvent(EVENTS.get(0), event, row);
         csvWriter.printRow(row);
-        return stream.toString();
+        return stream.toString("UTF-8");
     }
 
     /**
