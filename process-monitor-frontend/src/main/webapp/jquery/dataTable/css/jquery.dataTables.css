@@ -9,7 +9,7 @@ table.dataTable {
 }
 
 table.dataTable thead th {
-	padding: 3px 22px 3px 1px;
+	padding: 3px 2px 3px 1px;
 	border-bottom: 1px solid black;
 	font-weight: bold;
 	cursor: pointer;
