@@ -48,20 +48,20 @@
 
 <!-- Modal -->
 <div id="detailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="width: 80%">
-  <div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h4 id="detailsModalTitle">Modal header</h4>
-  </div>
-  <div class="modal-body">
-      <p id="detailsModalDate"></p>
-      <pre id="detailsModalDetails"></pre>
-  </div>
-  <div class="modal-footer">
-  </div>
-  </div>
-  </div>
+    <div class="modal-dialog" style="width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="detailsModalTitle">Modal header</h4>
+            </div>
+            <div class="modal-body">
+                <p id="detailsModalDate"></p>
+                <pre id="detailsModalDetails"></pre>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -133,12 +133,12 @@
                 {column_number : 12, column_data_type: "html", filter_default_label: "All"}]);
         });
     }
+    <!-- Configuration of dataTables -->
     $.extend( true, $.fn.dataTable.defaults, {
         "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
         "sPaginationType": "scrolling",
         "aaSorting": [[ 0, "desc" ]],
         "iDisplayLength": "100",
-        "bStateSave": true,
         "oLanguage": {"sLengthMenu": "_MENU_ records per page"}
     } );
 
