@@ -28,12 +28,14 @@
             <th>Data received</th>
             <th>Metadata archived</th>
             <th>Files archived</th>
-            <th>File structure checked</th>
-            <th>Image properties analyzed</th>
+            <th>Batch structure checked</th>
+            <th>Images characterized</th>
+            <th>Image histograms generated</th>
             <th>Metadata checked</th>
-            <th>Automatic QA OK</th>
+            <th>Manual QA input generated</th>
             <th>Manual QA OK</th>
             <th>Batch approved</th>
+            <th>Presentation copies generated</th>
             <th>Reels received</th>
         </tr>
         </thead>
@@ -104,16 +106,19 @@
         $("#batches-body").append(html);
         $("#" + batchRow).append("<td>" + batch.batchID + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
+
         makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Data_Received", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Metadata_Archived", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Data_Archived", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Structure_Checked", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "JPylyzed", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Histogrammed", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Metadata_checked", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "auto-qa", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Manual_QA_Flagged", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "manuel-qa", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Approved", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Dissemination_Copy_Generated", batch.events, batch.batchID);
         makeEventCell("#" + batchRow, "Received_from_supplier", batch.events, batch.batchID);
     }
 
