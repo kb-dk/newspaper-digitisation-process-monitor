@@ -13,3 +13,6 @@
  * Removed the Automatic QA OK column
  * Added the Presentation Copies generated column
  * Use version 1.3 of MFPak and version 1.4.1 of Batch Event Framework
+
+1.3
+* Added filters for the last two columns
