@@ -41,10 +41,10 @@ table.table thead .sorting_asc_disabled { background: url('../images/sort_asc_di
 table.table thead .sorting_desc_disabled { background: url('../images/sort_desc_disabled.png') no-repeat center right; }
 
 
-table.dataTable tr.odd td.sorting_1 { background-color: #D3D6FF; }
+table.dataTable tr.odd td.sorting_1 { background-color: #E5E5E5; }
 table.dataTable tr.odd td.sorting_2 { background-color: #DADCFF; }
 table.dataTable tr.odd td.sorting_3 { background-color: #E0E2FF; }
-table.dataTable tr.even td.sorting_1 { background-color: #EAEBFF; }
+table.dataTable tr.even td.sorting_1 { background-color: #D2D2D2; }
 table.dataTable tr.even td.sorting_2 { background-color: #F2F3FF; }
 table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 
