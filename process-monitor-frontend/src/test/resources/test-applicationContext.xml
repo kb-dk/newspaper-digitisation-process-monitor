@@ -44,5 +44,8 @@
         <ref bean="dataSourceMockup"/>
     </util:list>
 
+    <bean id="statisticsService" class="dk.statsbiblioteket.newspaper.processmonitor.backend.StatisticsService">
+        <property name="statisticsBaseUrl" value="http:/localhost:7820/statistics/statistics.html?batchid="/>
+    </bean>
 
 </beans>
