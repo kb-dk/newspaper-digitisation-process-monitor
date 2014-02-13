@@ -69,6 +69,9 @@
 </div>
 
 <script>
+
+    var statisticsBaseUrl = null;
+
     function showDetails(batch, eventid) {
         var url = "services/batches/" + batch + "/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
@@ -104,7 +107,14 @@
         var batchRow = "batch-" + batch.batchID;
         var html = "<tr id='" + batchRow + "'></tr>";
         $("#batches-body").append(html);
-        $("#" + batchRow).append("<td>" + batch.batchID + "</td>");
+        var batchIDTDContent;
+        if(statisticsBaseUrl != null) {
+            batchIDTDContent = "<a href='" + statisticsBaseUrl + batch.batchID 
+                + "-RT" + batch.roundTripNumber + "'>" + batch.batchID + "</a>";
+        } else {
+            batchIDTDContent = batch.batchID
+        }
+        $("#" + batchRow).append("<td>" + batchIDTDContent + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
 
         makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events, batch.batchID);
@@ -147,6 +157,14 @@
                 {column_number : 14, column_data_type: "html", filter_default_label: "All"}]);
         });
     }
+
+    function loadStatisticsBaseUrl() {
+        var url = "services/stats/baseurl";
+        $.get(url, {}, function(baseurl) {
+            statisticsBaseUrl = baseurl;
+        }).always(loadBatches());
+    }
+
     <!-- Configuration of dataTables -->
     $.extend( true, $.fn.dataTable.defaults, {
         "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
@@ -157,7 +175,7 @@
     } );
 
     $(document).ready(function () {
-        loadBatches();
+        loadStatisticsBaseUrl();
     });
 </script>
 
