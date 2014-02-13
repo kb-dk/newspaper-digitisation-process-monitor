@@ -70,7 +70,7 @@
 
 <script>
     function showDetails(batch, eventid) {
-        var url = "batches/" + batch + "/" + eventid + "/?details=true";
+        var url = "services/batches/" + batch + "/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
             $('#detailsModalTitle').text(eventid);
             $('#detailsModalDate').text(new Date(event.date).toLocaleString());
@@ -123,7 +123,7 @@
     }
 
     function loadBatches() {
-        var url = "batches/";
+        var url = "services/batches/";
         $.getJSON(url, {}, function (batchList) {
             for (i in batchList) {
                 makeBatchRow(batchList[i]);
@@ -163,7 +163,7 @@
 
 <script type="text/javascript">
     var request = new XMLHttpRequest();
-    request.open('GET', 'batches?details=true');
+    request.open('GET', 'services/batches?details=true');
     request.setRequestHeader("Accept", "text/csv");
     request.responseType = 'arraybuffer';
     var a = document.getElementById('csv');

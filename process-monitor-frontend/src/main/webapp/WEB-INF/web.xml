@@ -57,7 +57,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Batches</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
