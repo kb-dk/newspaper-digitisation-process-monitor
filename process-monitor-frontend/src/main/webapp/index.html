@@ -108,8 +108,8 @@
         var html = "<tr id='" + batchRow + "'></tr>";
         $("#batches-body").append(html);
         var batchIDTDContent;
-        if(statisticsBaseUrl != null) {
-            batchIDTDContent = "<a href='" + statisticsBaseUrl + batch.batchID 
+        if(statisticsBaseUrl != null && batch.events["Statistics_Generated"] != null) {
+            batchIDTDContent = "<a href='" + statisticsBaseUrl + "B" + batch.batchID 
                 + "-RT" + batch.roundTripNumber + "'>" + batch.batchID + "</a>";
         } else {
             batchIDTDContent = batch.batchID
