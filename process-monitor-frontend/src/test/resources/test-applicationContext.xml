@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
+    <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor"/>
 
     <bean id="sboi_config" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration" scope="singleton">
         <property name="summaLocation" value="${autonomous.sboi.url}"/>       
@@ -44,7 +44,7 @@
         <ref bean="dataSourceMockup"/>
     </util:list>
 
-    <bean id="statisticsService" class="dk.statsbiblioteket.newspaper.processmonitor.backend.StatisticsService">
+    <bean id="statisticsService" class="dk.statsbiblioteket.newspaper.processmonitor.stats.StatisticsService">
         <property name="statisticsBaseUrl" value="http:/localhost:7820/statistics/statistics.html?batchid="/>
     </bean>
 

@@ -1,4 +1,4 @@
-package dk.statsbiblioteket.newspaper.processmonitor.backend;
+package dk.statsbiblioteket.newspaper.processmonitor.stats;
 
 import javax.annotation.Resource;
 import javax.ws.rs.GET;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "singleton")
-@Path("/stats/")
+@Path("/stats")
 public class StatisticsService {
 
     private String statisticsBaseUrl;

@@ -29,7 +29,7 @@ import java.util.List;
 
 @Component
 @Scope(value = "request")
-@Path("/")
+@Path("/batches")
 public class BatchesService {
     @Autowired
     private DataSourceCombiner dataSource;
