@@ -1,3 +1,6 @@
+1.4
+* Updated to newspaper-parent 1.1
+
 1.3
 * Added filters for the last two columns
 * Updated to version 1.4.1 of Batch Event Framework
