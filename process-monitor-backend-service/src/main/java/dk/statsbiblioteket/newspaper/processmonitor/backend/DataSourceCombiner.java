@@ -38,15 +38,21 @@ public class DataSourceCombiner implements DataSource {
     public List<dk.statsbiblioteket.medieplatform.autonomous.Batch> getBatches(boolean includeDetails,
                                                                                Map<String, String> filters) {
         logger.info("Call to getBatches with {} and filters {}", includeDetails, filters);
-        Map<String, dk.statsbiblioteket.medieplatform.autonomous.Batch> result = new HashMap<>();
+        Map<String, BatchResult> results = new HashMap<>();
+        List<dk.statsbiblioteket.medieplatform.autonomous.Batch> batches = new ArrayList<>();
         for (DataSource dataSource : dataSources) {
             try {
-                mergeResults(result, dataSource.getBatches(includeDetails, filters));
+                mergeResults(results, dataSource.getBatches(includeDetails, filters));
             } catch (NotWorkingProperlyException e) {
                 logger.error("Datasource failed", e);
             }
         }
-        return new ArrayList<dk.statsbiblioteket.medieplatform.autonomous.Batch>(result.values());
+        
+        for(BatchResult br : results.values()) {
+            batches.add(mergeBatches(br.getRoundtrip0(), br.getRoundtripMax()));
+        }
+        
+        return batches;
     }
 
     /**
@@ -55,15 +61,32 @@ public class DataSourceCombiner implements DataSource {
      * @param result  the map of batches to merge the list into
      * @param batches the batches to merge into the map
      */
-    private void mergeResults(Map<String, dk.statsbiblioteket.medieplatform.autonomous.Batch> result, List<dk.statsbiblioteket.medieplatform.autonomous.Batch> batches) {
-        //For each batch in the lis
+    private void mergeResults(Map<String, BatchResult> results, List<dk.statsbiblioteket.medieplatform.autonomous.Batch> batches) {
+        //For each batch in the list
         for (dk.statsbiblioteket.medieplatform.autonomous.Batch batch : batches) {
             //get the id
             String id = batch.getBatchID();
-            //get the id already in the map
-            //merge the batch from the list and the one from the map
-            //put them back into the map
-            result.put(id, mergeBatches(result.get(id), batch));
+            Integer roundtrip = batch.getRoundTripNumber();
+            BatchResult result = results.get(id);
+            if(result == null) {
+                result = new BatchResult();
+                result.resetMaxRoundTrip(roundtrip);
+            }
+            
+            Integer maxRoundtrip = result.getMaxRoundTrip();
+            if(roundtrip == 0) {
+                result.setRoundtrip0(mergeBatches(result.getRoundtrip0(), batch));
+            } else if(maxRoundtrip == null || maxRoundtrip == roundtrip) {
+                // Merge with existing
+                result.setRoundtripMax(mergeBatches(result.getRoundtripMax(), batch));
+            } else if(roundtrip > maxRoundtrip) {
+                // Ditch the existing and insert our own
+                result.resetMaxRoundTrip(roundtrip);
+                result.setRoundtripMax(mergeBatches(null, batch));
+            } else {
+                // roundtrip < maxRoundtrip i.e. we ditch it.
+            }
+            results.put(id, result);
         }
     }
 
@@ -173,5 +196,39 @@ public class DataSourceCombiner implements DataSource {
         throw new NotFoundException();
     }
 
+    /**
+     * Class for containing intermediate batch results while combining data from multiple sources. 
+     * Implemented as least-path-of-resistance to fix the merge bug in the process monitor. 
+     * TODO Make the class a first rate citizen holding the merging logic, so it's use is simplyfied from the outside.  
+     */
+    private class BatchResult {
+        private dk.statsbiblioteket.medieplatform.autonomous.Batch rts;
+        private dk.statsbiblioteket.medieplatform.autonomous.Batch rt0;
+        private Integer maxRoundTrip = null; 
 
+        Integer getMaxRoundTrip() {
+            return maxRoundTrip;
+        }
+        
+        void resetMaxRoundTrip(Integer roundtrip) {
+            maxRoundTrip = roundtrip;
+        }
+        
+        dk.statsbiblioteket.medieplatform.autonomous.Batch getRoundtrip0() {
+            return rt0;
+        }
+        
+        void setRoundtrip0(dk.statsbiblioteket.medieplatform.autonomous.Batch batch) {
+            rt0 = batch;
+        }
+        
+        dk.statsbiblioteket.medieplatform.autonomous.Batch getRoundtripMax() {
+            return rts;
+        }
+        
+        void setRoundtripMax(dk.statsbiblioteket.medieplatform.autonomous.Batch batch) {
+            rts = batch;
+        }
+        
+    }
 }
