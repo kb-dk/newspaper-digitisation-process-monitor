@@ -73,7 +73,7 @@
     var statisticsBaseUrl = null;
 
     function showDetails(batch, eventid) {
-        var url = "services/batches/" + batch + "/" + eventid + "/?details=true";
+        var url = "services/batches/" + batch.batchID + "/roundtrips/" + batch.roundTripNumber + "/events/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
             $('#detailsModalTitle').text(eventid);
             $('#detailsModalDate').text(new Date(event.date).toLocaleString());
@@ -87,16 +87,16 @@
         });
     }
 
-    function makeEventCell(row, key, events, batchid) {
+    function makeEventCell(row, key, batch) {
         var cellContent;
 
-        if (events[key] == null) {
+        if (batch.events[key] == null) {
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
-            if (events[key].success == true) {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batchid + "','" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
+            if (batch.events[key].success == true) {
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
             } else {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batchid + "','" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
             }
         }
 
@@ -117,19 +117,19 @@
         $("#" + batchRow).append("<td>" + batchIDTDContent + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
 
-        makeEventCell("#" + batchRow, "Shipped_to_supplier", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Data_Received", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Metadata_Archived", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Data_Archived", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Structure_Checked", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "JPylyzed", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Histogrammed", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Metadata_checked", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Manual_QA_Flagged", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "manuel-qa", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Approved", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Dissemination_Copy_Generated", batch.events, batch.batchID);
-        makeEventCell("#" + batchRow, "Received_from_supplier", batch.events, batch.batchID);
+        makeEventCell("#" + batchRow, "Shipped_to_supplier", batch);
+        makeEventCell("#" + batchRow, "Data_Received", batch);
+        makeEventCell("#" + batchRow, "Metadata_Archived", batch);
+        makeEventCell("#" + batchRow, "Data_Archived", batch);
+        makeEventCell("#" + batchRow, "Structure_Checked", batch);
+        makeEventCell("#" + batchRow, "JPylyzed", batch);
+        makeEventCell("#" + batchRow, "Histogrammed", batch);
+        makeEventCell("#" + batchRow, "Metadata_checked", batch);
+        makeEventCell("#" + batchRow, "Manual_QA_Flagged", batch);
+        makeEventCell("#" + batchRow, "manuel-qa", batch);
+        makeEventCell("#" + batchRow, "Approved", batch);
+        makeEventCell("#" + batchRow, "Dissemination_Copy_Generated", batch);
+        makeEventCell("#" + batchRow, "Received_from_supplier", batch);
     }
 
     function loadBatches() {
