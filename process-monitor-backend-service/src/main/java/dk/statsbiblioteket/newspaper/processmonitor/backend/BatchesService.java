@@ -91,15 +91,14 @@ public class BatchesService {
     @Produces({MediaType.APPLICATION_JSON, "text/csv"})
     public Response getSpecificBatchEvent(@Context Request req,
                                           @PathParam("batchID") String batchID,
-                                          @PathParam("roundtripID") String roundtripID,
+                                          @PathParam("roundtripID") Integer roundtripID,
                                           @PathParam("eventID") String eventID,
                                           @QueryParam("details") @DefaultValue("false") boolean details) {
         MediaType types[] = {MediaType.APPLICATION_JSON_TYPE, new MediaType("text", "csv")};
         List<Variant> vars = Variant.mediaTypes(types).add().build();
         Variant var = req.selectVariant(vars);
-        Integer roundtrip = Integer.parseInt(roundtripID);
         try {
-            Event body = Converter.convert(dataSource.getBatchEvent(batchID, roundtrip, eventID, details));
+            Event body = Converter.convert(dataSource.getBatchEvent(batchID, roundtripID, eventID, details));
             return Response.ok().entity(body).type(var.getMediaType()).build();
         } catch (IllegalArgumentException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
