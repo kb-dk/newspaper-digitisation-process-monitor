@@ -72,8 +72,8 @@
 
     var statisticsBaseUrl = null;
 
-    function showDetails(batch, eventid) {
-        var url = "services/batches/" + batch.batchID + "/roundtrips/" + batch.roundTripNumber + "/events/" + eventid + "/?details=true";
+    function showDetails(batchID, roundtrip, eventid) {
+        var url = "services/batches/" + batchID + "/roundtrips/" + roundtrip + "/events/" + eventid + "/?details=true";
         $.getJSON(url, {}, function (event) {
             $('#detailsModalTitle').text(eventid);
             $('#detailsModalDate').text(new Date(event.date).toLocaleString());
@@ -94,9 +94,9 @@
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (batch.events[key].success == true) {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "',' " + key + "')\" class=\"datetooltip label label-success\">Success</span>";
             } else {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch + "','" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "',' " + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
             }
         }
 
