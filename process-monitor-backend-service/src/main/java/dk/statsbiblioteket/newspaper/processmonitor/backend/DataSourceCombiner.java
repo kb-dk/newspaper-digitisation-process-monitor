@@ -58,7 +58,7 @@ public class DataSourceCombiner implements DataSource {
     /**
      * Merge a list of batches into the given result map. Will do inplace modification of the map.
      *
-     * @param result  the map of batches to merge the list into
+     * @param results  the map of batches to merge the list into
      * @param batches the batches to merge into the map
      */
     private void mergeResults(Map<String, BatchResult> results, List<dk.statsbiblioteket.medieplatform.autonomous.Batch> batches) {
@@ -76,7 +76,7 @@ public class DataSourceCombiner implements DataSource {
             Integer maxRoundtrip = result.getMaxRoundTrip();
             if(roundtrip == 0) {
                 result.setRoundtrip0(mergeBatches(result.getRoundtrip0(), batch));
-            } else if(maxRoundtrip == null || maxRoundtrip == roundtrip) {
+            } else if(maxRoundtrip.equals(roundtrip)) {
                 // Merge with existing
                 result.setRoundtripMax(mergeBatches(result.getRoundtripMax(), batch));
             } else if(roundtrip > maxRoundtrip) {
