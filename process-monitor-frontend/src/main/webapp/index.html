@@ -94,9 +94,9 @@
             cellContent = "<span class=\"label label-default\">Pending</span>";
         } else {
             if (batch.events[key].success == true) {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "',' " + key + "')\" class=\"datetooltip label label-success\">Success</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + key + "')\" class=\"datetooltip label label-success\">Success</span>";
             } else {
-                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "',' " + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
+                cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[key].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + key + "')\" class=\"datetooltip label label-danger\">Failed</span>";
             }
         }
 
