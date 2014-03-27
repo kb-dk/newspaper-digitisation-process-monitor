@@ -1,5 +1,7 @@
 1.4
-* Updated to newspaper-parent 1.1
+* Updated to newspaper-parent 1.2
+* Update to newspaper-mfpak-integration 1.5
+* Update to version 1.6 of batch event framework
 
 1.3
 * Added filters for the last two columns
