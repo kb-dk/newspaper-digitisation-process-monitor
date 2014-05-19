@@ -29,6 +29,16 @@
     <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource" scope="singleton">
         <constructor-arg ref="mpPakConfig"/>
     </bean>
+    
+    <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO" scope="singleton">
+        <constructor-arg ref="mpPakConfig"/>
+    </bean>
+    
+    <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
+        <property name="mfpak">
+            <ref bean="mfPakDAO"></ref>
+        </property>
+    </bean>
 
     <bean id="dataSourceMockup"
           class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.DataSourceMockup"

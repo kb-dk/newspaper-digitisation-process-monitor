@@ -21,6 +21,12 @@
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>process-monitor-datasource-interfaces</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>dk.statsbiblioteket.newspaper</groupId>
+            <artifactId>newspaper-mfpak-integration</artifactId>
+        </dependency>
+        
 
         <dependency>
            <groupId>eu.ralph-schuster</groupId>

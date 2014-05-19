@@ -33,6 +33,8 @@ import java.util.List;
 public class BatchesService {
     @Autowired
     private DataSourceCombiner dataSource;
+    @Autowired
+    private BatchEnricher enricher;
 
     /**
      * Retrieves a list of all known Batch objects (@see Batch).
@@ -47,6 +49,7 @@ public class BatchesService {
         List<Variant> vars = Variant.mediaTypes(types).add().build();
         Variant var = req.selectVariant(vars);
         List<Batch> body = Converter.convertBatchList(dataSource.getBatches(details, null));
+        enricher.enrich(body);
         return Response.ok().entity(body).type(var.getMediaType()).build();
     }
 
