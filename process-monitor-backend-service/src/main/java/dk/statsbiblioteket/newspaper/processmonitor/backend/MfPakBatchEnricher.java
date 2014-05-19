@@ -1,6 +1,7 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.InconsistentDatabaseException;
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
+import dk.statsbiblioteket.newspaper.mfpakintegration.database.NewspaperDateRange;
 
 @Component
 public class MfPakBatchEnricher implements BatchEnricher {
@@ -36,7 +38,8 @@ public class MfPakBatchEnricher implements BatchEnricher {
         for(Batch b : batches) {
             String batchID = b.getBatchID();
             try {
-                b.setAvisID(mfpak.getNewspaperID(batchID));    
+                b.setAvisID(mfpak.getNewspaperID(batchID));  
+                enrichWithDateRange(b);
             } catch (InconsistentDatabaseException | SQLException e) {
                 log.debug("Failed to enrich batch {}", batchID, e);
             }
@@ -46,4 +49,27 @@ public class MfPakBatchEnricher implements BatchEnricher {
         return batches;
     }
     
+    /**
+     * Enriches the batch with the start and stop dates from mfpak 
+     */
+    private Batch enrichWithDateRange(Batch batch) throws SQLException {
+        List<NewspaperDateRange> ranges = mfpak.getBatchDateRanges(batch.getBatchID());
+        Date tempStartDate = new Date();
+        Date tempEndDate = new Date(0);
+        
+        for(NewspaperDateRange range : ranges) {
+            if(range.getFromDate().before(tempStartDate)) {
+                tempStartDate = range.getFromDate();
+            }
+            
+            if(range.getToDate().after(tempEndDate)) {
+                tempEndDate = range.getToDate();
+            }
+        }
+        
+        batch.setStartDate(tempStartDate);
+        batch.setEndDate(tempEndDate);
+        
+        return batch;
+    }
 }
