@@ -55,7 +55,7 @@ public class MfPakBatchEnricher implements BatchEnricher {
     private Batch enrichWithDateRange(Batch batch) throws SQLException {
         List<NewspaperDateRange> ranges = mfpak.getBatchDateRanges(batch.getBatchID());
         Date tempStartDate = new Date();
-        Date tempEndDate = new Date(0);
+        Date tempEndDate = new Date(Long.MIN_VALUE);
         
         if(ranges != null && !ranges.isEmpty()) {
             for(NewspaperDateRange range : ranges) {
