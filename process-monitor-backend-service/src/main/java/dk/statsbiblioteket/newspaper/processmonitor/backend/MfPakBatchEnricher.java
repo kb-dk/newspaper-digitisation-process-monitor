@@ -57,18 +57,20 @@ public class MfPakBatchEnricher implements BatchEnricher {
         Date tempStartDate = new Date();
         Date tempEndDate = new Date(0);
         
-        for(NewspaperDateRange range : ranges) {
-            if(range.getFromDate().before(tempStartDate)) {
-                tempStartDate = range.getFromDate();
+        if(ranges != null && !ranges.isEmpty()) {
+            for(NewspaperDateRange range : ranges) {
+                if(range.getFromDate().before(tempStartDate)) {
+                    tempStartDate = range.getFromDate();
+                }
+                
+                if(range.getToDate().after(tempEndDate)) {
+                    tempEndDate = range.getToDate();
+                }
             }
             
-            if(range.getToDate().after(tempEndDate)) {
-                tempEndDate = range.getToDate();
-            }
+            batch.setStartDate(tempStartDate);
+            batch.setEndDate(tempEndDate);
         }
-        
-        batch.setStartDate(tempStartDate);
-        batch.setEndDate(tempEndDate);
         
         return batch;
     }
