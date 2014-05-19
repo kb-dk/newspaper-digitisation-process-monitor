@@ -13,6 +13,9 @@
     <link href="jquery/dataTable/yadcf/css/jquery.dataTables.yadcf.css" rel="stylesheet" />
     <link href="jquery/dataTable/css/jquery.dataTables.css" rel="stylesheet" />
     <link href="jqueryui/themes/base/jquery-ui.css" rel="stylesheet"/>
+    <style>
+        select.yadcf-filter{max-width:60px}
+    </style>
 </head>
 <body>
 
@@ -118,7 +121,7 @@
         }
         $("#" + batchRow).append("<td>" + batchIDTDContent + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
-        $("#" + batchRow).append("<td>" + batch.avisid + "</td>");
+        $("#" + batchRow).append("<td title='" + batch.avisid + "' style='text-overflow:ellipsis'>" + batch.avisid + "</td>");
         $("#" + batchRow).append("<td>" + batch.startDate + "</td>");
         $("#" + batchRow).append("<td>" + batch.endDate + "</td>");
 
