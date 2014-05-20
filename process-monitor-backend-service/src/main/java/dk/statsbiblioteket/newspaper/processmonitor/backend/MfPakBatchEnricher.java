@@ -4,11 +4,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.InconsistentDatabaseException;
@@ -41,7 +38,7 @@ public class MfPakBatchEnricher implements BatchEnricher {
                 b.setAvisID(mfpak.getNewspaperID(batchID));  
                 enrichWithDateRange(b);
             } catch (InconsistentDatabaseException | SQLException e) {
-                log.debug("Failed to enrich batch {}", batchID, e);
+                log.warn("Failed to enrich batch {}", batchID, e);
             }
                 
         }
@@ -70,6 +67,8 @@ public class MfPakBatchEnricher implements BatchEnricher {
             
             batch.setStartDate(tempStartDate);
             batch.setEndDate(tempEndDate);
+        } else {
+            log.debug("No date range found for batch {}, not enriching with range information", batch.getBatchID());
         }
         
         return batch;
