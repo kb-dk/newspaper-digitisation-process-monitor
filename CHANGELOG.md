@@ -1,3 +1,8 @@
+1.5
+* Add 'avisid', start date and end date to monitor page
+* Update to newspaper-mfpak-integration 1.6
+* Update to version 1.7 of batch event framework
+
 1.4
 * Updated to newspaper-parent 1.2
 * Update to newspaper-mfpak-integration 1.5
