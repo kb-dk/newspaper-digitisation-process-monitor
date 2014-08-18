@@ -30,6 +30,7 @@
             <th>AvisID</th>
             <th>Start date</th>
             <th>End date</th>
+            <th>Status</th>
             <th>Reels sent</th>
             <th>Data received</th>
             <th>Metadata archived</th>
@@ -41,6 +42,9 @@
             <th>Manual QA input generated</th>
             <th>Batch approved</th>
             <th>Presentation copies generated</th>
+            <th>Metadata enriched</th>
+            <th>Cleaned lesser roundtrips</th>
+            <th>Data released</th>
             <th>Reels received</th>
         </tr>
         </thead>
@@ -125,6 +129,8 @@
         $("#" + batchRow).append("<td>" + batch.startDate + "</td>");
         $("#" + batchRow).append("<td>" + batch.endDate + "</td>");
 
+        //NOTE: When this list is updated you must also always update the list in CSVGenerator
+        makeEventCell("#" + batchRow, "Manually_stopped", batch);
         makeEventCell("#" + batchRow, "Shipped_to_supplier", batch);
         makeEventCell("#" + batchRow, "Data_Received", batch);
         makeEventCell("#" + batchRow, "Metadata_Archived", batch);
@@ -136,6 +142,9 @@
         makeEventCell("#" + batchRow, "Manual_QA_Flagged", batch);
         makeEventCell("#" + batchRow, "Approved", batch);
         makeEventCell("#" + batchRow, "Dissemination_Copy_Generated", batch);
+        makeEventCell("#" + batchRow, "Metadata_Enriched", batch);
+        makeEventCell("#" + batchRow, "Cleaned_lesser_roundtrips", batch);
+        makeEventCell("#" + batchRow, "Data_Released", batch);
         makeEventCell("#" + batchRow, "Received_from_supplier", batch);
     }
 
@@ -163,7 +172,12 @@
                 {column_number : 13, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 14, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 15, column_data_type: "html", filter_default_label: "All"},
-                {column_number : 16, column_data_type: "html", filter_default_label: "All"}]);
+                {column_number : 16, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 17, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 18, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 19, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 20, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 21, column_data_type: "html", filter_default_label: "All"}]);
         });
     }
 

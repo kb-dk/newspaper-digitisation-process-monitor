@@ -33,16 +33,22 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
 
     /** List and order of events to present in CSV files in different columns */
     private final List<String> EVENTS = Arrays.asList(
+            //Note: When this list is updated you must also always update the list in index.html
+            "Manually_stopped",
             "Shipped_to_supplier",
             "Data_Received",
             "Metadata_Archived",
             "Data_Archived",
             "Structure_Checked",
             "JPylyzed",
+            "Histogrammed",
             "Metadata_checked",
-            "auto-qa",
-            "manuel-qa",
+            "Manual_QA_Flagged",
             "Approved",
+            "Dissemination_Copy_Generated",
+            "Metadata_Enriched",
+            "Cleaned_lesser_roundtrips",
+            "Data_Released",
             "Received_from_supplier");
 
     /** How many columns are used per event */
