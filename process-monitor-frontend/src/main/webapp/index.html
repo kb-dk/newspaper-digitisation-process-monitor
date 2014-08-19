@@ -96,6 +96,52 @@
         });
     }
 
+    /**
+     * Make a cell that translates various states into a state for the entire roundtrip.
+     *
+     * States are (first to apply counts):
+     * * Stopped: manually_stopped
+     * * Failed: Any failed state
+     * * Approved: Success
+     * * Data_Received: In progress
+     * * Pending: Any other state
+     *
+     * @param row The row that should contain the status
+     * @param batch
+     */
+    function makeStatusCell(row, batch) {
+        var cellContent;
+        var failedEvent = findFailedEvent(batch);
+        if (batch.events["Manually_stopped"] != null) {
+            cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events["Manually_stopped"].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + "Manually_stopped" + "')\" class=\"datetooltip label label-danger\">Stopped</span>";
+        } else if (failedEvent != null) {
+            cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[failedEvent].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + failedEvent + "')\" class=\"datetooltip label label-danger\">Failed</span>";
+        } else if (batch.events["Approved"] != null) {
+            cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events["Approved"].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + "Approved" + "')\" class=\"datetooltip label label-success\">Success</span>";
+        } else if (batch.events["Data_Received"] != null) {
+            cellContent = "<span class=\"label label-success\">In progress</span>";
+        } else {
+            cellContent = "<span class=\"label label-default\">Pending</span>";
+        }
+
+        $(row).append("<td>" + cellContent + "</td>");
+    }
+
+    /**
+     * Helper function to find any event with failed state.
+     *
+     * @param batch The batch to look for failed events in
+     * @returns The key of the failed event, or null for none.
+     */
+    function findFailedEvent(batch) {
+        for (event in batch.events) {
+            if (batch.events.hasOwnProperty(event) && batch.events[event].success == false) {
+                return event;
+            }
+        }
+        return null;
+    }
+
     function makeEventCell(row, key, batch) {
         var cellContent;
 
@@ -130,7 +176,7 @@
         $("#" + batchRow).append("<td>" + batch.endDate + "</td>");
 
         //NOTE: When this list is updated you must also always update the list in CSVGenerator
-        makeEventCell("#" + batchRow, "Manually_stopped", batch);
+        makeStatusCell("#" + batchRow, batch);
         makeEventCell("#" + batchRow, "Shipped_to_supplier", batch);
         makeEventCell("#" + batchRow, "Data_Received", batch);
         makeEventCell("#" + batchRow, "Metadata_Archived", batch);
