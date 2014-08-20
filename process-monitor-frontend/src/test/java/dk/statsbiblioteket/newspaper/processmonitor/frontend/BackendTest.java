@@ -2,15 +2,19 @@ package dk.statsbiblioteket.newspaper.processmonitor.frontend;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.jersey.api.json.JSONConfiguration;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Event;
 
+import com.sun.net.httpserver.HttpServer;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
 public class BackendTest {
 
@@ -20,14 +24,12 @@ public class BackendTest {
     private String eventID = "Shipped_to_supplier";
     private String integrationTestServer;
 
-
     @BeforeClass(groups = "integrationTest")
-    public void setup() {
+    public void setup() throws IOException {
         config = new DefaultClientConfig();
         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         integrationTestServer = "http://localhost:8081/process-monitor-frontend/services/batches/";
     }
-
 
     @Test(groups = "integrationTest")
     public void testGetBatches() {
@@ -50,6 +52,9 @@ public class BackendTest {
         Event result = Client.create(config)
                 .resource(integrationTestServer)
                 .path(batchID + "")
+                .path("roundtrips")
+                .path("1")
+                .path("events")
                 .path(eventID)
                 .queryParam("details", "true")
                 .get(Event.class);
@@ -63,12 +68,12 @@ public class BackendTest {
                 .accept("text/csv")
                 .get(String.class);
         result = cleanDate(result);
-        Assert.assertTrue(result.startsWith("Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;"),
+        Assert.assertEquals(result.substring(0,result.indexOf('\n')), "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;",
                           "Expect a column header first");
-        Assert.assertTrue(result.contains("\"=\"\"4001\"\"\";1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
-                          "The 4001 batch should be contained");
+        Assert.assertTrue(result.contains("\"=\"\"4001\"\"\";0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
+                          "The 4001 batch should be contained, but was " + result);
         Assert.assertTrue(result.contains("\"=\"\"400022028241\"\"\";1;"),
-                          "The small test batch should be there");
+                          "The small test batch should be there, but was " + result);
     }
 
     @Test(groups = "integrationTest")
@@ -80,8 +85,8 @@ public class BackendTest {
                 .get(String.class);
         result = cleanDate(result);
         Assert.assertEquals(result,
-                            "Batch;Roundtrip;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Metadata_checked;;;auto-qa;;;manuel-qa;;;Approved;;;Received_from_supplier;;\n"
-                                    + "\"=\"\"4001\"\"\";1;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+                            "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;\n"
+                                    + "\"=\"\"4001\"\"\";0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
     }
 
     private String cleanDate(String result) {
@@ -93,6 +98,9 @@ public class BackendTest {
         String result = Client.create(config)
                 .resource(integrationTestServer)
                 .path(batchID + "")
+                .path("roundtrips")
+                .path("1")
+                .path("events")
                 .path(eventID)
                 .queryParam("details", "true")
                 .accept("text/csv")
