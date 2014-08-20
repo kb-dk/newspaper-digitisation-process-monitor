@@ -68,7 +68,7 @@ public class BackendTest {
                 .accept("text/csv")
                 .get(String.class);
         result = cleanDate(result);
-        Assert.assertEquals(result.substring(0,result.indexOf('\n')), "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;",
+        Assert.assertEquals(result.substring(0,result.indexOf('\n')), "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Roundtrip_Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;",
                           "Expect a column header first");
         Assert.assertTrue(result.contains("\"=\"\"4001\"\"\";0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
                           "The 4001 batch should be contained, but was " + result);
@@ -85,7 +85,7 @@ public class BackendTest {
                 .get(String.class);
         result = cleanDate(result);
         Assert.assertEquals(result,
-                            "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;\n"
+                            "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Roundtrip_Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;\n"
                                     + "\"=\"\"4001\"\"\";0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
     }
 
