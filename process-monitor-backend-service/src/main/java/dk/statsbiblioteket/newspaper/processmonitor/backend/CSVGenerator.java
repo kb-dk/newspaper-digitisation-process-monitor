@@ -44,7 +44,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             "Histogrammed",
             "Metadata_checked",
             "Manual_QA_Flagged",
-            "Approved",
+            "Roundtrip_Approved",
             "Dissemination_Copy_Generated",
             "Metadata_Enriched",
             "Cleaned_lesser_roundtrips",

@@ -104,7 +104,7 @@
      * States are (first to apply counts):
      * * Stopped: manually_stopped
      * * Failed: Any failed state
-     * * Approved: Success
+     * * Roundtrip_Approved: Success
      * * Data_Received: In progress
      * * Pending: Any other state
      *
@@ -118,8 +118,8 @@
             cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events["Manually_stopped"].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + "Manually_stopped" + "')\" class=\"datetooltip label label-danger\">Stopped</span>";
         } else if (failedEvent != null) {
             cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events[failedEvent].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + failedEvent + "')\" class=\"datetooltip label label-danger\">Failed</span>";
-        } else if (batch.events["Approved"] != null) {
-            cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events["Approved"].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + "Approved" + "')\" class=\"datetooltip label label-success\">Success</span>";
+        } else if (batch.events["Roundtrip_Approved"] != null) {
+            cellContent = "<span data-toggle=\"tooltip\" title=\"" + new Date(batch.events["Roundtrip_Approved"].date).toLocaleString() + "\" onclick=\"showDetails('" + batch.batchID + "', '" + batch.roundTripNumber + "', '" + "Roundtrip_Approved" + "')\" class=\"datetooltip label label-success\">Success</span>";
         } else if (batch.events["Data_Received"] != null) {
             cellContent = "<span class=\"label label-success\">In progress</span>";
         } else {
@@ -188,7 +188,7 @@
         makeEventCell("#" + batchRow, "Histogrammed", batch);
         makeEventCell("#" + batchRow, "Metadata_checked", batch);
         makeEventCell("#" + batchRow, "Manual_QA_Flagged", batch);
-        makeEventCell("#" + batchRow, "Approved", batch);
+        makeEventCell("#" + batchRow, "Roundtrip_Approved", batch);
         makeEventCell("#" + batchRow, "Dissemination_Copy_Generated", batch);
         makeEventCell("#" + batchRow, "Metadata_Enriched", batch);
         makeEventCell("#" + batchRow, "Cleaned_lesser_roundtrips", batch);
