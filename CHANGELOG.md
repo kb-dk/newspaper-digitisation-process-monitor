@@ -1,3 +1,7 @@
+1.6
+* Update generated CSV files to include all known states
+* Update columns in process monitor, including improved headings
+
 1.5
 * Add 'avisid', start date and end date to monitor page
 * Update to newspaper-mfpak-integration 1.6
