@@ -8,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-digitisation-process-monitor</artifactId>
-    <version>1.6</version>
+    <version>1.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -19,7 +19,7 @@
         <url>https://github.com/statsbiblioteket/newspaper-digitisation-process-monitor</url>
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-digitisation-process-monitor.git</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-digitisation-process-monitor.git</developerConnection>
-        <tag>newspaper-digitisation-process-monitor-1.6</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
