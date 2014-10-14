@@ -55,17 +55,17 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>sboi-datasource</artifactId>
-                <version>1.11-SNAPSHOT</version>
+                <version>1.12-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-interfaces</artifactId>
-                <version>1.11-SNAPSHOT</version>
+                <version>1.12-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-mockup</artifactId>
-                <version>1.11-SNAPSHOT</version>
+                <version>1.12-SNAPSHOT</version>
             </dependency>
 
 
