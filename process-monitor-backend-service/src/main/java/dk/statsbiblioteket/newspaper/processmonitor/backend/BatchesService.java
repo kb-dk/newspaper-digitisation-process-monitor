@@ -36,6 +36,11 @@ public class BatchesService {
     @Autowired
     private BatchEnricher enricher;
 
+
+    public BatchesService() {
+        System.out.println("Starting");
+    }
+
     /**
      * Retrieves a list of all known Batch objects (@see Batch).
      *

@@ -8,7 +8,7 @@
 
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor"/>
 
-    <bean id="sboi_config" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration" scope="singleton">
+    <bean id="sboi_config" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration">
         <property name="summaLocation" value="${autonomous.sboi.url}"/>       
         <property name="domsLocation" value="${doms.url}"/>
         <property name="domsUser" value="${doms.username}"/>
@@ -16,33 +16,31 @@
          
     </bean>
 
-    <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource" scope="singleton">
+    <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource">
         <constructor-arg ref="sboi_config"/>
     </bean>
 
     <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration"
-          scope="singleton">
+            >
         <property name="databaseUrl" value="${mfpak.postgres.url}"/>
         <property name="databaseUser" value="${mfpak.postgres.user}"/>
         <property name="databasePassword" value="${mfpak.postgres.password}"/>
     </bean>
-    <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource" scope="singleton">
+    <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource">
         <constructor-arg ref="mpPakConfig"/>
     </bean>
     
-    <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO" scope="singleton">
+    <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO">
         <constructor-arg ref="mpPakConfig"/>
     </bean>
     
     <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
-        <property name="mfpak">
-            <ref bean="mfPakDAO"></ref>
-        </property>
+        <property name="mfpak" ref="mfPakDAO"/>
     </bean>
 
     <bean id="dataSourceMockup"
           class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.DataSourceMockup"
-          scope="singleton">
+            >
         <property name="username" value="${doms.username}"/>
         <property name="password" value="${doms.password}"/>
     </bean>

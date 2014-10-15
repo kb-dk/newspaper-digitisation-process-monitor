@@ -28,7 +28,7 @@ public class BackendTest {
     public void setup() throws IOException {
         config = new DefaultClientConfig();
         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        integrationTestServer = "http://localhost:8081/process-monitor-frontend/services/batches/";
+        integrationTestServer = "http://localhost:8080/process-monitor-frontend/services/batches";
     }
 
     @Test(groups = "integrationTest")
