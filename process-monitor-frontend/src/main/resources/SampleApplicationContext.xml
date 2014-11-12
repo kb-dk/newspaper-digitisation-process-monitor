@@ -3,23 +3,49 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor"/>
+    <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
-    <bean id="dataSourceMockup"
-          class="dk.statsbiblioteket.newspaper.processmonitor.datasources.DataSourceMockup"
-          scope="request">
-        <property name="username" value="testUser"/>
-        <property name="password" value="testPass"/>
+    <bean id="sboi_config" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration" scope="singleton">
+        <property name="summaLocation" value="http://{sboi.host}:{sboi.port}/newspapr/sbsolr/"/>
+        <property name="domsLocation" value="http://{doms.host}:{doms.port}/fedora"/>
+        <property name="domsUser" value="{doms.username}"/>
+        <property name="domsPassword" value="{doms.password}"/>
+    </bean>
+
+    <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource" scope="singleton">
+        <constructor-arg ref="sboi_config"/>
+    </bean>
+    
+    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration">
+        <property name="databaseUrl" value="{mfpak.postgres.url}"/>
+        <property name="databaseUser" value="{mfpak.postgres.username}"/>
+        <property name="databasePassword" value="{mfpak.postgres.password}"/>
+    </bean>
+    <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource">
+        <constructor-arg ref="mpPakConfig"/>
+    </bean>
+
+    <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO" scope="singleton">
+        <constructor-arg ref="mpPakConfig"/>
+    </bean>
+    
+    <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
+        <property name="mfpak">
+            <ref bean="mfPakDAO"></ref>
+        </property>
     </bean>
 
     <!--Reserved name for the data sources list-->
-    <util:list id="dataSourcesList" list-class="java.util.ArrayList" scope="request">
-        <ref bean="dataSourceMockup"/>
+    <util:list id="dataSourcesList" list-class="java.util.ArrayList">
+        <ref bean="mfPak"/>
+       <ref bean="sboi"/>
     </util:list>
 
+    <bean id="statisticsService" class="dk.statsbiblioteket.newspaper.processmonitor.stats.StatisticsService">
+        <property name="statisticsBaseUrl" value="http://{processmonitor.host}:{processmonitor.port}/statistics/statistics.html?batchid="/>
+    </bean>
 
 </beans>
