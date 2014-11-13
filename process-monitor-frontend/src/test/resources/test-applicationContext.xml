@@ -20,18 +20,18 @@
         <constructor-arg ref="sboi_config"/>
     </bean>
 
-    <bean id="mpPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration"
+    <bean id="mfPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration"
             >
         <property name="databaseUrl" value="${mfpak.postgres.url}"/>
         <property name="databaseUser" value="${mfpak.postgres.user}"/>
         <property name="databasePassword" value="${mfpak.postgres.password}"/>
     </bean>
     <bean id="mfPak" class="dk.statsbiblioteket.newspaper.mfpakintegration.MfPakDataSource">
-        <constructor-arg ref="mpPakConfig"/>
+        <constructor-arg ref="mfPakConfig"/>
     </bean>
     
     <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO">
-        <constructor-arg ref="mpPakConfig"/>
+        <constructor-arg ref="mfPakConfig"/>
     </bean>
     
     <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
