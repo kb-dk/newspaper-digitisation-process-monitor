@@ -1,6 +1,7 @@
 1.7
 * Use newest version of item event framework. No functional changes for this module.
 * Update Jersey framework to newest version
+* Configuration has been extended and changed and example config has been updated. Please update your configuration files.
 
 1.6
 * Update generated CSV files to include all known states
