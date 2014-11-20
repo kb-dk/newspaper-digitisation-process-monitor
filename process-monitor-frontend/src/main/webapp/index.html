@@ -47,6 +47,7 @@
             <th>Manual QA input generated</th>
             <th>Roundtrip approved</th>
             <th>Presentation copies generated</th>
+            <th>Presentation editions generated</th>
             <th>Metadata enriched</th>
             <th>Cleaned lower roundtrips</th>
             <th>Data released</th>
@@ -193,6 +194,7 @@
         makeEventCell("#" + batchRow, "Manual_QA_Flagged", batch);
         makeEventCell("#" + batchRow, "Roundtrip_Approved", batch);
         makeEventCell("#" + batchRow, "Dissemination_Copy_Generated", batch);
+        makeEventCell("#" + batchRow, "Dissemination_Editions_Generated", batch);
         makeEventCell("#" + batchRow, "Metadata_Enriched", batch);
         makeEventCell("#" + batchRow, "Cleaned_lesser_roundtrips", batch);
         makeEventCell("#" + batchRow, "Data_Released", batch);
@@ -228,7 +230,8 @@
                 {column_number : 18, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 19, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 20, column_data_type: "html", filter_default_label: "All"},
-                {column_number : 21, column_data_type: "html", filter_default_label: "All"}]);
+                {column_number : 21, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 22, column_data_type: "html", filter_default_label: "All"}]);
         });
     }
 
