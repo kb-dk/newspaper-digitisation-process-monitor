@@ -1,4 +1,5 @@
 1.7
+* Add PDF edition dissemantion copy column
 * Use newest version of item event framework. No functional changes for this module.
 * Update Jersey framework to newest version
 * Configuration has been extended and changed and example config has been updated. Please update your configuration files.
