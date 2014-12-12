@@ -11,6 +11,7 @@ public class Event {
     private boolean success;
     private String details;
     private Date date;
+    private String duration;
 
     @XmlElement(name = "success")
     public boolean isSuccess() {
@@ -37,5 +38,14 @@ public class Event {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @XmlElement(name = "duration")
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }

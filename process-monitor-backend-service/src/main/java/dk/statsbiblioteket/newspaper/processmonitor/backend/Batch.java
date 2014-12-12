@@ -15,6 +15,7 @@ public class Batch {
     private Date startDate;
     private Date endDate;
     private Map<String, Event> events;
+    private int numberOfPages;
 
     @XmlElement(name = "batchID")
     public String getBatchID() {
@@ -68,5 +69,14 @@ public class Batch {
 
     public void setRoundTripNumber(int roundTripNumber) {
         this.roundTripNumber = roundTripNumber;
+    }
+
+    @XmlElement(name = "numberOfPages")
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public void setNumberOfPages(int numberOfPages) {
+        this.numberOfPages = numberOfPages;
     }
 }
