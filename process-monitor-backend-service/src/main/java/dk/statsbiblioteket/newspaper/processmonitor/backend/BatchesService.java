@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -33,9 +34,13 @@ import java.util.List;
 public class BatchesService {
     @Autowired
     private DataSourceCombiner dataSource;
-    @Autowired
-    private BatchEnricher enricher;
 
+    private List<BatchEnricher> enrichers;
+
+    @Resource(name = "enricherList")
+    public void setEnrichers(List<BatchEnricher> enrichers) {
+        this.enrichers = enrichers;
+    }
 
     public BatchesService() {
         System.out.println("Starting");
@@ -54,7 +59,7 @@ public class BatchesService {
         List<Variant> vars = Variant.mediaTypes(types).add().build();
         Variant var = req.selectVariant(vars);
         List<Batch> body = Converter.convertBatchList(dataSource.getBatches(details, null));
-        enricher.enrich(body);
+        enrichers.stream().forEach(enricher -> enricher.enrich(body));
         return Response.ok().entity(body).type(var.getMediaType()).build();
     }
 

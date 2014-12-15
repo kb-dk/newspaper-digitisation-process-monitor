@@ -116,10 +116,6 @@
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>process-monitor-datasource-mockup</artifactId>
         </dependency>
-        <dependency>
-            <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>sboi-datasource</artifactId>
-        </dependency>
 
 
         <dependency>
