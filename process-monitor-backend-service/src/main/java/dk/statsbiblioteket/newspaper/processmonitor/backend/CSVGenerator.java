@@ -166,11 +166,15 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         // Row headers
         updateCell(header, 0, "Batch");
         updateCell(header, 1, "Roundtrip");
+        updateCell(header, 2, "Avis id");
+        updateCell(header, 3, "Pages");
 
         // Event headers
         int index = ROW_HEADER_COLUMNS;
         for (String event : EVENTS) {
             updateCell(header, index, event);
+            updateCell(header, index+1, event + "_timestamp");
+            updateCell(header, index+2, event + "_duration");
             index += COLUMNS_PER_EVENT;
         }
         csvWriter.printRow(header);
