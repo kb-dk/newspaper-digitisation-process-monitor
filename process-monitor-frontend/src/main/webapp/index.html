@@ -33,6 +33,7 @@
             <th>Batch</th>
             <th>Roundtrip</th>
             <th>AvisID</th>
+            <th>Pages</th>
             <th>Start date</th>
             <th>End date</th>
             <th>Status</th>
@@ -178,6 +179,7 @@
         $("#" + batchRow).append("<td>" + batchIDTDContent + "</td>");
         $("#" + batchRow).append("<td>" + batch.roundTripNumber + "</td>");
         $("#" + batchRow).append("<td title='" + batch.avisid + "' style='text-overflow:ellipsis'>" + batch.avisid + "</td>");
+        $("#" + batchRow).append("<td>" + batch.numberOfPages + "</td>");
         $("#" + batchRow).append("<td>" + batch.startDate + "</td>");
         $("#" + batchRow).append("<td>" + batch.endDate + "</td>");
 
@@ -214,7 +216,7 @@
                 {column_number : 2, filter_default_label: "All"},
                 {column_number : 3, filter_default_label: "All"},
                 {column_number : 4, filter_default_label: "All"},
-                {column_number : 5, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 5, filter_default_label: "All"},
                 {column_number : 6, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 7, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 8, column_data_type: "html", filter_default_label: "All"},
@@ -231,7 +233,8 @@
                 {column_number : 19, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 20, column_data_type: "html", filter_default_label: "All"},
                 {column_number : 21, column_data_type: "html", filter_default_label: "All"},
-                {column_number : 22, column_data_type: "html", filter_default_label: "All"}]);
+                {column_number : 22, column_data_type: "html", filter_default_label: "All"},
+                {column_number : 23, column_data_type: "html", filter_default_label: "All"}]);
         });
     }
 
