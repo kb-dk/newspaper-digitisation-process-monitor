@@ -46,6 +46,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
             "Manual_QA_Flagged",
             "Roundtrip_Approved",
             "Dissemination_Copy_Generated",
+            "Dissemination_Editions_Generated",
             "Metadata_Enriched",
             "Cleaned_lesser_roundtrips",
             "Data_Released",
