@@ -31,10 +31,22 @@
     <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO" scope="singleton">
         <constructor-arg ref="mfPakConfig"/>
     </bean>
-    
+
+    <!--Reserved name for the data sources list-->
+    <util:list id="enricherList" list-class="java.util.ArrayList">
+        <ref bean="mfPakBatchEnricher"/>
+        <ref bean="DOMSBatchEnricher"/>
+    </util:list>
+
     <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
         <property name="mfpak">
             <ref bean="mfPakDAO"></ref>
+        </property>
+    </bean>
+
+    <bean id="DOMSBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.DOMSBatchEnricher">
+        <property name="config">
+            <ref bean="sboi_config"></ref>
         </property>
     </bean>
 
