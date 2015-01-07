@@ -17,17 +17,7 @@ import java.util.stream.Collectors;
  */
 
 public class DOMSBatchEnricher implements BatchEnricher {
-    private final WebResource domsResource;
     private SBOIDatasourceConfiguration config;
-
-
-    public DOMSBatchEnricher(SBOIDatasourceConfiguration config) {
-        this.config = config;
-        Client client = Client.create();
-        client.addFilter(new HTTPBasicAuthFilter(config.getDomsUser(), config.getDomsPassword()));
-
-        domsResource = client.resource(config.getDomsLocation()).path("/objects/");
-    }
 
     @Override
     public List<Batch> enrich(List<Batch> batches) {
@@ -35,18 +25,31 @@ public class DOMSBatchEnricher implements BatchEnricher {
     }
 
     private Batch enrichBatch(Batch batch) {
+/*
+        Client client = Client.create();
+        client.addFilter(
+                new HTTPBasicAuthFilter(
+                        config.getDomsUser(),
+                        config.getDomsPassword()));
 
-        String pid = "";
+        WebResource domsResource = client.resource(config.getDomsLocation()).path("/objects/");
         String batchStructureXML = domsResource.path(pid).path("/datastreams/BATCHSTRUCTURE/contents").get(String.class);
         Document batchStructureDOM = DOM.stringToDOM(batchStructureXML, true);
-        Integer numberOfPages = DOM.selectInteger(batchStructureDOM,
-                                                         "count(/node/node[@shortName != 'WORKSHIFT-ISO-TARGET']/node[@shortName != 'UNMATCHED' and @shortName != 'FILM-ISO-target']/node/node[substring(@shortName, string-length(@shortName) - string-length('-brik.jp2') +1) != '-brik.jp2']/attribute[@shortName = 'contents'])");
+        // count(node/node[@shortName != 'WORKSHIFT-ISO-TARGET']/node[@shortName != 'UNMATCHED' and @shortName != 'FILM-ISO-target']/node/node[substring(@shortName, string-length(@shortName) - string-length('-brik.jp2') +1) != '-brik.jp2']/attribute[@shortName = 'contents'])
+        DOM.selectInteger(batchStructureDOM, "count(/node/node[@shortName != 'WORKSHIFT-ISO-TARGET']/node[@shortName != 'UNMATCHED' and @shortName != 'FILM-ISO-target']/node/node[substring(@shortName, string-length(@shortName) - string-length('-brik.jp2') +1) != '-brik.jp2']/attribute[@shortName = 'contents'])");
+*/
 
-        batch.setNumberOfPages(numberOfPages);
+
         return batch;
     }
 
     public void setConfig(SBOIDatasourceConfiguration config) {
         this.config = config;
     }
+
+/*
+    public SBOIDatasourceConfiguration getConfig() {
+        return config;
+    }
+*/
 }
