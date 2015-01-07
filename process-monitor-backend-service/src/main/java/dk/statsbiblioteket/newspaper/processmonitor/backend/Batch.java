@@ -26,7 +26,7 @@ public class Batch {
         this.batchID = batchID;
     }
     
-    @XmlElement(name = "avisid")
+    @XmlElement(name = "avisID")
     public String getAvisID() {
         return avisID;
     }

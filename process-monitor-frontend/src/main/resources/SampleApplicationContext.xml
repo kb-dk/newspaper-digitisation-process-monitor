@@ -1,6 +1,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context
@@ -8,7 +9,8 @@
 
     <context:component-scan base-package="dk.statsbiblioteket.newspaper.processmonitor.backend"/>
 
-    <bean id="sboi_config" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration" scope="singleton">
+    <bean id="sboi_config"
+          class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration">
         <property name="summaLocation" value="http://{sboi.host}:{sboi.port}/newspapr/sbsolr/"/>
         <property name="domsLocation" value="http://{doms.host}:{doms.port}/fedora"/>
         <property name="domsUser" value="{doms.username}"/>
@@ -18,7 +20,7 @@
     <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource" scope="singleton">
         <constructor-arg ref="sboi_config"/>
     </bean>
-    
+
     <bean id="mfPakConfig" class="dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration">
         <property name="databaseUrl" value="{mfpak.postgres.url}"/>
         <property name="databaseUser" value="{mfpak.postgres.username}"/>

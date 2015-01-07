@@ -2,18 +2,12 @@ package dk.statsbiblioteket.newspaper.processmonitor.frontend;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.jersey.api.json.JSONConfiguration;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Event;
-
-import com.sun.net.httpserver.HttpServer;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 public class BackendTest {
@@ -26,19 +20,21 @@ public class BackendTest {
 
     @BeforeClass(groups = "integrationTest")
     public void setup() throws IOException {
-        config = new DefaultClientConfig();
-        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         integrationTestServer = "http://localhost:8080/process-monitor-frontend/services/batches";
+        config = new DefaultClientConfig();
     }
+
 
     @Test(groups = "integrationTest")
     public void testGetBatches() {
+        System.out.println("Running testGetBatches");
         Batch[] result = Client.create(config).resource(integrationTestServer).get(Batch[].class);
         Assert.assertTrue(result.length > 1, "We expected more than one batch to be returned");
     }
 
     @Test(groups = "integrationTest")
     public void testGetSingleBatch() {
+        System.out.println("Running testGetSingleBatch");
         Batch result = Client.create(config).resource(integrationTestServer).path(batchID + "").get(Batch.class);
         Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
         Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
@@ -49,6 +45,7 @@ public class BackendTest {
 
     @Test(groups = "integrationTest")
     public void testGetSingleEvent() {
+        System.out.println("Running testGetSingleEvent");
         Event result = Client.create(config)
                 .resource(integrationTestServer)
                 .path(batchID + "")
@@ -68,9 +65,9 @@ public class BackendTest {
                 .accept("text/csv")
                 .get(String.class);
         result = cleanDate(result);
-        Assert.assertEquals(result.substring(0,result.indexOf('\n')), "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Roundtrip_Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;",
+        Assert.assertEquals(result.substring(0,result.indexOf('\n')), "Batch;Roundtrip;Avis id;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration",
                           "Expect a column header first");
-        Assert.assertTrue(result.contains("\"=\"\"4001\"\"\";0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"),
+        Assert.assertTrue(result.contains("\"=\"\"4001\"\"\";0;boersen;0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n"),
                           "The 4001 batch should be contained, but was " + result);
         Assert.assertTrue(result.contains("\"=\"\"400022028241\"\"\";1;"),
                           "The small test batch should be there, but was " + result);
@@ -85,8 +82,7 @@ public class BackendTest {
                 .get(String.class);
         result = cleanDate(result);
         Assert.assertEquals(result,
-                            "Batch;Roundtrip;Manually_stopped;;;Shipped_to_supplier;;;Data_Received;;;Metadata_Archived;;;Data_Archived;;;Structure_Checked;;;JPylyzed;;;Histogrammed;;;Metadata_checked;;;Manual_QA_Flagged;;;Roundtrip_Approved;;;Dissemination_Copy_Generated;;;Metadata_Enriched;;;Cleaned_lesser_roundtrips;;;Data_Released;;;Received_from_supplier;;\n"
-                                    + "\"=\"\"4001\"\"\";0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+                            "Batch;Roundtrip;Avis id;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n" + "\"=\"\"4001\"\"\";0;;0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
     }
 
     private String cleanDate(String result) {
@@ -106,6 +102,6 @@ public class BackendTest {
                 .accept("text/csv")
                 .get(String.class);
         result = cleanDate(result);
-        Assert.assertEquals(result, ";;true;1970-01-01 01:00:00;\n");
+        Assert.assertEquals(result, ";;;;true;1970-01-01 01:00:00;\n");
     }
 }

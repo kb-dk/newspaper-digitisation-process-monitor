@@ -21,7 +21,8 @@ public class DOMSBatchEnricher implements BatchEnricher {
 
     @Override
     public List<Batch> enrich(List<Batch> batches) {
-        return batches.stream().map(this::enrichBatch).collect(Collectors.toList());
+        //return batches.stream().map(this::enrichBatch).collect(Collectors.toList());
+        return batches;
     }
 
     private Batch enrichBatch(Batch batch) {

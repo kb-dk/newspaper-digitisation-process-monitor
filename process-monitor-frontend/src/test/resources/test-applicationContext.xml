@@ -52,6 +52,12 @@
         <ref bean="dataSourceMockup"/>
     </util:list>
 
+    <!--Reserved name for the data sources list-->
+    <util:list id="enricherList" list-class="java.util.ArrayList">
+        <ref bean="mfPakBatchEnricher"/>
+    </util:list>
+
+
     <bean id="statisticsService" class="dk.statsbiblioteket.newspaper.processmonitor.stats.StatisticsService">
         <property name="statisticsBaseUrl" value="http:/localhost:7820/statistics/statistics.html?batchid="/>
     </bean>

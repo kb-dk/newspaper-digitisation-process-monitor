@@ -45,15 +45,14 @@
 
     <servlet>
         <servlet-name>Batches</servlet-name>
-        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+        <servlet-class>
+            org.glassfish.jersey.servlet.ServletContainer
+        </servlet-class>
         <init-param>
-            <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>dk.statsbiblioteket.newspaper.processmonitor</param-value>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>dk.statsbiblioteket.newspaper.processmonitor.backend.ProcessMonitor</param-value>
         </init-param>
-        <init-param>
-            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-            <param-value>true</param-value>
-        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Batches</servlet-name>

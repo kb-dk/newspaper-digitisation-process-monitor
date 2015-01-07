@@ -2,6 +2,9 @@ package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
 import dk.statsbiblioteket.medieplatform.autonomous.NotFoundException;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,6 +35,8 @@ import java.util.List;
 @Scope(value = "request")
 @Path("/batches")
 public class BatchesService {
+
+
     @Autowired
     private DataSourceCombiner dataSource;
 
@@ -59,7 +64,9 @@ public class BatchesService {
         List<Variant> vars = Variant.mediaTypes(types).add().build();
         Variant var = req.selectVariant(vars);
         List<Batch> body = Converter.convertBatchList(dataSource.getBatches(details, null));
-        enrichers.stream().forEach(enricher -> enricher.enrich(body));
+        for (BatchEnricher enricher : enrichers) {
+            enricher.enrich(body);
+        }
         return Response.ok().entity(body).type(var.getMediaType()).build();
     }
 
