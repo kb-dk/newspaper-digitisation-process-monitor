@@ -1,16 +1,8 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration;
-import dk.statsbiblioteket.util.xml.DOM;
-import org.w3c.dom.Document;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Add number of pages to batch and duration to events.
