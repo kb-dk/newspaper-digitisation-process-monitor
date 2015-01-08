@@ -26,7 +26,7 @@ public class MfPakBatchEnricher implements BatchEnricher {
     }
     
     /**
-     * Enriches the batch objects with 'avisid' and date intervals from the mfpak database. 
+     * Enriches the batch objects with 'avisID' and date intervals from the mfpak database.
      * The returned reference to list of batches is the same as the one taken as input. 
      */
     @Override
