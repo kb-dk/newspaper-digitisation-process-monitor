@@ -218,8 +218,6 @@
             }
             $(".datetooltip").tooltip({placement: 'bottom'});
             var batchtable = $('#batchtable');
-            batchtable.DataTable();
-
             yadcf.init(batchtable.DataTable(),[
                 {column_number : 0, filter_type: "auto_complete", filter_default_label: "Filter batch"},
                 {column_number : 1, filter_default_label: "All"},
