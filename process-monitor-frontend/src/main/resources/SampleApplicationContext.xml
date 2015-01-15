@@ -15,6 +15,9 @@
         <property name="domsLocation" value="http://{doms.host}:{doms.port}/fedora"/>
         <property name="domsUser" value="{doms.username}"/>
         <property name="domsPassword" value="{doms.password}"/>
+        <property name="domsPidGenLocation" value="{doms.pidgenlocation}"/>
+        <property name="domsRetries" value="{doms.retries}"/>
+        <property name="domsDelayBetweenRetries" value="{doms.delaybetweenretries}"/>
     </bean>
 
     <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource" scope="singleton">
