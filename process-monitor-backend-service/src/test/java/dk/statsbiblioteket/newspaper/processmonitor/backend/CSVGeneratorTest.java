@@ -45,9 +45,9 @@ public class CSVGeneratorTest {
     @Test
     public void testGenerateCSVForBatchList() throws Exception {
         String expectedOutput
-                = "Batch;Roundtrip;Avis id;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n" +
-                  "\"=\"\"4000000000\"\"\";2;;0;;;;;;;false;1970-01-01 01:00:00;;;;;;;;;;;false;1970-01-01 01:00:01;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n" +
-                  "\"=\"\"4000000001\"\"\";1;;0;;;;true;1970-01-01 01:00:02;;;;;true;1970-01-01 01:00:00;;;;;false;1970-01-01 01:00:01;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+                = "Batch;Roundtrip;Avis id;Start date;End date;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n"
+                + "\"=\"\"4000000000\"\"\";2;testavis;1970-01-01 01:00:00;1970-01-01 01:00:01;0;;;;;;;false;1970-01-01 01:00:00;;;;;;;;;;;false;1970-01-01 01:00:01;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n"
+                + "\"=\"\"4000000001\"\"\";1;testavis;1970-01-01 01:00:00;1970-01-01 01:00:01;0;;;;true;1970-01-01 01:00:02;;;;;true;1970-01-01 01:00:00;;;;;false;1970-01-01 01:00:01;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         new CSVGenerator().writeTo(TEST_BATCHES, null, null, null, null, null, baos);
         assertEquals(baos.toString(), expectedOutput);
@@ -56,7 +56,8 @@ public class CSVGeneratorTest {
     @Test
     public void testGenerateCSVForBatch() throws Exception {
         String expectedOutput
-                = "Batch;Roundtrip;Avis id;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n" + "\"=\"\"4000000000\"\"\";2;;0;;;;;;;false;1970-01-01 01:00:00;;;;;;;;;;;false;1970-01-01 01:00:01;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+                = "Batch;Roundtrip;Avis id;Start date;End date;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n"
+                + "\"=\"\"4000000000\"\"\";2;testavis;1970-01-01 01:00:00;1970-01-01 01:00:01;0;;;;;;;false;1970-01-01 01:00:00;;;;;;;;;;;false;1970-01-01 01:00:01;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         new CSVGenerator().writeTo(TEST_BATCH_1, null, null, null, null, null, baos);
         assertEquals(baos.toString(), expectedOutput);
@@ -64,7 +65,7 @@ public class CSVGeneratorTest {
 
     @Test
     public void testGenerateCSVForEvent() throws Exception {
-        String expectedOutput=";;;;false;1970-01-01 01:00:01;\n";
+        String expectedOutput=";;;;;;false;1970-01-01 01:00:01;\n";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         new CSVGenerator().writeTo(TEST_EVENT, null, null, null, null, null, baos);
         assertEquals(baos.toString(), expectedOutput);
@@ -74,6 +75,9 @@ public class CSVGeneratorTest {
         Batch batch = new Batch();
         batch.setBatchID(batchID);
         batch.setRoundTripNumber(roundTripNumber);
+        batch.setAvisID("testavis");
+        batch.setStartDate(new Date(0L));
+        batch.setEndDate(new Date(1000L));
         batch.setEvents(events);
         return batch;
     }
