@@ -1,31 +1,39 @@
 package dk.statsbiblioteket.newspaper.processmonitor.backend;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import dk.statsbiblioteket.doms.central.connectors.EnhancedFedora;
+import dk.statsbiblioteket.util.xml.XPathSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import dk.statsbiblioteket.doms.central.connectors.BackendInvalidCredsException;
 import dk.statsbiblioteket.doms.central.connectors.BackendInvalidResourceException;
 import dk.statsbiblioteket.doms.central.connectors.BackendMethodFailedException;
-import dk.statsbiblioteket.doms.central.connectors.EnhancedFedoraImpl;
-import dk.statsbiblioteket.doms.webservices.authentication.Credentials;
 import dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasourceConfiguration;
 import dk.statsbiblioteket.util.xml.DOM;
-import dk.statsbiblioteket.util.xml.DefaultNamespaceContext;
-import dk.statsbiblioteket.util.xml.XPathSelectorImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Add number of pages to batch and duration to events.
  */
 
 public class DOMSBatchEnricher implements BatchEnricher {
+
+    private static final Logger log = LoggerFactory.getLogger(DOMSBatchEnricher.class);
     private SBOIDatasourceConfiguration config;
+
+    EnhancedFedora fedora;
+
+    public EnhancedFedora getFedora() {
+        return fedora;
+    }
+
+    public void setFedora(EnhancedFedora fedora) {
+        this.fedora = fedora;
+    }
 
     @Override
     public List<Batch> enrich(List<Batch> batches) {
@@ -35,43 +43,87 @@ public class DOMSBatchEnricher implements BatchEnricher {
         return batches;
     }
 
-    private Batch enrichBatch(Batch batch) {
-        String batchStructureXML = null;
-        String eventXML = null;
+    private Batch enrichBatch(Batch batch){
+        String pid = null;
         try {
-            EnhancedFedora fedora = new EnhancedFedoraImpl(
-                    new Credentials(config.getDomsUser(), config.getDomsPassword()), config.getDomsLocation(), config.getDomsPidGenLocation(), null, Integer.parseInt(config.getDomsRetries()), Integer.parseInt(config.getDomsDelayBetweenRetries()));
-            String pid = fedora.findObjectFromDCIdentifier("B" + batch.getBatchID() + "RT" + batch.getRoundTripNumber()).get(0);
-            batchStructureXML = fedora.getXMLDatastreamContents(pid, "BATCHSTRUCTURE");
+            pid = getPid(batch);
+        } catch (BackendInvalidResourceException e) {
+            //Okay, no pid in doms found, just return
+            return batch;
+        }
+
+        enrichNumberOfPages(batch, pid);
+
+        enrichDuration(batch, pid);
+
+        return batch;
+    }
+
+    protected void enrichDuration(Batch batch, String pid) {
+        String eventXML;
+        try {
             eventXML = fedora.getXMLDatastreamContents(pid, "EVENTS");
-        } catch (BackendInvalidCredsException | BackendMethodFailedException | BackendInvalidResourceException e) {
+        } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
             throw new RuntimeException(e.getMessage(), e);
+        } catch (BackendInvalidResourceException e) {
+            //Okay, no events datastream, just return,
+            return;
+        }
+        Document eventDOM = DOM.stringToDOM(eventXML, true);
+        XPathSelector xPathSelector
+                = DOM.createXPathSelector("premis", "info:lc/xmlns/premis-v2","result","http://schemas.statsbiblioteket.dk/result/");
+
+        for (Map.Entry<String, Event> event : batch.getEvents().entrySet()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            final String xpath
+                    = "/premis:premis/premis:event[premis:eventType/text()='" + event.getKey() + "' and premis:eventDateTime/text()='" + sdf.format(event.getValue().getDate()) + "']/premis:eventOutcomeInformation/premis:eventOutcomeDetail/premis:eventOutcomeDetailNote/text()";
+            String eventOutcome = xPathSelector.selectString(eventDOM, xpath);
+            if (eventOutcome == null || eventOutcome.isEmpty()) {
+                continue;
+            }
+            Document eventOutcomeDOM = dk.statsbiblioteket.newspaper.processmonitor.backend.DOM.stringToDOM(eventOutcome,
+                                                                                                                   true);
+            String eventDuration = xPathSelector.selectString(eventOutcomeDOM,
+                                                              "/result:result/result:duration/text()");
+            event.getValue().setDuration(eventDuration);
+        }
+    }
+
+    protected void enrichNumberOfPages(Batch batch, String pid) {
+        String batchStructureXML;
+        try {
+            batchStructureXML = fedora.getXMLDatastreamContents(pid, "BATCHSTRUCTURE");
+        } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (BackendInvalidResourceException e) {
+            //Okay, the batch have not yet been given a structure
+            return;
         }
 
         Document batchStructureDOM = DOM.stringToDOM(batchStructureXML, true);
         Integer pages = DOM.selectInteger(batchStructureDOM,
                                             "count(/node/node[@shortName != 'WORKSHIFT-ISO-TARGET']/node[@shortName != 'UNMATCHED' and @shortName != 'FILM-ISO-target']/node/node[substring(@shortName, string-length(@shortName) - string-length('-brik.jp2') +1) != '-brik.jp2']/attribute[@shortName = 'contents'])");
         batch.setNumberOfPages(pages);
+    }
 
-
-        Document eventDOM = DOM.stringToDOM(eventXML, true);
-        XPathSelectorImpl xPathSelector
-                = new XPathSelectorImpl(new DefaultNamespaceContext("info:lc/xmlns/premis-v2", "premis", "info:lc/xmlns/premis-v2"), 10);
-        for (Map.Entry<String, Event> event : batch.getEvents().entrySet()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            String eventOutcome = xPathSelector.selectString(eventDOM, "/premis/event[eventType/text()='" + event.getKey()
-                    + "' and eventDateTime/text()='" + sdf.format(event.getValue().getDate())
-                    + "']/eventOutcomeInformation/eventOutcomeDetail/eventOutcomeDetailNote/text()");
-            if (eventOutcome == null || eventOutcome.isEmpty()) {
-                continue;
+    protected String getPid(Batch batch) throws BackendInvalidResourceException {
+        String pid;
+        if (batch.getDomsID() != null){
+            pid = batch.getDomsID();
+        } else {
+            try {
+                final List<String> identifierList
+                        = fedora.findObjectFromDCIdentifier("B" + batch.getBatchID() + "RT" + batch.getRoundTripNumber());
+                if (identifierList.isEmpty()){
+                    throw new BackendInvalidResourceException("Pid not found for "+batch);
+                }
+                pid = identifierList
+                            .get(0);
+            } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
-            Document eventOutcomeDOM = DOM.stringToDOM(eventOutcome,true);
-            String eventDuration = xPathSelector.selectString(eventOutcomeDOM,
-                                                              "result/duration/text");
-            event.getValue().setDuration(eventDuration);
         }
-
-        return batch;
+        return pid;
     }
 
     public void setConfig(SBOIDatasourceConfiguration config) {

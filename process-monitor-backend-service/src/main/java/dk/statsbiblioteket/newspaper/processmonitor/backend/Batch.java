@@ -11,6 +11,7 @@ public class Batch {
 
     private String batchID;
     private int roundTripNumber;
+    private String domsID;
     private String avisID;
     private Date startDate;
     private Date endDate;
@@ -78,5 +79,28 @@ public class Batch {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
+    }
+
+    @XmlElement(name = "domsID")
+    public String getDomsID() {
+        return domsID;
+    }
+
+    public void setDomsID(String domsID) {
+        this.domsID = domsID;
+    }
+
+    @Override
+    public String toString() {
+        return "Batch{" +
+               "batchID='" + batchID + '\'' +
+               ", roundTripNumber=" + roundTripNumber +
+               ", domsID='" + domsID + '\'' +
+               ", avisID='" + avisID + '\'' +
+               ", startDate=" + startDate +
+               ", endDate=" + endDate +
+               ", events=" + events +
+               ", numberOfPages=" + numberOfPages +
+               '}';
     }
 }

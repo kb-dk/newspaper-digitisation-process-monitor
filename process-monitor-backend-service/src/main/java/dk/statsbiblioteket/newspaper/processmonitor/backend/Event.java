@@ -48,4 +48,14 @@ public class Event {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+               "success=" + success +
+               ", details='" + details + '\'' +
+               ", date=" + date +
+               ", duration='" + duration + '\'' +
+               '}';
+    }
 }

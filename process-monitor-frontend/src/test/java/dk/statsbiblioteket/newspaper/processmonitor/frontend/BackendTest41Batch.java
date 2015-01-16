@@ -10,13 +10,14 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class BackendTest {
+public class BackendTest41Batch {
 
     public static final boolean enabled = true;
+
     private DefaultClientConfig config;
 
-    private String batchID = "4001";
-    private String eventID = "Shipped_to_supplier";
+    private String batchID = "400022028241";
+    private String eventID = "Metadata_Archived";
     private String integrationTestServer;
 
     @BeforeClass(groups = "integrationTest", enabled = enabled)
@@ -38,7 +39,7 @@ public class BackendTest {
         System.out.println("Running testGetSingleBatch");
         Batch result = Client.create(config).resource(integrationTestServer).path(batchID + "").get(Batch.class);
         Assert.assertEquals(result.getBatchID(), batchID, "This is not the batch we expected");
-        Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key");
+        Assert.assertTrue(result.getEvents().containsKey(eventID), "The batch does not contain the expected key: "+result.toString());
         Assert.assertTrue(result.getEvents().get(eventID).isSuccess(), "The event is not marked as succesful");
 
     }
@@ -83,7 +84,7 @@ public class BackendTest {
                 .get(String.class);
         result = cleanDate(result);
         Assert.assertEquals(result,
-                            "Batch;Roundtrip;Avis id;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n" + "\"=\"\"4001\"\"\";0;;0;;;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+                            "Batch;Roundtrip;Avis id;Pages;Manually_stopped;Manually_stopped_timestamp;Manually_stopped_duration;Shipped_to_supplier;Shipped_to_supplier_timestamp;Shipped_to_supplier_duration;Data_Received;Data_Received_timestamp;Data_Received_duration;Metadata_Archived;Metadata_Archived_timestamp;Metadata_Archived_duration;Data_Archived;Data_Archived_timestamp;Data_Archived_duration;Structure_Checked;Structure_Checked_timestamp;Structure_Checked_duration;JPylyzed;JPylyzed_timestamp;JPylyzed_duration;Histogrammed;Histogrammed_timestamp;Histogrammed_duration;Metadata_checked;Metadata_checked_timestamp;Metadata_checked_duration;Manual_QA_Flagged;Manual_QA_Flagged_timestamp;Manual_QA_Flagged_duration;Roundtrip_Approved;Roundtrip_Approved_timestamp;Roundtrip_Approved_duration;Dissemination_Copy_Generated;Dissemination_Copy_Generated_timestamp;Dissemination_Copy_Generated_duration;Dissemination_Editions_Generated;Dissemination_Editions_Generated_timestamp;Dissemination_Editions_Generated_duration;Metadata_Enriched;Metadata_Enriched_timestamp;Metadata_Enriched_duration;Cleaned_lesser_roundtrips;Cleaned_lesser_roundtrips_timestamp;Cleaned_lesser_roundtrips_duration;Data_Released;Data_Released_timestamp;Data_Released_duration;Received_from_supplier;Received_from_supplier_timestamp;Received_from_supplier_duration\n" + "\"=\"\""+batchID+"\"\"\";1;;0;;;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;;;;;;;;;;;;;;;;;;;;;\n");
     }
 
     private String cleanDate(String result) {

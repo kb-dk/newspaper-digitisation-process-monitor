@@ -13,7 +13,10 @@
         <property name="domsLocation" value="${doms.url}"/>
         <property name="domsUser" value="${doms.username}"/>
         <property name="domsPassword" value="${doms.password}"/>
-         
+        <property name="domsPidGenLocation" value="{doms.pidgenerator.url}"/>
+        <property name="domsRetries" value="3"/>
+        <property name="domsDelayBetweenRetries" value="100"/>
+
     </bean>
 
     <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource">
@@ -33,14 +36,9 @@
     <bean id="mfPakDAO" class="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO">
         <constructor-arg ref="mfPakConfig"/>
     </bean>
-    
-    <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
-        <property name="mfpak" ref="mfPakDAO"/>
-    </bean>
 
     <bean id="dataSourceMockup"
-          class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.DataSourceMockup"
-            >
+          class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.DataSourceMockup">
         <property name="username" value="${doms.username}"/>
         <property name="password" value="${doms.password}"/>
     </bean>
@@ -52,9 +50,33 @@
         <ref bean="dataSourceMockup"/>
     </util:list>
 
+
+    <bean id="mfPakBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher">
+        <property name="mfpak" ref="mfPakDAO"/>
+    </bean>
+
+
+    <bean id="DOMSBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.DOMSBatchEnricher">
+        <property name="fedora" ref="fedora"/>
+    </bean>
+
+    <bean id="fedora" class="dk.statsbiblioteket.doms.central.connectors.EnhancedFedoraImpl">
+        <constructor-arg name="creds"
+                         type="dk.statsbiblioteket.doms.webservices.authentication.Credentials"
+                         value="#{new dk.statsbiblioteket.doms.webservices.authentication.Credentials(sboi_config.domsUser,sboi_config.domsPassword)}"/>
+        <constructor-arg name="fedoraLocation" value="#{sboi_config.domsLocation}"/>
+        <constructor-arg name="pidGenLocation" value="#{sboi_config.domsPidGenLocation}"/>
+        <constructor-arg name="thisLocation" value="#{null}"/>
+        <constructor-arg name="maxTriesPut" value="#{sboi_config.domsRetries}"/>
+        <constructor-arg name="maxTriesPost" value="#{sboi_config.domsRetries}"/>
+        <constructor-arg name="maxTriesDelete" value="#{sboi_config.domsRetries}"/>
+        <constructor-arg name="retryDelay" value="#{sboi_config.domsDelayBetweenRetries}"/>
+    </bean>
+
     <!--Reserved name for the data sources list-->
     <util:list id="enricherList" list-class="java.util.ArrayList">
         <ref bean="mfPakBatchEnricher"/>
+        <ref bean="DOMSBatchEnricher"/>
     </util:list>
 
 

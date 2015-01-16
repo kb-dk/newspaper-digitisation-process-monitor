@@ -42,6 +42,7 @@ public class Converter {
         result.setBatchID(batch.getBatchID());
         result.setRoundTripNumber(batch.getRoundTripNumber());
         result.setEvents(convert(batch.getEventList()));
+        result.setDomsID(batch.getDomsID());
         //result = EventCleaner.cleanBatch(result);
 
         return result;

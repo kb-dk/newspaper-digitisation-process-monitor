@@ -7,4 +7,13 @@
         <param-value>file://${project.build.testOutputDirectory}/test-applicationContext.xml</param-value>
     </context-param>
 
+    <context-param>
+        <description>The config dir where logback.xml is read from. Regarded as absolute if starting with /, otherwise
+            relative from the WEB-INF folder of the webapp
+        </description>
+        <param-name>CONFIGDIR</param-name>
+        <param-value>/${project.build.testOutputDirectory}</param-value>
+    </context-param>
+
+
 </web-app>

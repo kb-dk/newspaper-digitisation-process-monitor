@@ -1,0 +1,15 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO" level="ERROR"/>
+    <logger name="dk.statsbiblioteket.newspaper.processmonitor.backend.MfPakBatchEnricher" level="INFO"/>
+    <logger name="dk.statsbiblioteket.util.xml" level="OFF"/>
+    <logger name="dk.statsbiblioteket.newspaper.processmonitor.backend.DOM" level="OFF"/>
+    <logger name="dk.statsbibliokeket" level="DEBUG"/>
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

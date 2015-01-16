@@ -112,7 +112,19 @@
                 <groupId>eu.ralph-schuster</groupId>
                 <artifactId>csv</artifactId>
                 <version>2.6.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.5</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>
