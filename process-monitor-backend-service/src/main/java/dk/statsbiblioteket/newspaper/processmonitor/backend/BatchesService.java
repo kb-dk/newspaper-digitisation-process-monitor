@@ -48,8 +48,8 @@ public class BatchesService {
     }
 
     public BatchesService() {
-        System.out.println("Starting");
-    }
+        //System.out.println("Starting");
+   }
 
     /**
      * Retrieves a list of all known Batch objects (@see Batch).
@@ -88,6 +88,9 @@ public class BatchesService {
         Variant var = req.selectVariant(vars);
         try {
             Batch body = Converter.convert(dataSource.getBatch(batchID, null, details));
+            for (BatchEnricher enricher : enrichers) {
+                enricher.enrich(body);
+            }
             return Response.ok().entity(body).type(var.getMediaType()).build();
         } catch (NotFoundException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
@@ -119,6 +122,7 @@ public class BatchesService {
         Variant var = req.selectVariant(vars);
         try {
             Event body = Converter.convert(dataSource.getBatchEvent(batchID, roundtripID, eventID, details));
+            //TODO Events are not individually enriched for now
             return Response.ok().entity(body).type(var.getMediaType()).build();
         } catch (IllegalArgumentException e) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)

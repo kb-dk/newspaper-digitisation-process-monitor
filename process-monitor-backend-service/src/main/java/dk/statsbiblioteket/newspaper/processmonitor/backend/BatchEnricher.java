@@ -14,4 +14,8 @@ public interface BatchEnricher {
      */
     public abstract List<Batch> enrich(List<Batch> batches);
 
+    /**
+     * Enriches a batch with additional information.
+     */
+    public abstract Batch enrich(Batch batch);
 }

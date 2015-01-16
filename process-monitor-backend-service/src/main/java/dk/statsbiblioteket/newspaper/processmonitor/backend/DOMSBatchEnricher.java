@@ -38,12 +38,13 @@ public class DOMSBatchEnricher implements BatchEnricher {
     @Override
     public List<Batch> enrich(List<Batch> batches) {
         for (Batch batch : batches) {
-            enrichBatch(batch);
+            enrich(batch);
         }
         return batches;
     }
 
-    private Batch enrichBatch(Batch batch){
+    @Override
+    public Batch enrich(Batch batch) {
         String pid = null;
         try {
             pid = getPid(batch);
@@ -113,7 +114,7 @@ public class DOMSBatchEnricher implements BatchEnricher {
         } else {
             try {
                 final List<String> identifierList
-                        = fedora.findObjectFromDCIdentifier("B" + batch.getBatchID() + "RT" + batch.getRoundTripNumber());
+                        = fedora.findObjectFromDCIdentifier("path:B" + batch.getBatchID() + "-RT" + batch.getRoundTripNumber());
                 if (identifierList.isEmpty()){
                     throw new BackendInvalidResourceException("Pid not found for "+batch);
                 }

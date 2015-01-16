@@ -31,21 +31,24 @@ public class MfPakBatchEnricher implements BatchEnricher {
      */
     @Override
     public List<Batch> enrich(List<Batch> batches) {
-        
         for(Batch b : batches) {
-            String batchID = b.getBatchID();
-            try {
-                b.setAvisID(mfpak.getNewspaperID(batchID));  
-                enrichWithDateRange(b);
-            } catch (InconsistentDatabaseException | SQLException e) {
-                log.warn("Failed to enrich batch {}", batchID, e);
-            }
-                
+            enrich(b);
         }
-        
         return batches;
     }
-    
+
+    @Override
+    public Batch enrich(Batch batch) {
+        String batchID = batch.getBatchID();
+        try {
+            batch.setAvisID(mfpak.getNewspaperID(batchID));
+            enrichWithDateRange(batch);
+        } catch (InconsistentDatabaseException | SQLException e) {
+            log.warn("Failed to enrich batch {}", batchID, e);
+        }
+        return batch;
+    }
+
     /**
      * Enriches the batch with the start and stop dates from mfpak 
      */
