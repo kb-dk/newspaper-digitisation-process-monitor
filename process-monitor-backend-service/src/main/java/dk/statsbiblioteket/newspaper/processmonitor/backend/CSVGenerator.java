@@ -55,7 +55,7 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
     /** How many columns are used per event */
     private final int COLUMNS_PER_EVENT = 3;
     /** How many columns are used per row for headers */
-    private final int ROW_HEADER_COLUMNS = 4;
+    private final int ROW_HEADER_COLUMNS = 6;
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -168,7 +168,9 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         updateCell(header, 0, "Batch");
         updateCell(header, 1, "Roundtrip");
         updateCell(header, 2, "Avis id");
-        updateCell(header, 3, "Pages");
+        updateCell(header, 3, "Start date");
+        updateCell(header, 4, "End date");
+        updateCell(header, 5, "Pages");
 
         // Event headers
         int index = ROW_HEADER_COLUMNS;
@@ -196,7 +198,9 @@ public class CSVGenerator implements MessageBodyWriter<Object> {
         updateCell(row, 0, "=\"" + batch.getBatchID() + "\"");
         updateCell(row, 1, batch.getRoundTripNumber());
         updateCell(row, 2, batch.getAvisID());
-        updateCell(row, 3, batch.getNumberOfPages());
+        updateCell(row, 3, batch.getStartDate());
+        updateCell(row, 4, batch.getEndDate());
+        updateCell(row, 5, batch.getNumberOfPages());
 
         // Events
         Map<String, Event> events = batch.getEvents();
