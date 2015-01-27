@@ -27,13 +27,6 @@ public class DOMSBatchEnricher implements BatchEnricher {
 
     EnhancedFedora fedora;
 
-    public EnhancedFedora getFedora() {
-        return fedora;
-    }
-
-    public void setFedora(EnhancedFedora fedora) {
-        this.fedora = fedora;
-    }
 
     @Override
     public List<Batch> enrich(List<Batch> batches) {
@@ -65,7 +58,8 @@ public class DOMSBatchEnricher implements BatchEnricher {
         try {
             eventXML = fedora.getXMLDatastreamContents(pid, "EVENTS");
         } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            log.warn("Failed to retrieve EVENTS from doms for object '" + pid + "'", e);
+            return;
         } catch (BackendInvalidResourceException e) {
             //Okay, no events datastream, just return,
             return;
@@ -95,7 +89,8 @@ public class DOMSBatchEnricher implements BatchEnricher {
         try {
             batchStructureXML = fedora.getXMLDatastreamContents(pid, "BATCHSTRUCTURE");
         } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            log.warn("Failed to retrieve BATCHSTRUCTURE from doms for object '" + pid + "'", e);
+            return;
         } catch (BackendInvalidResourceException e) {
             //Okay, the batch have not yet been given a structure
             return;
@@ -121,7 +116,8 @@ public class DOMSBatchEnricher implements BatchEnricher {
                 pid = identifierList
                             .get(0);
             } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
-                throw new RuntimeException(e.getMessage(), e);
+                log.warn("Failed to retrieve get pid from doms for object 'B" + batch.getBatchID() + "-RT" + batch.getRoundTripNumber()+"'", e);
+                throw new RuntimeException(e);
             }
         }
         return pid;
@@ -133,5 +129,13 @@ public class DOMSBatchEnricher implements BatchEnricher {
 
     public SBOIDatasourceConfiguration getConfig() {
         return config;
+    }
+
+    public EnhancedFedora getFedora() {
+        return fedora;
+    }
+
+    public void setFedora(EnhancedFedora fedora) {
+        this.fedora = fedora;
     }
 }

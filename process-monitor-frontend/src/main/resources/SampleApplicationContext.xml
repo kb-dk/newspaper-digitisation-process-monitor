@@ -15,9 +15,9 @@
         <property name="domsLocation" value="http://{doms.host}:{doms.port}/fedora"/>
         <property name="domsUser" value="{doms.username}"/>
         <property name="domsPassword" value="{doms.password}"/>
-        <property name="domsPidGenLocation" value="{doms.pidgenlocation}"/>
-        <property name="domsRetries" value="{doms.retries}"/>
-        <property name="domsDelayBetweenRetries" value="{doms.delaybetweenretries}"/>
+        <property name="domsPidGenLocation" value="http://{doms.host}:{doms.port}/pidgenerator-service"/>
+        <property name="domsRetries" value="3"/>
+        <property name="domsDelayBetweenRetries" value="100"/>
     </bean>
 
     <bean id="sboi" class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.SBOIDatasource">
