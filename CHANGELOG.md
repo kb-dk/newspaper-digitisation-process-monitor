@@ -2,7 +2,7 @@
 * Requires java7 or java8
 * Remove old retry logic
 * add different colors for even and odd rows in the process monitor frontend
-* Integration tests actually run with jetty and java 7 again
+* Integration tests actually run with jetty and java 7 again. Use the jettyTest profile to enable these
 * logback.xml files updated to better pattern including thread
 * Remember the pdf editions in csv
 * Added "Pages" column to the web view.
