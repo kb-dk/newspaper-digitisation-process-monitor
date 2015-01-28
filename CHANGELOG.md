@@ -1,3 +1,15 @@
+1.8
+* Requires java7 or java8
+* Remove old retry logic
+* add different colors for even and odd rows in the process monitor frontend
+* Integration tests actually run with jetty and java 7 again
+* logback.xml files updated to better pattern including thread
+* Remember the pdf editions in csv
+* Added "Pages" column to the web view.
+* CSV: download with number of pages, avidid, duration
+* CSV: Include start and end date in CSV download
+* CSV: Fixed CSVDownload headers.
+
 1.7
 * Add PDF edition dissemantion copy column
 * Use newest version of item event framework. No functional changes for this module.
