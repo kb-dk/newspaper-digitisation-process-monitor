@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>dk.statsbiblioteket.newspaper</groupId>
@@ -9,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-digitisation-process-monitor</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.8</version>
     <packaging>pom</packaging>
 
 
@@ -26,7 +25,7 @@
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-digitisation-process-monitor.git</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-digitisation-process-monitor.git
         </developerConnection>
-        <tag>HEAD</tag>
+        <tag>newspaper-digitisation-process-monitor-1.8</tag>
     </scm>
 
     <modules>
@@ -81,17 +80,17 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>sboi-datasource</artifactId>
-                <version>2.5-SNAPSHOT</version>
+                <version>2.5</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-interfaces</artifactId>
-                <version>2.5-SNAPSHOT</version>
+                <version>2.5</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-mockup</artifactId>
-                <version>2.5-SNAPSHOT</version>
+                <version>2.5</version>
             </dependency>
 
 
