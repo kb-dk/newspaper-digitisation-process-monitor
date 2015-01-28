@@ -37,17 +37,19 @@
         <constructor-arg ref="mfPakConfig"/>
     </bean>
 
-    <bean id="dataSourceMockup"
+  <!--  <bean id="dataSourceMockup"
           class="dk.statsbiblioteket.medieplatform.autonomous.processmonitor.datasources.DataSourceMockup">
         <property name="username" value="${doms.username}"/>
         <property name="password" value="${doms.password}"/>
-    </bean>
+    </bean>-->
 
     <!--Reserved name for the data sources list-->
     <util:list id="dataSourcesList" list-class="java.util.ArrayList" scope="request">
         <ref bean="mfPak"/>
         <ref bean="sboi"/>
+<!--
         <ref bean="dataSourceMockup"/>
+-->
     </util:list>
 
 
