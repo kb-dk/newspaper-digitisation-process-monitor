@@ -58,7 +58,11 @@
     </bean>
 
 
-    <bean id="DOMSBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.DOMSBatchEnricher">
+    <bean id="PagesDOMSBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.PagesDOMSBatchEnricher">
+        <property name="fedora" ref="fedora"/>
+    </bean>
+
+    <bean id="DurationDOMSBatchEnricher" class="dk.statsbiblioteket.newspaper.processmonitor.backend.DurationDOMSBatchEnricher">
         <property name="fedora" ref="fedora"/>
     </bean>
 
@@ -78,7 +82,8 @@
     <!--Reserved name for the data sources list-->
     <util:list id="enricherList" list-class="java.util.ArrayList">
         <ref bean="mfPakBatchEnricher"/>
-        <ref bean="DOMSBatchEnricher"/>
+        <ref bean="PagesDOMSBatchEnricher"/>
+        <ref bean="DurationDOMSBatchEnricher"/>
     </util:list>
 
 
