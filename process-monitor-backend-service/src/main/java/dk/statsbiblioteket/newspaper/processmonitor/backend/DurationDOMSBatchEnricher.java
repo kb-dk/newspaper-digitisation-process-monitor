@@ -63,8 +63,9 @@ public class DurationDOMSBatchEnricher extends AbstractDOMSBatchEnricher {
 
         for (Map.Entry<String, Event> event : batch.getEvents().entrySet()) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            final String xpath
-                    = "/premis:premis/premis:event[premis:eventType/text()='" + event.getKey() + "' and premis:eventDateTime/text()='" + sdf.format(event.getValue().getDate()) + "']/premis:eventOutcomeInformation/premis:eventOutcomeDetail/premis:eventOutcomeDetailNote/text()";
+            final String xpath = "/premis:premis/premis:event[premis:eventType/text()='" + event.getKey()
+                    + "' and premis:eventDateTime/text()='" + sdf.format(event.getValue().getDate())
+                    + "']/premis:eventOutcomeInformation/premis:eventOutcomeDetail/premis:eventOutcomeDetailNote/text()";
             String eventOutcome = xPathSelector.selectString(eventDOM, xpath);
             if (eventOutcome == null || eventOutcome.isEmpty()) {
                 continue;

@@ -38,8 +38,7 @@ public abstract class AbstractDOMSBatchEnricher implements BatchEnricher {
                 if (identifierList.isEmpty()){
                     throw new BackendInvalidResourceException("Pid not found for "+batch);
                 }
-                pid = identifierList
-                            .get(0);
+                pid = identifierList.get(0);
             } catch (BackendInvalidCredsException | BackendMethodFailedException e) {
                 log.warn("Failed to retrieve pid from doms for object 'B" + batch.getBatchID() + "-RT" + batch
                         .getRoundTripNumber() + "'", e);
