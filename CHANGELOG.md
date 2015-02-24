@@ -1,3 +1,6 @@
+1.9
+* Cache values for duration and pages
+
 1.8
 * Requires java7 or java8
 * Remove old retry logic
