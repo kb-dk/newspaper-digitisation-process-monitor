@@ -23,6 +23,10 @@ public class PagesDOMSBatchEnricher extends AbstractDOMSBatchEnricher {
 
     @Override
     public Batch enrich(Batch batch) {
+        if (batch.getEvents() == null || !batch.getEvents().containsKey("Structure_Checked")) {
+            // Do not enrich batches without batch structure, the pages cannot be counted yet
+            return batch;
+        }
         String pid;
         try {
             pid = getPid(batch);

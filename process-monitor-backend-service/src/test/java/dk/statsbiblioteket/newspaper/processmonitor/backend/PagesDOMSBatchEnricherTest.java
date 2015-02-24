@@ -4,6 +4,8 @@ import dk.statsbiblioteket.doms.central.connectors.EnhancedFedora;
 import dk.statsbiblioteket.util.Strings;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -24,6 +26,9 @@ public class PagesDOMSBatchEnricherTest {
         enricher.setFedora(fedora);
         Batch myBatch = new Batch();
         myBatch.setDomsID(pid);
+        HashMap<String, Event> events = new HashMap<>();
+        events.put("Structure_Checked", new Event());
+        myBatch.setEvents(events);
         enricher.enrich(myBatch);
 
         //Verify expected DOMS calls
