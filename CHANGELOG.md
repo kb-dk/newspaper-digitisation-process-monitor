@@ -1,5 +1,7 @@
 1.9
 * Cache values for duration and pages
+* Update to version 2.2 of mfpak module
+* Update to version 2.6 of batch event framework
 
 1.8
 * Requires java7 or java8
