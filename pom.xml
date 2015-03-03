@@ -75,22 +75,22 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>newspaper-mfpak-integration</artifactId>
-                <version>2.2-SNAPSHOT</version>
+                <version>2.2</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>sboi-datasource</artifactId>
-                <version>2.6-SNAPSHOT</version>
+                <version>2.6</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-interfaces</artifactId>
-                <version>2.6-SNAPSHOT</version>
+                <version>2.6</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-mockup</artifactId>
-                <version>2.6-SNAPSHOT</version>
+                <version>2.6</version>
             </dependency>
 
 
