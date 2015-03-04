@@ -32,6 +32,9 @@ public abstract class AbstractDOMSBatchEnricher implements BatchEnricher {
         if (batch.getDomsID() != null){
             pid = batch.getDomsID();
         } else {
+            if (batch.getRoundTripNumber() < 1) {
+                throw new BackendInvalidResourceException("This batch does not exist in DOMS yet "+batch);
+            }
             try {
                 final List<String> identifierList
                         = fedora.findObjectFromDCIdentifier("path:B" + batch.getBatchID() + "-RT" + batch.getRoundTripNumber());
