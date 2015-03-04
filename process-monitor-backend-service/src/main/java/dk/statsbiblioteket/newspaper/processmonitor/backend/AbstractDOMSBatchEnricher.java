@@ -47,6 +47,7 @@ public abstract class AbstractDOMSBatchEnricher implements BatchEnricher {
                         .getRoundTripNumber() + "'", e);
                 throw new RuntimeException(e);
             }
+            batch.setDomsID(pid);
         }
         return pid;
     }

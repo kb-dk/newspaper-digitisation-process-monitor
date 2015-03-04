@@ -39,7 +39,14 @@ public class PagesDOMSBatchEnricherTest {
         assertEquals(10269, myBatch.getNumberOfPages());
 
         //Ensure caching happens, call again
-        enricher.enrich(myBatch);
+        PagesDOMSBatchEnricher enricher2 = new PagesDOMSBatchEnricher();
+        enricher2.setFedora(fedora);
+        Batch myBatch2 = new Batch();
+        myBatch2.setDomsID(pid);
+        HashMap<String, Event> events2 = new HashMap<>();
+        events2.put("Structure_Checked", new Event());
+        myBatch2.setEvents(events2);
+        enricher2.enrich(myBatch2);
         verifyNoMoreInteractions(fedora);
     }
 }

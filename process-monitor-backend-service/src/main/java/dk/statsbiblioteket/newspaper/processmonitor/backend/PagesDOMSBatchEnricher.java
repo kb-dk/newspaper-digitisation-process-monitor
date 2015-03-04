@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class PagesDOMSBatchEnricher extends AbstractDOMSBatchEnricher {
     private static final Logger log = LoggerFactory.getLogger(PagesDOMSBatchEnricher.class);
-    private static final Map<Batch, Integer> cache = Collections.synchronizedMap(new HashMap<Batch, Integer>());
+    private static final Map<String, Integer> cache = Collections.synchronizedMap(new HashMap<String, Integer>());
 
     @Override
     public Batch enrich(Batch batch) {
@@ -35,8 +35,8 @@ public class PagesDOMSBatchEnricher extends AbstractDOMSBatchEnricher {
             return batch;
         }
 
-        if (cache.containsKey(batch)) {
-            batch.setNumberOfPages(cache.get(batch));
+        if (cache.containsKey(batch.getDomsID())) {
+            batch.setNumberOfPages(cache.get(batch.getDomsID()));
         } else {
             enrichNumberOfPages(batch, pid);
         }
@@ -58,7 +58,7 @@ public class PagesDOMSBatchEnricher extends AbstractDOMSBatchEnricher {
         Document batchStructureDOM = DOM.stringToDOM(batchStructureXML, true);
         Integer pages = DOM.selectInteger(batchStructureDOM,
                                             "count(/node/node[@shortName != 'WORKSHIFT-ISO-TARGET']/node[@shortName != 'UNMATCHED' and @shortName != 'FILM-ISO-target']/node/node[substring(@shortName, string-length(@shortName) - string-length('-brik.jp2') +1) != '-brik.jp2']/attribute[@shortName = 'contents'])");
-        cache.put(batch, pages);
+        cache.put(batch.getDomsID(), pages);
         batch.setNumberOfPages(pages);
     }
 
