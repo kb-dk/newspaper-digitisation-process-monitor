@@ -1,3 +1,7 @@
+1.10
+* Fix faulty caching of pages
+* Remember pids from Summa index instead of looking them up
+
 1.9
 * Cache values for duration and pages
 * Update to version 2.2 of mfpak module
