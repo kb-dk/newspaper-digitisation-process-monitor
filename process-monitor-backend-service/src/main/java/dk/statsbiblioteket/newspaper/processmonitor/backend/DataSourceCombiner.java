@@ -112,8 +112,10 @@ public class DataSourceCombiner implements DataSource {
         boolean aIsHigher = a.getRoundTripNumber() > b.getRoundTripNumber();
         if (aIsHigher) {
             result.setRoundTripNumber(a.getRoundTripNumber());
+            result.setDomsID(a.getDomsID());
         } else {
             result.setRoundTripNumber(b.getRoundTripNumber());
+            result.setDomsID(b.getDomsID());
         }
 
         HashMap<String, dk.statsbiblioteket.medieplatform.autonomous.Event> eventMap = new HashMap<>();
