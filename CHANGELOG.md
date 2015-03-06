@@ -1,3 +1,6 @@
+1.11
+* Do not give details in CSV file
+
 1.10
 * Fix faulty caching of pages
 * Remember pids from Summa index instead of looking them up
