@@ -88,7 +88,7 @@
 
 
     <bean id="statisticsService" class="dk.statsbiblioteket.newspaper.processmonitor.stats.StatisticsService">
-        <property name="statisticsBaseUrl" value="http:/localhost:7820/statistics/statistics.html?batchid="/>
+        <property name="statisticsBaseUrl" value="http://localhost:7820/statistics/statistics.html?batchid="/>
     </bean>
 
 </beans>
