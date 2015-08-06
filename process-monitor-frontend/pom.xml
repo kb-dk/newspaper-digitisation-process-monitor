@@ -170,10 +170,6 @@
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
         <dependency>
-            <groupId>dk.statsbiblioteket.doms.domsutil</groupId>
-            <artifactId>domsutil-webservice-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>process-monitor-backend-service</artifactId>
             <version>${project.version}</version>

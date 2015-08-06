@@ -5,7 +5,7 @@
     <!--General for reading context params, not presently needed-->
     <listener>
         <listener-class>
-            dk.statsbiblioteket.doms.webservices.configuration.ConfigContextListener
+            dk.statsbiblioteket.sbutil.webservices.configuration.ConfigContextListener
         </listener-class>
     </listener>
 

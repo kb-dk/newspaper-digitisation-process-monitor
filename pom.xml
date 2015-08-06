@@ -80,24 +80,17 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>sboi-datasource</artifactId>
-                <version>2.9-SNAPSHOT</version>
+                <version>2.10-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-interfaces</artifactId>
-                <version>2.9-SNAPSHOT</version>
+                <version>2.10-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.newspaper</groupId>
                 <artifactId>process-monitor-datasource-mockup</artifactId>
-                <version>2.9-SNAPSHOT</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>dk.statsbiblioteket.doms.domsutil</groupId>
-                <artifactId>domsutil-webservice-common</artifactId>
-                <version>1.0</version>
+                <version>2.10-SNAPSHOT</version>
             </dependency>
 
             <dependency>
