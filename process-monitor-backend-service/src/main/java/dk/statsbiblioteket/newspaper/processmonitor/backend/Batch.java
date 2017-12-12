@@ -17,6 +17,7 @@ public class Batch {
     private Date endDate;
     private Map<String, Event> events;
     private int numberOfPages;
+    private int numberOfUnmatched;
 
     @XmlElement(name = "batchID")
     public String getBatchID() {
@@ -101,6 +102,15 @@ public class Batch {
                ", endDate=" + endDate +
                ", events=" + events +
                ", numberOfPages=" + numberOfPages +
+               ", numberOfUnmatched=" + numberOfUnmatched +
                '}';
+    }
+
+    public void setNumberOfUnmatched(int numberOfUnmatched) {
+        this.numberOfUnmatched = numberOfUnmatched;
+    }
+
+    public int getNumberOfUnmatched() {
+        return numberOfUnmatched;
     }
 }
