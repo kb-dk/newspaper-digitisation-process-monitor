@@ -1,3 +1,6 @@
+1.12
+* Report number of unmatched pages in CSV file
+
 1.11
 * Do not give details in CSV file
 
