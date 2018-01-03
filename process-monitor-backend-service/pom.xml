@@ -11,6 +11,19 @@
     <artifactId>process-monitor-backend-service</artifactId>
 
     <dependencies>
+
+        <!--To fix
+[ERROR] Failed to execute goal on project process-monitor-backend-service: Could not resolve dependencies for project dk.statsbiblioteket.newspaper:process-monitor-backend-service:jar:1.13-SNAPSHOT: Could not find artifact jdk.tools:jdk.tools:jar:1.6 at specified path /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64/jre/../lib/tools.jar -> [Help 1]
+-->
+        <dependency>
+            <groupId>jdk.tools</groupId>
+            <artifactId>jdk.tools</artifactId>
+            <version>${java.version}</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/../lib/tools.jar</systemPath>
+        </dependency>
+
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
