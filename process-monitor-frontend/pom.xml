@@ -45,48 +45,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
-<!--
-
-                    <plugin>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-maven-plugin</artifactId>
-                        <version>9.2.3.v20140905</version>
-                        <configuration>
-                            <stopKey>STOP</stopKey>
-                            <stopPort>9999</stopPort>
-                            <stopWait>5</stopWait>
-                            <scanIntervalSeconds>5</scanIntervalSeconds>
-                            <systemPropertiesFile>${integration.test.newspaper.properties}</systemPropertiesFile>
-                            <webAppConfig>
-                                <contextPath>/${project.artifactId}</contextPath>
-                                <overrideDescriptor>${project.build.testOutputDirectory}/test-web.xml
-                                </overrideDescriptor>
-                            </webAppConfig>
-
-
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>start Jetty</id>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <scanIntervalSeconds>0</scanIntervalSeconds>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>stop Jetty</id>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                                <phase>post-integration-test</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
--->
                 </plugins>
             </build>
         </profile>
