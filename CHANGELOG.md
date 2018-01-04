@@ -1,3 +1,7 @@
+1.13
+* Fixed a bug that crashed 1.12
+* Jetty Integration tests are no longer controlled by maven, for easier local testing and debugging
+
 1.12
 * Report number of unmatched pages in CSV file
 
