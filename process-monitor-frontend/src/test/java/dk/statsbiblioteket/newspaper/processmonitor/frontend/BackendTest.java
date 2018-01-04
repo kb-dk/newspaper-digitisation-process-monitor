@@ -4,11 +4,15 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Event;
+import org.eclipse.jetty.server.Server;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BackendTest {
 
@@ -22,12 +26,23 @@ public class BackendTest {
     private String eventID = "Shipped_to_supplier";
     private String integrationTestServer;
 
-    @BeforeClass(groups = JETTY_TEST, enabled = enabled)
-    public void setup() throws IOException {
+    protected Server server;
+
+    protected static Lock lock = new ReentrantLock();
+
+    @BeforeClass(groups = JETTY_TEST)
+    public void setup() throws Exception {
+        lock.lock();
+        server = JettyRunner.startJettyServer();
         integrationTestServer = "http://localhost:8080/process-monitor-frontend/services/batches";
         config = new DefaultClientConfig();
     }
 
+    @AfterClass(groups = JETTY_TEST)
+    public void tearDown() throws Exception {
+        server.stop();
+        lock.unlock();
+    }
 
     @Test(groups = JETTY_TEST, enabled = enabled)
     public void testGetBatches() {

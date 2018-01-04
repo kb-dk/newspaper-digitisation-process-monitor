@@ -40,11 +40,13 @@
                                     <includes>
                                         <include>**/*.java</include>
                                     </includes>
+                                    <forkMode>never</forkMode>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
 
+<!--
 
                     <plugin>
                         <groupId>org.eclipse.jetty</groupId>
@@ -84,6 +86,7 @@
                             </execution>
                         </executions>
                     </plugin>
+-->
                 </plugins>
             </build>
         </profile>
@@ -142,11 +145,14 @@
     </build>
 
     <dependencies>
-
+        <!--The selenium tests use a jetty webserver-->
         <dependency>
-            <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>newspaper-mfpak-integration</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>8.2.0.v20160908</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

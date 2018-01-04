@@ -12,7 +12,7 @@
             relative from the WEB-INF folder of the webapp
         </description>
         <param-name>CONFIGDIR</param-name>
-        <param-value>/${project.build.testOutputDirectory}</param-value>
+        <param-value>${project.build.testOutputDirectory}</param-value>
     </context-param>
 
 

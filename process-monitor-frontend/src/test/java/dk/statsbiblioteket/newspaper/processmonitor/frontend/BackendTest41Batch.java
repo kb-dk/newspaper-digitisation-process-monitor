@@ -4,11 +4,14 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Batch;
 import dk.statsbiblioteket.newspaper.processmonitor.backend.Event;
+import org.eclipse.jetty.server.Server;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BackendTest41Batch {
 
@@ -24,14 +27,24 @@ public class BackendTest41Batch {
 
     private String batchID = "400022028241";
     private String eventID = "Metadata_Archived";
-    private String integrationTestServer;
+    protected String integrationTestServer;
+    protected Server server;
 
-    @BeforeClass(groups = JETTY_TEST, enabled = enabled)
-    public void setup() throws IOException {
+    protected static Lock lock = new ReentrantLock();
+
+    @BeforeClass(groups = JETTY_TEST)
+    public void setup() throws Exception {
+        lock.lock();
+        server = JettyRunner.startJettyServer();
         integrationTestServer = "http://localhost:8080/process-monitor-frontend/services/batches";
         config = new DefaultClientConfig();
     }
 
+    @AfterClass(groups = JETTY_TEST)
+    public void tearDown() throws Exception {
+        server.stop();
+        lock.unlock();
+    }
 
     @Test(groups = JETTY_TEST, enabled = enabled)
     public void testGetBatches() {
@@ -91,7 +104,7 @@ public class BackendTest41Batch {
                 .get(String.class);
         result = cleanDate(result);
         Assert.assertEquals(result.trim(),
-                            HEADER+"\n" + "\"=\"\"400022028241\"\"\";1;adresseavisen1759;1795-06-01;1795-06-15;9;0;;;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;;;;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;;;;;;");
+                            HEADER+"\n" + "\"=\"\"400022028241\"\"\";1;adresseavisen1759;1795-06-01;1795-06-15;9;1;;;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;;;;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;true;1970-01-01 01:00:00;P0Y1M0DT0H0M0.101S;;;;;;");
     }
 
     private String cleanDate(String result) {
