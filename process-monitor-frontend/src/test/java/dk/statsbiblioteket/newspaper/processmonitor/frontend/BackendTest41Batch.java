@@ -30,11 +30,9 @@ public class BackendTest41Batch {
     protected String integrationTestServer;
     protected Server server;
 
-    protected static Lock lock = new ReentrantLock();
 
     @BeforeClass(groups = JETTY_TEST)
     public void setup() throws Exception {
-        lock.lock();
         server = JettyRunner.startJettyServer();
         integrationTestServer = "http://localhost:8080/process-monitor-frontend/services/batches";
         config = new DefaultClientConfig();
@@ -43,7 +41,6 @@ public class BackendTest41Batch {
     @AfterClass(groups = JETTY_TEST)
     public void tearDown() throws Exception {
         server.stop();
-        lock.unlock();
     }
 
     @Test(groups = JETTY_TEST, enabled = enabled)
